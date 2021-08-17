@@ -93,6 +93,7 @@ const TimerClock = observer(() => {
 
   return (
     <>
+    <Text color="white" weight="600" size={1.5}>ช่วงโฟกัส</Text>
       <div style={{ width: 250 }}>
         {!startCount ? (
           <SetTimerComp

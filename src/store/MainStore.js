@@ -1,13 +1,13 @@
 import React, { createContext } from "react";
 import { makeAutoObservable } from "mobx";
 import TimerStore from "./TimerStore";
-import Timer from "../pages/Timer";
+import TodosStore from "./TodosStore";
 
 class mainStore {
-  timer = 0;
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
+    this.todosStore = new TodosStore(this);
   }
 }
 

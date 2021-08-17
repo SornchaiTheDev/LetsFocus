@@ -1,40 +1,73 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { MainStore } from "../store/MainStore";
+import { observer } from "mobx-react-lite";
+import TodoBoxComp from "./TodoBox";
 import styled from "styled-components";
 import { Text } from "../css/main";
-import Checkbox from "./Checkbox";
-const TodoBox = styled.div`
-  @media (min-width: 320px) {
-    width: 90%;
-  }
-  @media (min-width: 928px) {
-    width: 50%;
-  }
+import { FaPlus } from "react-icons/fa";
+import { v4 as uuid } from "uuid";
 
-  background: white;
-  border-radius: 20px;
-  box-shadow: 2px 5px 1px 2px rgba(0, 0, 0, 0.25);
-  padding: 5px 10px;
+const TodoGroup = styled.div`
+  width: 70%;
+  height: 100%;
   display: flex;
-  flex-diection: column;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const TopGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
 `;
 
-const TodoArea = styled.div`
-  width: 100%;
-  height: 100%;
-  background: gold;
+const AddTodo = styled.button`
+  outline: none;
+  background: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-function TodoList() {
+const TodoList = observer(() => {
+  const { todosStore } = useContext(MainStore);
+
   return (
     <>
-      <TodoBox>
-        <Text weight={500}>แคล หน้า 1-10</Text>
-        <Checkbox />
-      </TodoBox>
+      <TodoGroup>
+        <TopGroup>
+          <Text color="white" weight="600" size={1.5}>
+            กำลังทำ ({todosStore.TodosLength})
+          </Text>
+          <AddTodo
+            onClick={() =>
+              todosStore.addTodos({
+                id: uuid(),
+                lastModified: new Date().getTime(),
+                event: uuid(),
+                completed: false,
+              })
+            }
+          >
+            <FaPlus size="1rem" />
+          </AddTodo>
+        </TopGroup>
+        {todosStore.todos.map((todo, index) => (
+          <TodoBoxComp
+            key={index}
+            id={todo.id}
+            event={todo.event}
+            completed={todo.completed}
+          />
+        ))}
+      </TodoGroup>
     </>
   );
-}
+});
 
 export default TodoList;

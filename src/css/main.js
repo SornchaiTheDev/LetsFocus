@@ -8,21 +8,30 @@ export const Text = styled.h1`
 `;
 
 export const Base = styled.div`
-  width: 100vw;
-  height: 100vh;
+  margin-top: 30px;
+  // width: 100vw;
+  // height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  gap: 50px;
+  align-items: center;
 `;
 
 export const Container = styled.div`
-  width: 80vw;
+  @media (min-width: 320px) {
+    width: 100%;
+  }
+  @media (min-width: 928px) {
+    width: 70%;
+  }
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 50px;
+  justify-content: center;
   align-items: center;
+  gap: 50px;
+  //   background : gold;
 `;
 
 export const Button = styled.button`
@@ -70,9 +79,7 @@ export const TimeInputSet = styled.div`
 `;
 
 export const Icon = styled.button`
-  @media (min-width: 928px) {
-    cursor: pointer;
-  }
+  cursor: pointer;
   outline: none;
   background: none;
   border: none;
