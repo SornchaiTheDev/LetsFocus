@@ -40,7 +40,7 @@ const SetTimerComp = observer(() => {
     if (minutes > 1 && seconds === 60) setSeconds(55);
   }, [minutes, seconds]);
   const TimeSet = (digit, type, amount) => {
-    if (type === "increase" && amount < 60) {
+    if (type === "increase") {
       if (digit === "minutes") {
         setMinutes((prev) => prev + 5);
       }

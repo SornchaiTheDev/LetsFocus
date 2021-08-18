@@ -31,6 +31,7 @@ const TodoInput = styled.input`
   font-weight: 500;
   outline: none;
   padding: 6px;
+  border-bottom: ${(props) => (props.empty ? "3px red solid" : "none")};
 `;
 
 const AddBtn = styled.button`
@@ -48,7 +49,20 @@ const AddBtn = styled.button`
 const AddTodo = ({ hide }) => {
   const { todosStore } = useContext(MainStore);
   const [eventName, setEventName] = useState("");
+  const [empty, setEmpty] = useState(false);
 
+  const _addTodo = () => {
+    if (eventName.length > 0) {
+      todosStore.addTodo({
+        id: uuid(),
+        event: eventName,
+        completed: false,
+      });
+      hide(false);
+    } else {
+      setEmpty(true);
+    }
+  };
   return (
     <TodoBox>
       <TextSection>
@@ -57,20 +71,10 @@ const AddTodo = ({ hide }) => {
           value={eventName}
           onChange={(e) => setEventName(e.target.value)}
           placeholder="ใส่งานที่ต้องทำ"
+          empty={empty}
         />
       </TextSection>
-      <AddBtn
-        onClick={() => {
-          todosStore.addTodo({
-            id: uuid(),
-            event: eventName,
-            completed: false,
-          });
-          hide(false);
-        }}
-      >
-        เพิ่ม
-      </AddBtn>
+      <AddBtn onClick={_addTodo}>เพิ่ม</AddBtn>
     </TodoBox>
   );
 };

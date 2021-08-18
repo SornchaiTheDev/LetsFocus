@@ -3,10 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Tree from "./Tree";
 import reportWebVitals from "./reportWebVitals";
+import StoreProvider from "./store/MainStore";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Tree />
+    <StoreProvider>
+      <Tree />
+    </StoreProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

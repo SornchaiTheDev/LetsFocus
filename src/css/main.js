@@ -9,11 +9,10 @@ export const Text = styled.h1`
 
 export const Base = styled.div`
   background: ${(props) => (props.background ? props.background : "#eb3c27")};
-  width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 50px;
   align-items: center;
 `;

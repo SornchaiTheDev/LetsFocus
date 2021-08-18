@@ -4,10 +4,19 @@ import TimerStore from "./TimerStore";
 import TodosStore from "./TodosStore";
 
 class mainStore {
+  alert = false;
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
     this.todosStore = new TodosStore(this);
+  }
+
+  alert() {
+    this.alert = true;
+  }
+
+  closeAlert() {
+    this.alert = false;
   }
 }
 

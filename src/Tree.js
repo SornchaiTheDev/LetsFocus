@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
 } from "react-router-dom";
-import StoreProvider from "./store/MainStore";
-import PrivateRoute from "./components/PrivateRoute";
+import Alert from "./components/Alert";
 import Timer from "./pages/Timer";
-
-function Tree() {
+import { observer } from "mobx-react-lite";
+import { MainStore } from "./store/MainStore";
+const Tree = observer(() => {
+  const mainStore = useContext(MainStore);
   return (
-    <StoreProvider>
+    <>
+      {mainStore.alert && <Alert />}
+
       <Router>
         <Switch>
           <Route path="/" exact component={Timer} />
@@ -19,8 +22,8 @@ function Tree() {
           <Redirect to="/" />
         </Switch>
       </Router>
-    </StoreProvider>
+    </>
   );
-}
+});
 
 export default Tree;
