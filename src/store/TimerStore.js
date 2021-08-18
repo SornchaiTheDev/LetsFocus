@@ -1,8 +1,11 @@
 import { makeAutoObservable } from "mobx";
 
 class TimerStore {
-  timer = 0;
-  maxtime = 0;
+  focusTime = 25;
+  restTime = 5;
+  maxFocusTime = 0;
+  maxRestTime = 0;
+  mode = "focus";
 
   rootStore;
   constructor(rootStore) {
@@ -10,13 +13,29 @@ class TimerStore {
     this.rootStore = rootStore;
   }
 
-  countdown() {
-    this.timer--;
+  setMode() {
+    return this.mode === "focus" ? (this.mode = "rest") : (this.mode = "focus");
   }
 
-  set setTimer(time) {
-    this.timer = time;
-    this.maxtime = time;
+  countdown() {
+    return this.mode === "focus" ? this.focusTime-- : this.restTime--;
+  }
+
+  set setFocusTime(time) {
+    this.focusTime = time;
+    this.maxFocusTime = time;
+  }
+
+  set setRestTime(time) {
+    this.restTime = time;
+    this.maxRestTime = time;
+  }
+
+  get timer() {
+    return this.mode === "focus" ? this.focusTime : this.restTime;
+  }
+  get maxTime() {
+    return this.mode === "focus" ? this.maxFocusTime : this.maxRestTime;
   }
 
   get currentTime() {
@@ -28,10 +47,6 @@ class TimerStore {
     return `${Math.floor(this.timer / 60)}:${(this.timer % 60)
       .toString()
       .padEnd(2, 0)}`;
-  }
-
-  get maxTime() {
-    return this.maxtime;
   }
 
   get isZero() {

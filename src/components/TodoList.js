@@ -1,12 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { MainStore } from "../store/MainStore";
 import { observer } from "mobx-react-lite";
 import TodoBoxComp from "./TodoBox";
 import styled from "styled-components";
 import { Text } from "../css/main";
 import { FaPlus } from "react-icons/fa";
-import { v4 as uuid } from "uuid";
-
+import AddTodo from "./AddTodo";
 const TodoGroup = styled.div`
   width: 70%;
   height: 100%;
@@ -23,7 +22,8 @@ const TopGroup = styled.div`
   align-items: center;
 `;
 
-const AddTodo = styled.button`
+const AddTodoBtn = styled.button`
+  cursor: pointer;
   outline: none;
   background: white;
   border: none;
@@ -36,27 +36,20 @@ const AddTodo = styled.button`
 
 const TodoList = observer(() => {
   const { todosStore } = useContext(MainStore);
+  const [addClick, setAddClick] = useState(false);
 
   return (
     <>
       <TodoGroup>
         <TopGroup>
           <Text color="white" weight="600" size={1.5}>
-            กำลังทำ ({todosStore.TodosLength})
+            ที่ต้องทำ ({todosStore.TodosLength})
           </Text>
-          <AddTodo
-            onClick={() =>
-              todosStore.addTodos({
-                id: uuid(),
-                lastModified: new Date().getTime(),
-                event: uuid(),
-                completed: false,
-              })
-            }
-          >
+          <AddTodoBtn onClick={() => setAddClick(!addClick)}>
             <FaPlus size="1rem" />
-          </AddTodo>
+          </AddTodoBtn>
         </TopGroup>
+        {addClick && <AddTodo hide={(e) => setAddClick(e)} />}
         {todosStore.todos.map((todo, index) => (
           <TodoBoxComp
             key={index}

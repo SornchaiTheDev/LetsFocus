@@ -6,10 +6,12 @@ import { Base, Container, Text } from "../css/main";
 import { MainStore } from "../store/MainStore";
 import TimerClock from "../components/TimerClock";
 import TodoList from "../components/TodoList";
+import { observer } from "mobx-react-lite";
 
-function Timer() {
+const Timer = observer(() => {
+  const { timerStore } = useContext(MainStore);
   return (
-    <Base>
+    <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
       <Container>
         <TopBar />
         <TimerClock />
@@ -17,6 +19,6 @@ function Timer() {
       </Container>
     </Base>
   );
-}
+});
 
 export default Timer;

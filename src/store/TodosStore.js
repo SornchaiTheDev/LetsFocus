@@ -18,7 +18,7 @@ class TodosStore {
     return this.todos[currentId].completed;
   }
 
-  addTodos(todo) {
+  addTodo(todo) {
     return this.todos.push(todo);
   }
 
@@ -26,12 +26,9 @@ class TodosStore {
     const currentId = this.todos.findIndex((todo) => todo.id === id);
     this.todos[currentId] = {
       id: id,
-      lastModified: new Date().getTime(),
       event: this.todos[currentId].event,
       completed: !this.todos[currentId].completed,
     };
-    const sortList = this.todos.sort((a, b) => a.lastModified - b.lastModified);
-    this.todos = sortList;
   }
 }
 

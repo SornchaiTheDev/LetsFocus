@@ -8,9 +8,9 @@ export const Text = styled.h1`
 `;
 
 export const Base = styled.div`
-  margin-top: 30px;
-  // width: 100vw;
-  // height: 100vh;
+  background: ${(props) => (props.background ? props.background : "#eb3c27")};
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,6 +19,7 @@ export const Base = styled.div`
 `;
 
 export const Container = styled.div`
+  margin-top: 30px;
   @media (min-width: 320px) {
     width: 100%;
   }
@@ -67,7 +68,7 @@ export const SetTimerInner = styled.div`
   border-radius: 50%;
   width: 85%;
   height: 85%;
-  background: #eb3c27;
+  background: ${(props) => (props.background ? props.background : "#eb3c27")};
   color: white;
 `;
 

@@ -19,13 +19,24 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
+import TimerMode from "./TimerMode";
 
-const SetTimerComp = ({ Time }) => {
-  const [minutes, setMinutes] = useState(25);
+const SetTimerComp = observer(() => {
+  const { timerStore } = useContext(MainStore);
+  const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    Time(minutes * 60 + seconds);
+    timerStore.mode === "focus" ? setMinutes(25) : setMinutes(5);
+  }, [timerStore.mode]);
+
+  useEffect(() => {
+    if (timerStore.mode === "focus") {
+      timerStore.setFocusTime = minutes * 60 + seconds;
+    } else {
+      timerStore.setRestTime = minutes * 60 + seconds;
+    }
+
     if (minutes > 1 && seconds === 60) setSeconds(55);
   }, [minutes, seconds]);
   const TimeSet = (digit, type, amount) => {
@@ -48,7 +59,9 @@ const SetTimerComp = ({ Time }) => {
 
   return (
     <SetTimer>
-      <SetTimerInner>
+      <SetTimerInner
+        background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}
+      >
         <TimeInputSet>
           <Icon onClick={() => TimeSet("minutes", "increase", minutes)}>
             <BsFillCaretUpFill size="2rem" />
@@ -77,7 +90,7 @@ const SetTimerComp = ({ Time }) => {
       </SetTimerInner>
     </SetTimer>
   );
-};
+});
 
 const TimerClock = observer(() => {
   const { timerStore } = useContext(MainStore);
@@ -86,22 +99,20 @@ const TimerClock = observer(() => {
   useEffect(() => {
     const countdown = setInterval(() => {
       if (startCount && !timerStore.isZero) timerStore.countdown();
-      if (timerStore.isZero) setStartCount(false);
+      if (timerStore.isZero) {
+        setStartCount(false);
+        timerStore.setMode();
+      }
     }, 1000);
     return () => clearInterval(countdown);
   }, [timerStore.timer, startCount]);
 
   return (
     <>
-    <Text color="white" weight="600" size={1.5}>ช่วงโฟกัส</Text>
+      <TimerMode />
       <div style={{ width: 250 }}>
         {!startCount ? (
-          <SetTimerComp
-            Time={(time) => {
-              time = time;
-              timerStore.setTimer = time;
-            }}
-          />
+          <SetTimerComp />
         ) : (
           <CircularProgressbar
             value={(timerStore.timer / timerStore.maxTime) * 100}
@@ -126,6 +137,7 @@ const TimerClock = observer(() => {
           />
         )}
       </div>
+
       <Button
         onClick={() => {
           setStartCount(!startCount);
