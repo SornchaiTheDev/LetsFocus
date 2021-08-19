@@ -5,14 +5,19 @@ import TodosStore from "./TodosStore";
 
 class mainStore {
   alert = false;
+  page = "timer";
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
     this.todosStore = new TodosStore(this);
   }
 
-  alert() {
+  setAlert() {
     this.alert = true;
+  }
+
+  setPage(page) {
+    this.page = page;
   }
 
   closeAlert() {

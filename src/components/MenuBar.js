@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
+
 import styled from "styled-components";
 import { Text } from "../css/main";
+import { useHistory, useLocation } from "react-router";
+
 const MenuBox = styled.div`
   width: 100%;
   display: flex;
@@ -13,20 +16,32 @@ const Menu = styled.div`
   padding: 6px;
   border-bottom: ${(props) => (props.active ? "5px solid white" : "none")};
 `;
-function MenuBar() {
+const MenuBar = () => {
+  let location = useLocation();
+  const history = useHistory();
+
   return (
     <MenuBox>
-      <Menu active>
+      <Menu
+        active={location.pathname === "/"}
+        onClick={() => history.replace("/")}
+      >
         <Text color="white">จับเวลา</Text>
       </Menu>
-      <Menu>
+      <Menu
+        active={location.pathname === "/leaderboard"}
+        onClick={() => history.replace("/leaderboard")}
+      >
         <Text color="white">อันดับ</Text>
       </Menu>
-      <Menu>
+      <Menu
+        active={location.pathname === "/me"}
+        onClick={() => history.replace("/me")}
+      >
         <Text color="white">ฉัน</Text>
       </Menu>
     </MenuBox>
   );
-}
+};
 
 export default MenuBar;

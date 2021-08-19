@@ -8,7 +8,7 @@ import {
   SetTimerInner,
   TimeInputSet,
   Icon,
-} from "../css/main";
+} from "../../css/main";
 import {
   BsStop,
   BsPlay,
@@ -18,7 +18,7 @@ import {
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { observer } from "mobx-react-lite";
-import { MainStore } from "../store/MainStore";
+import { MainStore } from "../../store/MainStore";
 import TimerMode from "./TimerMode";
 
 const SetTimerComp = observer(() => {
@@ -93,17 +93,23 @@ const SetTimerComp = observer(() => {
 });
 
 const TimerClock = observer(() => {
+  const mainContext = useContext(MainStore);
   const { timerStore } = useContext(MainStore);
   const [startCount, setStartCount] = useState(false);
 
   useEffect(() => {
-    const countdown = setInterval(() => {
-      if (startCount && !timerStore.isZero) timerStore.countdown();
-      if (timerStore.isZero) {
-        setStartCount(false);
-        timerStore.setMode();
-      }
-    }, 1000);
+    let countdown = "";
+    if (!mainContext.alert) {
+      countdown = setInterval(() => {
+        if (startCount && !timerStore.isZero) timerStore.countdown();
+        if (timerStore.isZero) {
+          setStartCount(false);
+          timerStore.setMode();
+        }
+      }, 1000);
+    } else {
+      setStartCount(false);
+    }
     return () => clearInterval(countdown);
   }, [timerStore.timer, startCount]);
 

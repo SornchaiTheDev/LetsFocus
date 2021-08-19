@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 class TimerStore {
+  saveTime = null;
   focusTime = 25;
   restTime = 5;
   maxFocusTime = 0;
@@ -19,6 +20,14 @@ class TimerStore {
 
   countdown() {
     return this.mode === "focus" ? this.focusTime-- : this.restTime--;
+  }
+
+  set timeSave(time) {
+    this.saveTime = time;
+  }
+
+  set updateTimer(time) {
+    return this.mode === "focus" ? this.focusTime - time : this.restTime - time;
   }
 
   set setFocusTime(time) {

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
-import { Text } from "../css/main";
+import { Text } from "../../css/main";
 import Checkbox from "./Checkbox";
 
-import { MainStore } from "../store/MainStore";
+import { MainStore } from "../../store/MainStore";
 
 const TodoBox = styled.div`
   width: 95%;

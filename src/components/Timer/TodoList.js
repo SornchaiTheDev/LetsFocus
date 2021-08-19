@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import { MainStore } from "../store/MainStore";
+import { MainStore } from "../../store/MainStore";
 import { observer } from "mobx-react-lite";
 import TodoBoxComp from "./TodoBox";
 import styled from "styled-components";
-import { Text } from "../css/main";
+import { Text } from "../../css/main";
 import { FaPlus } from "react-icons/fa";
 import AddTodo from "./AddTodo";
 const TodoGroup = styled.div`

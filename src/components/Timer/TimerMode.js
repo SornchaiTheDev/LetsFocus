@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { MainStore } from "../store/MainStore";
+import { MainStore } from "../../store/MainStore";
 import { observer } from "mobx-react-lite";
 
-import { Text } from "../css/main";
+import { Text } from "../../css/main";
 const TimerSelector = styled.div`
   user-select: none;
   width: 100px;
@@ -11,7 +11,6 @@ const TimerSelector = styled.div`
   padding: 6px;
   background: white;
   border: 1px solid white;
-
   border-radius: 50px;
   display: flex;
   justify-content: center;

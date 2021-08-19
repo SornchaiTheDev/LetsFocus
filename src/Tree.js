@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -7,18 +7,36 @@ import {
 } from "react-router-dom";
 import Alert from "./components/Alert";
 import Timer from "./pages/Timer";
+import Leaderboard from "./pages/Leaderboard";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
 const Tree = observer(() => {
-  const mainStore = useContext(MainStore);
+  const { timerStore } = useContext(MainStore);
+
+  const onBlur = (e) => {
+    if (document.visibilityState === "hidden") {
+      timerStore.timeSave = new Date().getTime();
+    }
+
+    timerStore.updateTimer =
+      (new Date().getTime() - timerStore.saveTime) / 1000;
+  };
+  useEffect(() => {
+    document.addEventListener("visibilitychange", onBlur);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onBlur);
+    };
+  }, []);
+
   return (
     <>
-      {mainStore.alert && <Alert />}
+      {/* {mainStore.alert && <Alert />} */}
 
       <Router>
         <Switch>
           <Route path="/" exact component={Timer} />
-
+          <Route path="/leaderboard" exact component={Leaderboard} />
           <Redirect to="/" />
         </Switch>
       </Router>

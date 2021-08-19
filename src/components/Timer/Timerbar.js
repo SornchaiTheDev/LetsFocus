@@ -1,5 +1,5 @@
 import React from 'react'
-import {Circular, InnerCircular , OuterTimerLeft , OuterTimerRight , ProgressLeft , ProgressRight} from '../css/Timerbar'
+import {Circular, InnerCircular , OuterTimerLeft , OuterTimerRight , ProgressLeft , ProgressRight} from '../../css/Timerbar'
 function Timerbar() {
     return (
         

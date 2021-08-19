@@ -4,7 +4,7 @@ import { Text } from "../css/main";
 import { AiFillAlert } from "react-icons/ai";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
-import TimerMode from "./TimerMode";
+import TimerMode from "./Timer/TimerMode";
 const AlertContainer = styled.div`
   width: 100vw;
   height: 100vh;
@@ -16,9 +16,8 @@ const AlertContainer = styled.div`
   z-index: 9999;
 `;
 const AlertBox = styled.div`
-  width: 25%;
-  height: 30%;
-  padding: 10px;
+  width: 300px;
+  padding: 20px;
   background: white;
   border-radius: 10px;
   box-shadow: 2px 4px 1px 0.5px rgba(0, 0, 0, 0.25);
