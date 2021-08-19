@@ -4,7 +4,8 @@ export const Text = styled.h1`
   font-size: ${(props) => (props.size ? props.size : 1.25)}rem;
   font-family: "Bai Jamjuree", sans-serif;
   font-weight: ${(props) => (props.weight ? props.weight : "normal")};
-  color: ${(props) => (props.color ? props.color : "black")};
+  color: ${(props) => (props.color ? props.color : "#0F1108")};
+  line-break: anywhere;
 `;
 
 export const Base = styled.div`
@@ -31,7 +32,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   gap: 50px;
-  //   background : gold;
+  // background : gold;
 `;
 
 export const Button = styled.button`

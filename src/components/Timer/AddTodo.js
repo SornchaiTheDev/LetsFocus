@@ -67,6 +67,7 @@ const AddTodo = ({ hide }) => {
     <TodoBox>
       <TextSection>
         <TodoInput
+          autoFocus
           type="text"
           value={eventName}
           onChange={(e) => setEventName(e.target.value)}

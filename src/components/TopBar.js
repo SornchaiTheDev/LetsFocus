@@ -1,11 +1,22 @@
 import React from "react";
-import { LogoSection } from "../css/Topbar";
 import { Text } from "../css/main";
 import MenuBar from "./MenuBar";
-function TopBar({ children }) {
+import styled from "styled-components";
+
+const LogoSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+function TopBar() {
   return (
     <LogoSection>
-      <Text color="white" size={2} weight="bold">Pomodoro</Text>
+      {/* <Text color="white" size={2} weight="bold">
+        Pomodoro
+      </Text> */}
       <MenuBar />
     </LogoSection>
   );
