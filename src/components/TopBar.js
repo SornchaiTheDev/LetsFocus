@@ -4,7 +4,8 @@ import MenuBar from "./MenuBar";
 import styled from "styled-components";
 
 const LogoSection = styled.div`
-  width: 100%;
+  margin-top: 30px;
+  width: 70%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,9 +15,9 @@ const LogoSection = styled.div`
 function TopBar() {
   return (
     <LogoSection>
-      {/* <Text color="white" size={2} weight="bold">
+      <Text color="white" size={2} weight="bold">
         Pomodoro
-      </Text> */}
+      </Text>
       <MenuBar />
     </LogoSection>
   );

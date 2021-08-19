@@ -41,9 +41,8 @@ function Leaderboard() {
 
   return (
     <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
+      <TopBar />
       <Container>
-        <TopBar />
-
         <LeaderBox>
           <LeaderboardCard
             rank={myRank.rank}

@@ -10,6 +10,7 @@ export const Text = styled.h1`
 
 export const Base = styled.div`
   background: ${(props) => (props.background ? props.background : "#eb3c27")};
+  height: 100vh;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,7 +20,6 @@ export const Base = styled.div`
 `;
 
 export const Container = styled.div`
-  margin-top: 30px;
   @media (min-width: 320px) {
     width: 100%;
   }
