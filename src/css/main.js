@@ -10,13 +10,14 @@ export const Text = styled.h1`
 
 export const Base = styled.div`
   background: ${(props) => (props.background ? props.background : "#eb3c27")};
-  height: 100vh;
+  height: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 50px;
   align-items: center;
+  user-select: none;
 `;
 
 export const Container = styled.div`
@@ -31,7 +32,8 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 50px;
+
+  gap: ${(props) => (props.gap ? props.gap : 50)}px;
   // background : gold;
 `;
 
@@ -85,4 +87,22 @@ export const Icon = styled.button`
   background: none;
   border: none;
   color: ${(props) => (props.color ? props.color : "white")};
+`;
+
+export const Card = styled.div`
+  @media (min-width: 320px) {
+    width: 80%;
+  }
+  @media (min-width: 928px) {
+    width: 50%;
+  }
+  height: ${(props) => (props.height ? props.height + "px" : "100%")};
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 `;

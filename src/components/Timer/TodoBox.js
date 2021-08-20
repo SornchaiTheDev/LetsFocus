@@ -1,9 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
-import { Text } from "../../css/main";
-import Checkbox from "./Checkbox";
 
-import { MainStore } from "../../store/MainStore";
+import Checkbox from "./Checkbox";
 
 const TodoBox = styled.div`
   width: 95%;
@@ -32,7 +30,7 @@ const TodoText = styled.h1`
   color: ${(props) => (props.color ? props.color : "black")};
 `;
 
-const TodoBoxComp = ({ id, event, completed }) => {
+const TodoBoxComp = ({ id, event, completed = false }) => {
   return (
     <>
       <TodoBox>
