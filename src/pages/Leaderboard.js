@@ -19,6 +19,7 @@ const LeaderBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
+  margin-bottom: 30px;
 `;
 
 const Divider = styled.div`
