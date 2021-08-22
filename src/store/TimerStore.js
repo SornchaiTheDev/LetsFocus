@@ -6,6 +6,7 @@ class TimerStore {
   restTime = 5;
   maxFocusTime = 0;
   maxRestTime = 0;
+  status = "stop";
   mode = "focus";
 
   rootStore;
@@ -19,6 +20,7 @@ class TimerStore {
   }
 
   countdown() {
+    this.status = "start";
     timer.postMessage({ status: "start", time: this.timer });
     timer.addEventListener("message", (e) => {
       this.updateTimer = e.data.time;
@@ -62,7 +64,7 @@ class TimerStore {
   }
 
   get isZero() {
-    return this.timer === 0;
+    return this.status === "start" && this.timer === 0;
   }
 }
 
