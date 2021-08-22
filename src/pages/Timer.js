@@ -13,6 +13,22 @@ const Timer = observer(() => {
   const { timerStore } = useContext(MainStore);
   return (
     <>
+      <Alert
+        title="หยุดจับเวลา"
+        btn={[
+          {
+            title: "ตกลง",
+            onClick: () => console.log("accept"),
+            background: "#85CB33",
+          },
+
+          {
+            title: "ยกเลิก",
+            onClick: () => console.log("cancel"),
+            background: "#eb3c27",
+          },
+        ]}
+      />
       <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
         <TopBar />
         <Container>

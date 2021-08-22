@@ -9,7 +9,8 @@ self.addEventListener("message", (e) => {
     timer = setInterval(() => {
       const now = Date.now();
       self.postMessage({ time: Math.ceil((timerEnd - now) / 1000) });
-      if (Math.ceil((timerEnd - now) / 1000) === 0) clearInterval(timer);
+      if (Math.abs(Math.ceil((timerEnd - now) / 1000)) === 0)
+        clearInterval(timer);
     }, 1000);
   }
 });

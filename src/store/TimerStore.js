@@ -16,7 +16,9 @@ class TimerStore {
   }
 
   setMode() {
-    return this.mode === "focus" ? (this.mode = "rest") : (this.mode = "focus");
+    return this.mode === "focus"
+      ? ((this.mode = "rest"), (this.status = "stop"))
+      : ((this.mode = "focus"), (this.status = "stop"));
   }
 
   countdown() {
