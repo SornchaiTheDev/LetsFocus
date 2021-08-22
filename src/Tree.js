@@ -14,22 +14,6 @@ import { MainStore } from "./store/MainStore";
 const Tree = observer(() => {
   const { timerStore } = useContext(MainStore);
 
-  const onBlur = (e) => {
-    if (document.visibilityState === "hidden") {
-      timerStore.timeSave = new Date().getTime();
-    }
-
-    timerStore.updateTimer =
-      (new Date().getTime() - timerStore.saveTime) / 1000;
-  };
-  useEffect(() => {
-    document.addEventListener("visibilitychange", onBlur);
-
-    return () => {
-      document.removeEventListener("visibilitychange", onBlur);
-    };
-  }, []);
-
   return (
     <>
       {/* {mainStore.alert && <Alert />} */}

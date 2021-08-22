@@ -31,10 +31,12 @@ const SetTimerComp = observer(() => {
   }, [timerStore.mode]);
 
   useEffect(() => {
-    if (timerStore.mode === "focus") {
-      timerStore.setFocusTime = minutes * 60 + seconds;
-    } else {
-      timerStore.setRestTime = minutes * 60 + seconds;
+    if (minutes + seconds > 0) {
+      if (timerStore.mode === "focus") {
+        timerStore.setFocusTime = minutes * 60 + seconds;
+      } else {
+        timerStore.setRestTime = minutes * 60 + seconds;
+      }
     }
 
     if (minutes > 1 && seconds === 60) setSeconds(55);
@@ -98,19 +100,14 @@ const TimerClock = observer(() => {
   const [startCount, setStartCount] = useState(false);
 
   useEffect(() => {
-    let countdown = "";
     if (!mainContext.alert) {
-      countdown = setInterval(() => {
-        if (startCount && !timerStore.isZero) timerStore.countdown();
-        if (timerStore.isZero) {
-          setStartCount(false);
-          timerStore.setMode();
-        }
-      }, 1000);
+      if (timerStore.isZero) {
+        setStartCount(false);
+        timerStore.setMode();
+      }
     } else {
       setStartCount(false);
     }
-    return () => clearInterval(countdown);
   }, [timerStore.timer, startCount]);
 
   return (
@@ -146,6 +143,7 @@ const TimerClock = observer(() => {
 
       <Button
         onClick={() => {
+          if (!startCount) timerStore.countdown();
           setStartCount(!startCount);
         }}
       >

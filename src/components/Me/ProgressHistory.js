@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Bar } from "react-chartjs-2";
 
 const data = {
@@ -7,7 +7,7 @@ const data = {
     {
       label: "เวลาโฟกัส",
       data: [
-        { day: "จันทร์", seconds: 36000, hour: 10 },
+        { day: "จันทร์", seconds: 3600, hour: 1 },
         { day: "อังคาร", seconds: 7200, hour: 2 },
         { day: "พุธ", seconds: 3600, hour: 1 },
         { day: "พฤหัส", seconds: 1800, hour: 0.5 },
@@ -120,4 +120,4 @@ function ProgressHistory() {
   return <Bar width="100%" height="100%" data={data} options={options} />;
 }
 
-export default ProgressHistory;
+export default memo(ProgressHistory);

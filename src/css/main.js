@@ -98,6 +98,7 @@ export const Card = styled.div`
   }
   height: ${(props) => (props.height ? props.height + "px" : "100%")};
   background: white;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   padding: 20px;
   display: flex;
@@ -105,4 +106,5 @@ export const Card = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
+  margin-bottom: 30px;
 `;

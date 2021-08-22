@@ -33,11 +33,11 @@ const Box = styled.div`
   position: relative;
 `;
 
-function TodoBoxComp() {
+function TodoBoxComp({ event }) {
   return (
     <TodoBox>
       <TextSection>
-        <Text>Test</Text>
+        <Text>{event}</Text>
       </TextSection>
       <Box>
         <div style={{ position: "absolute", top: -30, left: -17 }}>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
 import TopBar from "../components/TopBar";
@@ -10,6 +10,7 @@ const myRank = { rank: 2, username: "โชกุนน", focusTime: 3660 };
 
 function Me() {
   const { timerStore } = useContext(MainStore);
+
   const { focusTime } = myRank;
   const getFocusTime = () => {
     if (focusTime === undefined) return "error";
@@ -25,7 +26,6 @@ function Me() {
       return `โฟกัส ${minutes} นาที`;
     }
   };
-
   return (
     <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
       <TopBar />
@@ -35,6 +35,7 @@ function Me() {
           <Text weight="600" size={2}>
             โชกุนนน
           </Text>
+
           <Text weight="300">{getFocusTime()}</Text>
         </Card>
         <Card height={250}>

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-
+const timer = new Worker("./worker/timer.js");
 class TimerStore {
   saveTime = null;
   focusTime = 25;
@@ -19,7 +19,10 @@ class TimerStore {
   }
 
   countdown() {
-    return this.mode === "focus" ? this.focusTime-- : this.restTime--;
+    timer.postMessage({ status: "start", time: this.timer });
+    timer.addEventListener("message", (e) => {
+      this.updateTimer = e.data.time;
+    });
   }
 
   set timeSave(time) {
@@ -27,7 +30,7 @@ class TimerStore {
   }
 
   set updateTimer(time) {
-    return this.mode === "focus" ? this.focusTime - time : this.restTime - time;
+    this.mode === "focus" ? (this.focusTime = time) : (this.restTime = time);
   }
 
   set setFocusTime(time) {
