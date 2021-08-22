@@ -90,22 +90,21 @@ const SetTimerComp = observer(() => {
   );
 });
 
-const TimerClock = observer(() => {
+const TimerClock = observer(({ stopConfirm }) => {
   const mainContext = useContext(MainStore);
   const { timerStore } = useContext(MainStore);
   const [startCount, setStartCount] = useState(false);
 
   useEffect(() => {
-    if (!mainContext.alert) {
-      if (timerStore.isZero) {
-        setStartCount(false);
-        timerStore.setMode();
-      }
-    } else {
+    if (timerStore.isZero) {
+      setStartCount(false);
+      timerStore.setMode();
+    }
+
+    if (timerStore.status === "stop") {
       setStartCount(false);
     }
-    console.log(timerStore.timer);
-  }, [timerStore.timer, startCount]);
+  }, [timerStore.timer, timerStore.status, startCount]);
 
   return (
     <>
@@ -143,6 +142,8 @@ const TimerClock = observer(() => {
           if (!startCount && timerStore.timer > 0) {
             timerStore.countdown();
             setStartCount(!startCount);
+          } else {
+            stopConfirm();
           }
         }}
       >

@@ -29,6 +29,11 @@ class TimerStore {
     });
   }
 
+  stop() {
+    this.status = "stop";
+    timer.postMessage({ status: "stop" });
+  }
+
   set timeSave(time) {
     this.saveTime = time;
   }

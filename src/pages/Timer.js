@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import TopBar from "../components/TopBar";
 
 import { Base, Container, Text } from "../css/main";
@@ -11,28 +11,34 @@ import Alert from "../components/Alert";
 
 const Timer = observer(() => {
   const { timerStore } = useContext(MainStore);
+  const [stopConfirm, setStopConfirm] = useState(false);
   return (
     <>
-      <Alert
-        title="หยุดจับเวลา"
-        btn={[
-          {
-            title: "ตกลง",
-            onClick: () => console.log("accept"),
-            background: "#85CB33",
-          },
+      {stopConfirm && (
+        <Alert
+          title="หยุดจับเวลา"
+          btn={[
+            {
+              title: "ตกลง",
+              onClick: () => {
+                timerStore.stop();
+                setStopConfirm(false);
+              },
+              background: "#85CB33",
+            },
 
-          {
-            title: "ยกเลิก",
-            onClick: () => console.log("cancel"),
-            background: "#eb3c27",
-          },
-        ]}
-      />
+            {
+              title: "ยกเลิก",
+              onClick: () => setStopConfirm(false),
+              background: "#eb3c27",
+            },
+          ]}
+        />
+      )}
       <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
         <TopBar />
         <Container>
-          <TimerClock />
+          <TimerClock stopConfirm={() => setStopConfirm(true)} />
           <TodoList />
         </Container>
       </Base>
