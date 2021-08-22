@@ -91,26 +91,19 @@ const SetTimerComp = observer(() => {
 });
 
 const TimerClock = observer(({ stopConfirm }) => {
-  const mainContext = useContext(MainStore);
   const { timerStore } = useContext(MainStore);
-  const [startCount, setStartCount] = useState(false);
 
   useEffect(() => {
-    if (timerStore.isZero) {
-      setStartCount(false);
+    if (timerStore.isFinish && timerStore.status !== "idle") {
       timerStore.setMode();
     }
-
-    if (timerStore.status === "stop") {
-      setStartCount(false);
-    }
-  }, [timerStore.timer, timerStore.status, startCount]);
+  }, [timerStore.isFinish]);
 
   return (
     <>
       <TimerMode />
       <div style={{ width: 250 }}>
-        {!startCount ? (
+        {timerStore.isFinish ? (
           <SetTimerComp />
         ) : (
           <CircularProgressbar
@@ -139,15 +132,14 @@ const TimerClock = observer(({ stopConfirm }) => {
 
       <Button
         onClick={() => {
-          if (!startCount && timerStore.timer > 0) {
+          if (timerStore.isFinish) {
             timerStore.countdown();
-            setStartCount(!startCount);
           } else {
             stopConfirm();
           }
         }}
       >
-        {!startCount || timerStore.isZero ? (
+        {timerStore.isFinish ? (
           <BsPlay size="2rem" color="#0F1108" />
         ) : (
           <BsStop size="2rem" color="#0F1108" />

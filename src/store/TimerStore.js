@@ -1,13 +1,13 @@
 import { makeAutoObservable } from "mobx";
 const timer = new Worker("./worker/timer.js");
 class TimerStore {
-  saveTime = null;
   focusTime = 25;
   restTime = 5;
   maxFocusTime = 0;
   maxRestTime = 0;
-  status = "stop";
+  status = "idle";
   mode = "focus";
+  isFinish = true;
 
   rootStore;
   constructor(rootStore) {
@@ -21,17 +21,24 @@ class TimerStore {
       : ((this.mode = "focus"), (this.status = "stop"));
   }
 
+  set setFinish(status) {
+    return (this.isFinish = status);
+  }
+
   countdown() {
+    this.setFinish = false;
     this.status = "start";
     timer.postMessage({ status: "start", time: this.timer });
-    timer.addEventListener("message", (e) => {
+    timer.addEventListener("message", async (e) => {
       this.updateTimer = e.data.time;
+      if (e.data.status === "finish") this.setFinish = true;
     });
   }
 
   stop() {
     this.status = "stop";
     timer.postMessage({ status: "stop" });
+    this.setFinish = true;
   }
 
   set timeSave(time) {
@@ -68,10 +75,6 @@ class TimerStore {
     return `${Math.floor(this.timer / 60)}:${(this.timer % 60)
       .toString()
       .padEnd(2, 0)}`;
-  }
-
-  get isZero() {
-    return this.status === "start" && this.timer === 0;
   }
 }
 

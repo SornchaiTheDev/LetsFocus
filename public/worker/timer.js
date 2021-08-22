@@ -6,14 +6,17 @@ self.addEventListener("message", (e) => {
 
     timer = setInterval(() => {
       const now = Date.now();
-      if (Math.abs(Math.ceil((timerEnd - now) / 1000)) === 0)
+      console.log("counting !");
+      if (Math.ceil((timerEnd - now) / 1000) <= 0) {
         clearInterval(timer);
-
-      self.postMessage({ time: Math.ceil((timerEnd - now) / 1000) });
+        self.postMessage({ time: 0, status: "finish" });
+      } else {
+        self.postMessage({
+          time: Math.abs(Math.ceil((timerEnd - now) / 1000)),
+        });
+      }
     }, 1000);
   }
-});
 
-self.addEventListener("message", (e) => {
   if (e.data.status === "stop") clearInterval(timer);
 });
