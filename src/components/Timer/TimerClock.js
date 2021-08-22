@@ -30,9 +30,9 @@ const SetTimerComp = observer(() => {
 
   useEffect(() => {
     if (timerStore.mode === "focus") {
-      timerStore.setFocusTime = minutes * 60 + seconds;
+      timerStore.setTime = minutes * 60 + seconds;
     } else {
-      timerStore.setRestTime = minutes * 60 + seconds;
+      timerStore.setTime = minutes * 60 + seconds;
     }
 
     if (minutes > 1 && seconds === 60) setSeconds(55);
@@ -96,6 +96,7 @@ const TimerClock = observer(({ stopConfirm }) => {
   useEffect(() => {
     if (timerStore.isFinish && timerStore.status !== "idle") {
       timerStore.setMode();
+      console.log(timerStore.timer);
     }
   }, [timerStore.isFinish]);
 
@@ -132,7 +133,7 @@ const TimerClock = observer(({ stopConfirm }) => {
 
       <Button
         onClick={() => {
-          if (timerStore.isFinish) {
+          if (timerStore.isFinish && timerStore.status === "idle") {
             timerStore.countdown();
           } else {
             stopConfirm();

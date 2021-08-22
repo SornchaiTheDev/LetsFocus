@@ -8,7 +8,6 @@ class TimerStore {
   status = "idle";
   mode = "focus";
   isFinish = true;
-
   rootStore;
   constructor(rootStore) {
     makeAutoObservable(this, { rootStore: false });
@@ -36,27 +35,24 @@ class TimerStore {
   }
 
   stop() {
-    this.status = "stop";
+    this.status = "idle";
     timer.postMessage({ status: "stop" });
     this.setFinish = true;
-  }
-
-  set timeSave(time) {
-    this.saveTime = time;
   }
 
   set updateTimer(time) {
     this.mode === "focus" ? (this.focusTime = time) : (this.restTime = time);
   }
 
-  set setFocusTime(time) {
-    this.focusTime = time;
-    this.maxFocusTime = time;
-  }
-
-  set setRestTime(time) {
-    this.restTime = time;
-    this.maxRestTime = time;
+  set setTime(time) {
+    if (this.mode === "focus") {
+      this.focusTime = time;
+      this.maxFocusTime = time;
+    }
+    if (this.mode === "rest") {
+      this.restTime = time;
+      this.maxRestTime = time;
+    }
   }
 
   get timer() {

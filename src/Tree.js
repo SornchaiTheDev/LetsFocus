@@ -17,7 +17,6 @@ const Tree = observer(() => {
   return (
     <>
       {/* {mainStore.alert && <Alert />} */}
-
       <Router>
         <Switch>
           <Route path="/" exact component={Timer} />
