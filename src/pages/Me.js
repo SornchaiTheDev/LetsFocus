@@ -2,13 +2,37 @@ import React, { useState, useEffect, useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
 import TopBar from "../components/TopBar";
-import { Base, Container, Text, Card } from "../css/main";
+import { Base, Container, Text, Card, Icon } from "../css/main";
+import { FiEdit3 } from "react-icons/fi";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
+import styled from "styled-components";
+
+const ProfileName = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const NameEdit = styled.input`
+  width: 100%;
+  padding: 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  border: none;
+  outline: none;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: 600;
+  font-size: 2rem;
+`;
 
 function Me() {
   const { timerStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
+  const [isChange, setIsChange] = useState(false);
+  const [username, setUserName] = useState("โชกุนนน");
 
   // const { focusTime } = myRank;
   const getFocusTime = () => {
@@ -32,10 +56,34 @@ function Me() {
       <Container gap={20}>
         {/* <LoginBox /> */}
         <Card height={100}>
-          <Text weight="600" size={2}>
-            โชกุนนน
-          </Text>
-
+          <ProfileName>
+            {isChange ? (
+              <form
+                style={{ width: "100%" }}
+                onSubmit={() => setIsChange(false)}
+              >
+                <NameEdit
+                  placeholder="ชื่อผู้ใช้"
+                  autoFocus
+                  value={username}
+                  onChange={(e) => setUserName(e.target.value)}
+                  onBlur={() => setIsChange(false)}
+                />
+              </form>
+            ) : (
+              <>
+                <Text weight="600" size={2}>
+                  {username}
+                </Text>
+                <Icon
+                  style={{ alignSelf: "flex-end" }}
+                  onClick={() => setIsChange(true)}
+                >
+                  <FiEdit3 size="1rem" color="black" />
+                </Icon>
+              </>
+            )}
+          </ProfileName>
           <Text weight="300">{getFocusTime()}</Text>
         </Card>
         <Card height={250}>

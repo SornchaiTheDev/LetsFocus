@@ -1,4 +1,6 @@
 import { makeAutoObservable } from "mobx";
+import { makePersistable } from "mobx-persist-store";
+import localforage from "localforage";
 
 class TodosStore {
   todos = [];
@@ -6,7 +8,19 @@ class TodosStore {
   rootStore;
   constructor(rootStore) {
     makeAutoObservable(this, { rootStore: false });
+    makePersistable(this, {
+      name: "TodosStore",
+      properties: ["todos"],
+      storage: localforage,
+      removeOnExpiration: true,
+      stringify: false,
+    });
     this.rootStore = rootStore;
+  }
+
+  clearTodo() {
+    const remainTodos = this.todos.filter((todo) => todo.completed === false);
+    return (this.todos = remainTodos);
   }
 
   get TodosLength() {
