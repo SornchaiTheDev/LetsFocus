@@ -39,12 +39,12 @@ const FinishTask = observer(() => {
   return (
     <Card>
       <TaskTopBar>
-        <Text>รายการที่ทำเสร็จ (1)</Text>
-        <Mode onClick={modeCycle}>
+        <Text>รายการที่ทำเสร็จสัปดาห์นี้ ({mainStore.allFinishTask})</Text>
+        {/* <Mode onClick={modeCycle}>
           <Text size={1} color="white">
             {currentMode}
           </Text>
-        </Mode>
+        </Mode> */}
       </TaskTopBar>
       {mainStore.finishTask
         .filter((todo) => {

@@ -2,11 +2,11 @@ import React, { createContext } from "react";
 import { makeAutoObservable, toJS } from "mobx";
 import TimerStore from "./TimerStore";
 import TodosStore from "./TodosStore";
-import { makePersistable } from "mobx-persist-store";
+import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
 
 class mainStore {
-  username = "โชกุนนน";
+  username = "กำลังโหลด";
   focusTime = 0;
   finishTask = [];
   constructor() {
@@ -17,9 +17,16 @@ class mainStore {
       name: "MeStore",
       properties: ["username", "focusTime", "finishTask"],
       storage: localforage,
-      removeOnExpiration: true,
       stringify: false,
     });
+  }
+
+  get allFinishTask() {
+    return this.finishTask.length;
+  }
+  
+  async clearStore() {
+    await clearPersistedStore();
   }
 
   set setUsername(name) {

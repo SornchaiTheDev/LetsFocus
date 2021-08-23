@@ -11,8 +11,9 @@ import Leaderboard from "./pages/Leaderboard";
 import Me from "./pages/Me";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
+import { auth } from "./firebase";
 const Tree = observer(() => {
-  const { timerStore } = useContext(MainStore);
+  const mainStore = useContext(MainStore);
 
   return (
     <>

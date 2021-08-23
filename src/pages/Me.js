@@ -32,7 +32,6 @@ const Me = observer(() => {
   const { timerStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
-  const [username, setUserName] = useState("โชกุนนน");
 
   const getFocusTime = () => {
     const focusTime = mainStore.focusTime;
@@ -52,7 +51,8 @@ const Me = observer(() => {
 
   const onChangeName = (e) => {
     e.preventDefault();
-    mainStore.Setusername = username;
+    const username = document.getElementById("username").value;
+    mainStore.setUsername = username;
     setIsChange(false);
   };
   return (
@@ -65,19 +65,18 @@ const Me = observer(() => {
             {isChange ? (
               <form style={{ width: "100%" }} onSubmit={onChangeName}>
                 <NameEdit
+                  id="username"
                   placeholder="ชื่อผู้ใช้"
+                  value={mainStore.username}
+                  onChange={(e) => (mainStore.setUsername = e.target.value)}
+                  onBlur={() => setIsChange(false)}
                   autoFocus
-                  value={username}
-                  onChange={(e) => {
-                    if (e.target.value.length < 16) setUserName(e.target.value);
-                  }}
-                  onBlur={onChangeName}
                 />
               </form>
             ) : (
               <>
                 <Text weight="600" size={2}>
-                  {username}
+                  {mainStore.username}
                 </Text>
                 <Icon
                   style={{ alignSelf: "flex-end" }}
