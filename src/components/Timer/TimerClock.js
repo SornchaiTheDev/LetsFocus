@@ -96,7 +96,6 @@ const TimerClock = observer(({ stopConfirm }) => {
   useEffect(() => {
     if (timerStore.isFinish && timerStore.status !== "idle") {
       timerStore.setMode();
-      console.log(timerStore.timer);
     }
   }, [timerStore.isFinish]);
 
@@ -133,9 +132,13 @@ const TimerClock = observer(({ stopConfirm }) => {
 
       <Button
         onClick={() => {
-          if (timerStore.isFinish && timerStore.status === "idle") {
+          if (
+            (timerStore.isFinish && timerStore.status === "idle") ||
+            timerStore.status === "stop"
+          ) {
             timerStore.countdown();
-          } else {
+          }
+          if (timerStore.maxTime - timerStore.timer > 0) {
             stopConfirm();
           }
         }}
