@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import TopBar from "../components/TopBar";
 
 import { Base, Container, Text } from "../css/main";
@@ -8,10 +8,13 @@ import { observer } from "mobx-react-lite";
 import TimerClock from "../components/Timer/TimerClock";
 import TodoList from "../components/Timer/TodoList";
 import Alert from "../components/Alert";
+import { auth } from "../firebase";
 
 const Timer = observer(() => {
   const { timerStore } = useContext(MainStore);
   const [stopConfirm, setStopConfirm] = useState(false);
+  const mainStore = useContext(MainStore);
+
   return (
     <>
       {stopConfirm && (

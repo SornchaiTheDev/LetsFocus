@@ -10,14 +10,10 @@ import Timer from "./pages/Timer";
 import Leaderboard from "./pages/Leaderboard";
 import Me from "./pages/Me";
 import { observer } from "mobx-react-lite";
-import { MainStore } from "./store/MainStore";
-import { auth } from "./firebase";
-const Tree = observer(() => {
-  const mainStore = useContext(MainStore);
 
+const Tree = observer(() => {
   return (
     <>
-      {/* {mainStore.alert && <Alert />} */}
       <Router>
         <Switch>
           <Route path="/" exact component={Timer} />

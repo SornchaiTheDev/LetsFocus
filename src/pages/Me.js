@@ -7,6 +7,7 @@ import { FiEdit3 } from "react-icons/fi";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 import styled from "styled-components";
+import { auth } from "../firebase";
 
 const ProfileName = styled.div`
   display: flex;
@@ -33,6 +34,22 @@ const Me = observer(() => {
   const mainStore = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
 
+  // User Authentication
+  useEffect(() => {
+    auth().onAuthStateChanged((user) => {
+      if (user === null) {
+        auth()
+          .signInAnonymously()
+          .then(() => {
+            mainStore.registered();
+            mainStore.UserUid = user.uid;
+          });
+      } else {
+        mainStore.UserUid = user.uid;
+      }
+    });
+  }, []);
+
   const getFocusTime = () => {
     const focusTime = mainStore.focusTime;
     if (focusTime === undefined) return "error";
@@ -52,7 +69,7 @@ const Me = observer(() => {
   const onChangeName = (e) => {
     e.preventDefault();
     const username = document.getElementById("username").value;
-    mainStore.setUsername = username;
+    mainStore.updateUser({ name: username, uid: mainStore.uid });
     setIsChange(false);
   };
   return (
@@ -69,7 +86,7 @@ const Me = observer(() => {
                   placeholder="ชื่อผู้ใช้"
                   value={mainStore.username}
                   onChange={(e) => (mainStore.setUsername = e.target.value)}
-                  onBlur={() => setIsChange(false)}
+                  onBlur={onChangeName}
                   autoFocus
                 />
               </form>
