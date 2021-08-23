@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 const timer = new Worker("./worker/timer.js");
 class TimerStore {
   focusTime = 25;
+  saveFocusTime = 0;
   restTime = 5;
   maxFocusTime = 0;
   maxRestTime = 0;
@@ -16,8 +17,8 @@ class TimerStore {
 
   setMode() {
     return this.mode === "focus"
-      ? ((this.mode = "rest"), (this.status = "stop"))
-      : ((this.mode = "focus"), (this.status = "stop"));
+      ? ((this.mode = "rest"), (this.status = "idle"))
+      : ((this.mode = "focus"), (this.status = "idle"));
   }
 
   set setFinish(status) {
@@ -30,7 +31,10 @@ class TimerStore {
     timer.postMessage({ status: "start", time: this.timer });
     timer.addEventListener("message", async (e) => {
       this.updateTimer = e.data.time;
-      if (e.data.status === "finish") this.setFinish = true;
+      if (e.data.status === "finish") {
+        this.setFinish = true;
+        this.status = "end";
+      }
     });
   }
 
@@ -42,6 +46,10 @@ class TimerStore {
 
   set updateTimer(time) {
     this.mode === "focus" ? (this.focusTime = time) : (this.restTime = time);
+  }
+
+  resetSaveFocusTime() {
+    return (this.saveFocusTime = 0);
   }
 
   set setTime(time) {
@@ -59,6 +67,7 @@ class TimerStore {
     return this.mode === "focus" ? this.focusTime : this.restTime;
   }
   get maxTime() {
+    this.saveFocusTime = this.maxFocusTime;
     return this.mode === "focus" ? this.maxFocusTime : this.maxRestTime;
   }
 

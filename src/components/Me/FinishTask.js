@@ -59,7 +59,6 @@ function FinishTask() {
     if (mode === 0) setCurrentMode("วันนี้");
     if (mode === 1) setCurrentMode("สัปดาห์นี้");
     if (mode === 2) setCurrentMode("เดือนนี้");
-    console.log(task);
   }, [mode]);
   return (
     <Card>

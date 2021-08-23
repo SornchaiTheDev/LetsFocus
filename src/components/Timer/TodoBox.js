@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
-
+import { Icon } from "../../css/main";
 import Checkbox from "./Checkbox";
+import { GrFormClose } from "react-icons/gr";
+import { MainStore } from "../../store/MainStore";
 
 const TodoBox = styled.div`
   width: 95%;
@@ -30,9 +32,17 @@ const TodoText = styled.h1`
   color: ${(props) => (props.color ? props.color : "black")};
 `;
 
+const Group = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+`;
+
 const TodoBoxComp = ({ id, event, completed = false }) => {
+  const { todosStore } = useContext(MainStore);
   return (
-    <>
+    <Group>
       <TodoBox>
         <TextSection>
           <TodoText weight={500} completed={completed}>
@@ -41,7 +51,10 @@ const TodoBoxComp = ({ id, event, completed = false }) => {
         </TextSection>
         <Checkbox id={id} />
       </TodoBox>
-    </>
+      <Icon onClick={() => todosStore.removeTodo(id)}>
+        <GrFormClose size="1.5rem" />
+      </Icon>
+    </Group>
   );
 };
 

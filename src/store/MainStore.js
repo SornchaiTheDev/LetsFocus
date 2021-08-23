@@ -6,10 +6,15 @@ import TodosStore from "./TodosStore";
 class mainStore {
   alert = false;
   page = "timer";
+  user = { focusTime: 0, username: "โชกุนนน", finishTask: [] };
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
     this.todosStore = new TodosStore(this);
+  }
+
+  setFocus(focusTime) {
+    return (this.user.focusTime += focusTime);
   }
 
   setAlert() {

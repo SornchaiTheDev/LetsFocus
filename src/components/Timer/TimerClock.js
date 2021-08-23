@@ -92,9 +92,12 @@ const SetTimerComp = observer(() => {
 
 const TimerClock = observer(({ stopConfirm }) => {
   const { timerStore } = useContext(MainStore);
+  const mainStore = useContext(MainStore);
 
   useEffect(() => {
-    if (timerStore.isFinish && timerStore.status !== "idle") {
+    if (timerStore.isFinish && timerStore.status === "end") {
+      mainStore.setFocus(timerStore.saveFocusTime);
+      timerStore.resetSaveFocusTime();
       timerStore.setMode();
     }
   }, [timerStore.isFinish]);
@@ -132,10 +135,7 @@ const TimerClock = observer(({ stopConfirm }) => {
 
       <Button
         onClick={() => {
-          if (
-            (timerStore.isFinish && timerStore.status === "idle") ||
-            timerStore.status === "stop"
-          ) {
+          if (timerStore.isFinish && timerStore.status === "idle") {
             timerStore.countdown();
           }
           if (timerStore.maxTime - timerStore.timer > 0) {

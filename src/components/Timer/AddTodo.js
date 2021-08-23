@@ -51,7 +51,8 @@ const AddTodo = ({ hide }) => {
   const [eventName, setEventName] = useState("");
   const [empty, setEmpty] = useState(false);
 
-  const _addTodo = () => {
+  const _addTodo = (e) => {
+    e.preventDefault();
     if (eventName.length > 0) {
       todosStore.addTodo({
         id: uuid(),
@@ -66,14 +67,16 @@ const AddTodo = ({ hide }) => {
   return (
     <TodoBox>
       <TextSection>
-        <TodoInput
-          autoFocus
-          type="text"
-          value={eventName}
-          onChange={(e) => setEventName(e.target.value)}
-          placeholder="ใส่งานที่ต้องทำ"
-          empty={empty}
-        />
+        <form style={{ width: "100%" }} onSubmit={_addTodo}>
+          <TodoInput
+            autoFocus
+            type="text"
+            value={eventName}
+            onChange={(e) => setEventName(e.target.value)}
+            placeholder="ใส่งานที่ต้องทำ"
+            empty={empty}
+          />
+        </form>
       </TextSection>
       <AddBtn onClick={_addTodo}>เพิ่ม</AddBtn>
     </TodoBox>

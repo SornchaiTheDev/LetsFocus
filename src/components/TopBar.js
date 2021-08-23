@@ -12,12 +12,22 @@ const LogoSection = styled.div`
   align-items: center;
 `;
 
+const LogoGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+`;
+
 function TopBar() {
   return (
     <LogoSection>
-      <Text color="white" size={2} weight="bold">
-        Pomodoro
-      </Text>
+      <LogoGroup>
+        <Text color="white" size={2} weight="bold">
+          FocusRank
+        </Text>
+      </LogoGroup>
+
       <MenuBar />
     </LogoSection>
   );

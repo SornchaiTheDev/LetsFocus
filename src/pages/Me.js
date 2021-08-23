@@ -6,13 +6,13 @@ import { Base, Container, Text, Card } from "../css/main";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 
-const myRank = { rank: 2, username: "โชกุนน", focusTime: 3660 };
-
 function Me() {
   const { timerStore } = useContext(MainStore);
+  const mainStore = useContext(MainStore);
 
-  const { focusTime } = myRank;
+  // const { focusTime } = myRank;
   const getFocusTime = () => {
+    const focusTime = mainStore.user.focusTime;
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
     const minutes = Math.ceil((focusTime / 60) % 60);

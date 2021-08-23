@@ -22,6 +22,11 @@ class TodosStore {
     return this.todos.push(todo);
   }
 
+  removeTodo(id) {
+    const remain = this.todos.filter((todo) => todo.id !== id);
+    return (this.todos = remain);
+  }
+
   changeTodo(id) {
     const currentId = this.todos.findIndex((todo) => todo.id === id);
     this.todos[currentId] = {
