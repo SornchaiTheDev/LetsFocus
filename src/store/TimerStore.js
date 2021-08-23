@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+
 const timer = new Worker("./worker/timer.js");
 class TimerStore {
   focusTime = 25;

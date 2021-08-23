@@ -94,17 +94,6 @@ const TimerClock = observer(({ stopConfirm }) => {
   const { timerStore, todosStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
 
-  useEffect(() => {
-    if (timerStore.isFinish && timerStore.status === "end") {
-      mainStore.setFocus(timerStore.saveFocusTime);
-      mainStore.setFinishTask(todosStore.finishedTask);
-      todosStore.clearTodo();
-      timerStore.resetSaveFocusTime();
-
-      timerStore.setMode();
-    }
-  }, [timerStore.isFinish]);
-
   return (
     <>
       <TimerMode />
