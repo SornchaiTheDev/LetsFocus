@@ -61,6 +61,7 @@ class mainStore {
   }
 
   setFocus(focusTime) {
+    console.log(this.focusTime + focusTime);
     return (this.focusTime += focusTime);
   }
 }

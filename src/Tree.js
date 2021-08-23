@@ -20,8 +20,8 @@ const Tree = observer(() => {
     if (timerStore.isFinish && timerStore.status === "end") {
       mainStore.setFocus(timerStore.saveFocusTime);
       mainStore.setFinishTask(todosStore.finishedTask);
-      todosStore.clearTodo();
       timerStore.resetSaveFocusTime();
+      todosStore.clearTodo();
       timerStore.setMode();
     }
   }, [timerStore.isFinish]);
