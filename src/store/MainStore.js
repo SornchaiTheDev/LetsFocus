@@ -1,32 +1,41 @@
 import React, { createContext } from "react";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import TimerStore from "./TimerStore";
 import TodosStore from "./TodosStore";
+import { makePersistable } from "mobx-persist-store";
+import localforage from "localforage";
 
 class mainStore {
-  alert = false;
-  page = "timer";
-  user = { focusTime: 0, username: "โชกุนนน", finishTask: [] };
+  username = "โชกุนนน";
+  focusTime = 0;
+  finishTask = [];
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
     this.todosStore = new TodosStore(this);
+    makePersistable(this, {
+      name: "MeStore",
+      properties: ["username", "focusTime", "finishTask"],
+      storage: localforage,
+      removeOnExpiration: true,
+      stringify: false,
+    });
+  }
+
+  set setUsername(name) {
+    return (this.username = name);
+  }
+
+  get doneTask() {
+    return toJS(this.finishTask);
+  }
+
+  setFinishTask(task) {
+    this.finishTask.push(...task);
   }
 
   setFocus(focusTime) {
-    return (this.user.focusTime += focusTime);
-  }
-
-  setAlert() {
-    this.alert = true;
-  }
-
-  setPage(page) {
-    this.page = page;
-  }
-
-  closeAlert() {
-    this.alert = false;
+    return (this.focusTime += focusTime);
   }
 }
 

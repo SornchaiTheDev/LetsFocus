@@ -28,15 +28,14 @@ const NameEdit = styled.input`
   font-size: 2rem;
 `;
 
-function Me() {
+const Me = observer(() => {
   const { timerStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
   const [username, setUserName] = useState("โชกุนนน");
 
-  // const { focusTime } = myRank;
   const getFocusTime = () => {
-    const focusTime = mainStore.user.focusTime;
+    const focusTime = mainStore.focusTime;
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
     const minutes = Math.ceil((focusTime / 60) % 60);
@@ -50,6 +49,12 @@ function Me() {
       return `โฟกัส ${minutes} นาที`;
     }
   };
+
+  const onChangeName = (e) => {
+    e.preventDefault();
+    mainStore.Setusername = username;
+    setIsChange(false);
+  };
   return (
     <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
       <TopBar />
@@ -58,16 +63,15 @@ function Me() {
         <Card height={100}>
           <ProfileName>
             {isChange ? (
-              <form
-                style={{ width: "100%" }}
-                onSubmit={() => setIsChange(false)}
-              >
+              <form style={{ width: "100%" }} onSubmit={onChangeName}>
                 <NameEdit
                   placeholder="ชื่อผู้ใช้"
                   autoFocus
                   value={username}
-                  onChange={(e) => setUserName(e.target.value)}
-                  onBlur={() => setIsChange(false)}
+                  onChange={(e) => {
+                    if (e.target.value.length < 16) setUserName(e.target.value);
+                  }}
+                  onBlur={onChangeName}
                 />
               </form>
             ) : (
@@ -94,6 +98,6 @@ function Me() {
       </Container>
     </Base>
   );
-}
+});
 
 export default Me;

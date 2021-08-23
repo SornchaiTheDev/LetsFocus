@@ -97,8 +97,10 @@ const TimerClock = observer(({ stopConfirm }) => {
   useEffect(() => {
     if (timerStore.isFinish && timerStore.status === "end") {
       mainStore.setFocus(timerStore.saveFocusTime);
+      mainStore.setFinishTask(todosStore.finishedTask);
       todosStore.clearTodo();
       timerStore.resetSaveFocusTime();
+
       timerStore.setMode();
     }
   }, [timerStore.isFinish]);
@@ -136,7 +138,11 @@ const TimerClock = observer(({ stopConfirm }) => {
 
       <Button
         onClick={() => {
-          if (timerStore.isFinish && timerStore.status === "idle") {
+          if (
+            timerStore.isFinish &&
+            timerStore.status === "idle" &&
+            timerStore.timer > 0
+          ) {
             timerStore.countdown();
           }
           if (timerStore.maxTime - timerStore.timer > 0) {

@@ -54,11 +54,12 @@ const AddTodo = ({ hide }) => {
   const _addTodo = (e) => {
     e.preventDefault();
     if (eventName.length > 0) {
-      todosStore.addTodo({
+      todosStore.addTodo = {
+        dated: Date.now(),
         id: uuid(),
         event: eventName,
         completed: false,
-      });
+      };
       hide(false);
     } else {
       setEmpty(true);

@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
 
@@ -32,7 +32,12 @@ class TodosStore {
     return this.todos[currentId].completed;
   }
 
-  addTodo(todo) {
+  get finishedTask() {
+    const refTodo = toJS(this.todos);
+    return refTodo.filter((todo) => todo.completed === true);
+  }
+
+  set addTodo(todo) {
     return this.todos.push(todo);
   }
 
@@ -47,6 +52,7 @@ class TodosStore {
       id: id,
       event: this.todos[currentId].event,
       completed: !this.todos[currentId].completed,
+      dated: this.todos[currentId].dated,
     };
   }
 }

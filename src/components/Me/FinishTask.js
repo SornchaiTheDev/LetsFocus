@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Card, Text } from "../../css/main";
 import styled from "styled-components";
 import TodoBox from "./TodoBox";
+import { MainStore } from "../../store/MainStore";
+import { observer } from "mobx-react-lite";
 const TaskTopBar = styled.div`
   width: 100%;
   display: flex;
@@ -20,36 +22,10 @@ const Mode = styled.button`
   box-shadow: 2px 4px 1px 0.5px rgba(0, 0, 0, 0.25);
 `;
 
-const task = [
-  {
-    event: "1/07/2021",
-    completed: true,
-    dated: new Date("July 1 , 2021 12:34:56"),
-  },
-  {
-    event: "1/08/2021",
-    completed: true,
-    dated: new Date("August 1 , 2021 12:34:56"),
-  },
-  {
-    event: "16/08/2021",
-    completed: true,
-    dated: new Date("August 16 , 2021 12:34:56"),
-  },
-  {
-    event: "21/08/2021",
-    completed: true,
-    dated: new Date("August 21 , 2021 12:34:56"),
-  },
-  {
-    event: "22/08/2021",
-    completed: true,
-    dated: new Date("August 22 , 2021 08:35:12"),
-  },
-];
-function FinishTask() {
+const FinishTask = observer(() => {
   const [mode, setMode] = useState(0);
   const [currentMode, setCurrentMode] = useState("วันนี้");
+  const mainStore = useContext(MainStore);
   const modeCycle = () => {
     if (mode < 2) return setMode((prev) => prev + 1);
     setMode(0);
@@ -70,12 +46,12 @@ function FinishTask() {
           </Text>
         </Mode>
       </TaskTopBar>
-      {task
+      {mainStore.finishTask
         .filter((todo) => {
           const today =
             new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
           const todoDated =
-            todo.dated.setHours(0, 0, 0, 0).valueOf() / 86400000;
+            new Date(todo.dated).setHours(0, 0, 0, 0).valueOf() / 86400000;
           let filtering = false;
           if (mode === 0 && today - todoDated === 0) filtering = true;
           if (mode === 1 && today - todoDated <= 7) filtering = true;
@@ -89,6 +65,6 @@ function FinishTask() {
         ))}
     </Card>
   );
-}
+});
 
 export default FinishTask;
