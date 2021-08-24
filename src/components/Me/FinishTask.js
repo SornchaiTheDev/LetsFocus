@@ -39,14 +39,14 @@ const FinishTask = observer(() => {
   return (
     <Card>
       <TaskTopBar>
-        <Text>รายการที่ทำเสร็จสัปดาห์นี้ ({mainStore.allFinishTask})</Text>
+        <Text>รายการที่ทำเสร็จอาทิตย์นี้ ({mainStore.allFinishTask})</Text>
         {/* <Mode onClick={modeCycle}>
           <Text size={1} color="white">
             {currentMode}
           </Text>
         </Mode> */}
       </TaskTopBar>
-      {mainStore.finishTask
+      {mainStore.user.finishTask
         .filter((todo) => {
           const today =
             new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;

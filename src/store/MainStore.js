@@ -7,10 +7,8 @@ import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
 import { firestore } from "../firebase";
 class mainStore {
-  username = null;
+  user = { username: null, focusTime: 0, finishTask: [] };
   uid = null;
-  focusTime = 0;
-  finishTask = [];
   isRegister = false;
   isMember = false; // use Google to Save Account
   mode = "focus";
@@ -31,6 +29,7 @@ class mainStore {
         "isMember",
         "uid",
         "rank",
+        "user",
       ],
       storage: localforage,
       stringify: false,
@@ -44,6 +43,10 @@ class mainStore {
       : ((this.mode = "focus"), (this.timerStore.status = "idle"));
   }
 
+  get username() {
+    return this.user.username;
+  }
+
   async clearLinkwithGoogle() {
     await clearPersistedStore(this);
     console.log("clear!");
@@ -52,9 +55,8 @@ class mainStore {
     this.isMember = true;
   }
 
-  set initUser(user) {
-    this.username = user.username;
-    this.focusTime = user.focusTime;
+  setUserFromDb(user) {
+    this.user = user;
   }
 
   set userRank(rank) {
@@ -69,17 +71,25 @@ class mainStore {
     return (this.isRegister = true);
   }
 
+  async userProgressHistory() {
+    const progress_history = [];
+    const week_progress = await firestore()
+      .collection("users")
+      .doc(mainStore.uid)
+      .collection("progress_history")
+      .get();
+
+    week_progress.forEach((progress) => progress_history.push(progress.data()));
+    return progress_history;
+  }
   get allFinishTask() {
-    return this.finishTask.length;
+    return this.user.finishTask.length;
   }
 
   async clearStore() {
     await clearPersistedStore();
   }
 
-  set setUsername(name) {
-    return (this.username = name);
-  }
   async updateUser(user) {
     await firestore()
       .collection("users")
@@ -89,15 +99,15 @@ class mainStore {
   }
 
   get doneTask() {
-    return toJS(this.finishTask);
+    return toJS(this.user.finishTask);
   }
 
   setFinishTask(task) {
-    this.finishTask.push(...task);
+    this.user.finishTask.push(...task);
   }
 
   setFocus(focusTime) {
-    return (this.focusTime += focusTime);
+    return (this.user.focusTime += focusTime);
   }
 }
 

@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
+import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
-import TopBar from "../components/TopBar";
 import { Base, Container, Text, Card, Icon } from "../css/main";
 import { FiEdit3 } from "react-icons/fi";
+import TopBar from "../components/TopBar";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
-import styled from "styled-components";
 import LoginBox from "../components/Me/LoginBox";
-import { firestore } from "../firebase";
 
+// Styling
 const ProfileName = styled.div`
   display: flex;
   flex-direction: row;
@@ -35,14 +35,14 @@ const Divider = styled.div`
   border-bottom: 3px solid #0f1108;
 `;
 
+// End Styling
+
 const Me = observer(() => {
-  const { timerStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
-  const [progressHistory, setProgressHistory] = useState([]);
 
   const getFocusTime = () => {
-    const focusTime = mainStore.focusTime;
+    const focusTime = mainStore.user.focusTime;
 
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
@@ -57,23 +57,6 @@ const Me = observer(() => {
       return `โฟกัส ${minutes} นาที`;
     }
   };
-
-  const fetchProgressHistory = async () => {
-    const progress_history = [];
-    const week_progress = await firestore()
-      .collection("users")
-      .doc(mainStore.uid)
-      .collection("progress_history")
-      .get();
-
-    week_progress.forEach((progress) => progress_history.push(progress.data()));
-
-    setProgressHistory(progress_history);
-  };
-
-  useEffect(() => {
-    if (mainStore.uid !== null) fetchProgressHistory();
-  }, [mainStore.uid]);
 
   const onChangeName = (e) => {
     e.preventDefault();
@@ -92,8 +75,8 @@ const Me = observer(() => {
                 <NameEdit
                   id="username"
                   placeholder="ชื่อผู้ใช้"
-                  value={mainStore.username}
-                  onChange={(e) => (mainStore.setUsername = e.target.value)}
+                  value={mainStore.user.username}
+                  onChange={(e) => (mainStore.user.username = e.target.value)}
                   onBlur={onChangeName}
                   autoFocus
                 />
@@ -101,8 +84,8 @@ const Me = observer(() => {
             ) : (
               <>
                 <Text weight="600" size={2}>
-                  {mainStore.username !== null
-                    ? mainStore.username
+                  {mainStore.user.username !== null
+                    ? mainStore.user.username
                     : "กำลังโหลด"}
                 </Text>
                 <Icon
@@ -124,7 +107,7 @@ const Me = observer(() => {
         </Card>
 
         <Card height={250}>
-          <ProgressHistory progress={progressHistory} />
+          <ProgressHistory progress={mainStore.userProgressHistory()} />
         </Card>
 
         <FinishTask />

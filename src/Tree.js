@@ -49,10 +49,12 @@ const Tree = observer(() => {
 
   // Fetch User Data
   const FetchUserData = async () => {
-    await firestore()
+    const userData = await firestore()
       .collection("users")
       .doc(mainStore.uid)
-      .onSnapshot((snapshot) => (mainStore.initUser = snapshot.data()));
+      .get();
+
+    mainStore.setUserFromDb(userData.data());
   };
 
   useEffect(() => {
