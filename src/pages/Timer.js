@@ -1,14 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import TopBar from "../components/TopBar";
 
-import { Base, Container, Text } from "../css/main";
+import { Base, Container } from "../css/main";
 
 import { MainStore } from "../store/MainStore";
 import { observer } from "mobx-react-lite";
 import TimerClock from "../components/Timer/TimerClock";
 import TodoList from "../components/Timer/TodoList";
 import Alert from "../components/Alert";
-import { auth } from "../firebase";
 
 const Timer = observer(() => {
   const { timerStore } = useContext(MainStore);
