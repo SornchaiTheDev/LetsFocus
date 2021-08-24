@@ -26,10 +26,6 @@ const SetTimerComp = observer(() => {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    mainStore.mode === "focus" ? setMinutes(25) : setMinutes(5);
-  }, [mainStore.mode]);
-
-  useEffect(() => {
     if (mainStore.mode === "focus") {
       timerStore.setTime = minutes * 60 + seconds;
     } else {

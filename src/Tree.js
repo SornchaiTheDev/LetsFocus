@@ -33,17 +33,6 @@ const Tree = observer(() => {
   }, []);
 
   // useEffect(() => {
-  //   const generateUser = () => {
-  //     new Array(50).fill("").map(
-  //       async (data, index) =>
-  //         await firestore()
-  //           .collection("users")
-  //           .add({ username: `User#${index + 4}`, focusTime: 0 })
-  //     );
-  //   };
-  //   generateUser();
-  // }, []);
-  // useEffect(() => {
   //   auth().signOut();
   //   mainStore.clearLinkwithGoogle();
   // }, []);
@@ -73,6 +62,7 @@ const Tree = observer(() => {
   const focusTimeOnDb = async () => {
     if (timerStore.isFinish && timerStore.status === "end") {
       const focusTime = timerStore.saveFocusTime;
+      console.log(focusTime);
       mainStore.setFocus(focusTime);
       mainStore.setFinishTask(todosStore.finishedTask);
 
@@ -106,6 +96,8 @@ const Tree = observer(() => {
   };
 
   useEffect(() => {
+    console.log("call");
+    console.log(timerStore.isFinish);
     focusTimeOnDb();
   }, [timerStore.isFinish]);
 
