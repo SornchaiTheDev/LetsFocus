@@ -77,7 +77,9 @@ const Me = observer(() => {
             ) : (
               <>
                 <Text weight="600" size={2}>
-                  {mainStore.username}
+                  {mainStore.username !== null
+                    ? mainStore.username
+                    : "กำลังโหลด"}
                 </Text>
                 <Icon
                   style={{ alignSelf: "flex-end" }}

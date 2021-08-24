@@ -6,7 +6,7 @@ import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
 import { firestore } from "../firebase";
 class mainStore {
-  username = "";
+  username = null;
   uid = null;
   focusTime = 0;
   finishTask = [];
@@ -28,6 +28,11 @@ class mainStore {
     return this.mode === "focus"
       ? ((this.mode = "rest"), (this.timerStore.status = "idle"))
       : ((this.mode = "focus"), (this.timerStore.status = "idle"));
+  }
+
+  set initUser(user) {
+    this.username = user.username;
+    this.focusTime = user.focusTime;
   }
 
   set UserUid(uid) {

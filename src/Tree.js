@@ -33,6 +33,15 @@ const Tree = observer(() => {
     });
   }, []);
 
+  // Fetch User Data
+  const FecthUserData = async () => {
+    const user = await firestore().collection("users").doc(mainStore.uid).get();
+    mainStore.initUser = user.data();
+  };
+  useEffect(() => {
+    if (mainStore.uid !== null) FecthUserData();
+  }, [mainStore.uid]);
+
   const focusTimeOnDb = async () => {
     if (timerStore.isFinish && timerStore.status === "end") {
       const focusTime = timerStore.saveFocusTime;
