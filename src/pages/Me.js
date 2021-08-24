@@ -7,6 +7,7 @@ import { FiEdit3 } from "react-icons/fi";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 import styled from "styled-components";
+import LoginBox from "../components/Me/LoginBox";
 
 const ProfileName = styled.div`
   display: flex;
@@ -28,10 +29,19 @@ const NameEdit = styled.input`
   font-size: 2rem;
 `;
 
+const Divider = styled.div`
+  width: 20%;
+  border-bottom: 3px solid #0f1108;
+`;
+
 const Me = observer(() => {
   const { timerStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
+
+  useEffect(()=>{
+    console.log(mainStore.isMember)
+  },[mainStore.isMember])
 
   const getFocusTime = () => {
     const focusTime = mainStore.focusTime;
@@ -60,8 +70,7 @@ const Me = observer(() => {
     <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
       <TopBar />
       <Container gap={20}>
-        {/* <LoginBox /> */}
-        <Card height={100}>
+        <Card>
           <ProfileName>
             {isChange ? (
               <form style={{ width: "100%" }} onSubmit={onChangeName}>
@@ -91,7 +100,14 @@ const Me = observer(() => {
             )}
           </ProfileName>
           <Text weight="300">{getFocusTime()}</Text>
+          {!mainStore.isMember && (
+            <>
+              <Divider />
+              <LoginBox />
+            </>
+          )}
         </Card>
+
         <Card height={250}>
           <ProgressHistory />
         </Card>

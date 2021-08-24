@@ -25,12 +25,26 @@ const Tree = observer(() => {
           .signInAnonymously()
           .then(() => {
             mainStore.registered();
-            mainStore.UserUid = user.uid;
           });
       } else {
         mainStore.UserUid = user.uid;
       }
     });
+  }, []);
+  // useEffect(() => {
+  //   auth().signOut();
+  //   mainStore.clearLinkwithGoogle();
+  // }, []);
+
+  useEffect(() => {
+    auth()
+      .getRedirectResult()
+      .then((result) => {
+        if (result.credential) {
+          console.log(result);
+          mainStore.linkwithGoogle();
+        }
+      });
   }, []);
 
   // Fetch User Data
@@ -38,6 +52,7 @@ const Tree = observer(() => {
     const user = await firestore().collection("users").doc(mainStore.uid).get();
     mainStore.initUser = user.data();
   };
+
   useEffect(() => {
     if (mainStore.uid !== null) FecthUserData();
   }, [mainStore.uid]);
@@ -66,7 +81,7 @@ const Tree = observer(() => {
 
   useEffect(() => {
     focusTimeOnDb();
-    console.log(timerStore.status);
+    // console.log(timerStore.status);
   }, [timerStore.isFinish]);
 
   return (

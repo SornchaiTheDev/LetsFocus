@@ -10,7 +10,8 @@ class mainStore {
   uid = null;
   focusTime = 0;
   finishTask = [];
-  isMember = false;
+  isRegister = false;
+  isMember = false; // use Google to Save Account
   mode = "focus";
   constructor() {
     makeAutoObservable(this);
@@ -18,7 +19,15 @@ class mainStore {
     this.todosStore = new TodosStore(this);
     makePersistable(this, {
       name: "MeStore",
-      properties: ["username", "focusTime", "finishTask", "isMember", "mode"],
+      properties: [
+        "username",
+        "focusTime",
+        "finishTask",
+        "isRegister",
+        "mode",
+        "isMember",
+        "uid",
+      ],
       storage: localforage,
       stringify: false,
     });
@@ -30,6 +39,14 @@ class mainStore {
       : ((this.mode = "focus"), (this.timerStore.status = "idle"));
   }
 
+  async clearLinkwithGoogle() {
+    await clearPersistedStore(this);
+    console.log("clear!");
+  }
+  linkwithGoogle() {
+    this.isMember = true;
+  }
+
   set initUser(user) {
     this.username = user.username;
     this.focusTime = user.focusTime;
@@ -38,11 +55,9 @@ class mainStore {
   set UserUid(uid) {
     return (this.uid = uid);
   }
-  get getUserStatus() {
-    return this.isMember;
-  }
+
   registered() {
-    return (this.isMember = true);
+    return (this.isRegister = true);
   }
 
   get allFinishTask() {
