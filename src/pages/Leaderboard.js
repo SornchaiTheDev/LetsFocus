@@ -42,9 +42,8 @@ const ScrollBox = styled.div`
 const Leaderboard = observer(() => {
   const mainStore = useContext(MainStore);
   const { leaderBoardStore } = useContext(MainStore);
+  const [userRank, setUserRank] = useState(null);
   const users = leaderBoardStore.userRank;
-  const userRank =
-    users.findIndex((user) => user.username === mainStore.username) + 1;
 
   // const _onScroll = () => {
   //   let startAt = 0;
@@ -59,6 +58,12 @@ const Leaderboard = observer(() => {
   //     // setStartAt((prev) => prev + 10);
   //   }
   // };
+
+  useEffect(() => {
+    setUserRank(
+      users.findIndex((user) => user.username === mainStore.username) + 1
+    );
+  }, [users]);
 
   return (
     <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>

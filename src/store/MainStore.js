@@ -14,6 +14,7 @@ class mainStore {
   isRegister = false;
   isMember = false; // use Google to Save Account
   mode = "focus";
+  rank = null;
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
@@ -29,6 +30,7 @@ class mainStore {
         "mode",
         "isMember",
         "uid",
+        "rank",
       ],
       storage: localforage,
       stringify: false,
@@ -53,6 +55,10 @@ class mainStore {
   set initUser(user) {
     this.username = user.username;
     this.focusTime = user.focusTime;
+  }
+
+  set userRank(rank) {
+    this.userRank = rank;
   }
 
   set UserUid(uid) {

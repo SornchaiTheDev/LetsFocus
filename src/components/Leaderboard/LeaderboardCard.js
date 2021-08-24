@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Text } from "../../css/main";
 import { AiFillTrophy } from "react-icons/ai";
+
 const Card = styled.div`
   width: 91%;
   padding: 20px;
@@ -20,7 +21,7 @@ const Icon = styled.div`
   border-radius: 50%;
   background: ${(props) => (props.background ? props.background : "black")};
 `;
-function LeaderboardCard({ rank, username, focusTime }) {
+const LeaderboardCard = ({ rank, username, focusTime }) => {
   const getFocusTime = () => {
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
@@ -71,6 +72,6 @@ function LeaderboardCard({ rank, username, focusTime }) {
       </Text>
     </Card>
   );
-}
+};
 
 export default LeaderboardCard;
