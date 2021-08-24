@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import TopBar from "../components/TopBar";
 
 import { Base, Container } from "../css/main";

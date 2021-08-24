@@ -88,8 +88,7 @@ const SetTimerComp = observer(() => {
 });
 
 const TimerClock = observer(({ stopConfirm }) => {
-  const { timerStore, todosStore } = useContext(MainStore);
-  const mainStore = useContext(MainStore);
+  const { timerStore } = useContext(MainStore);
 
   return (
     <>

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
 import TopBar from "../components/TopBar";
-import { Base, Container, Text } from "../css/main";
+import { Base, Container } from "../css/main";
 import styled from "styled-components";
 import LeaderboardCard from "../components/Leaderboard/LeaderboardCard";
 

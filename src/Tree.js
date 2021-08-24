@@ -98,8 +98,6 @@ const Tree = observer(() => {
   };
 
   useEffect(() => {
-    console.log("call");
-    console.log(timerStore.isFinish);
     focusTimeOnDb();
   }, [timerStore.isFinish]);
 
