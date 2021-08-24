@@ -21,15 +21,16 @@ import TimerMode from "./TimerMode";
 
 const SetTimerComp = observer(() => {
   const { timerStore } = useContext(MainStore);
+  const mainStore = useContext(MainStore);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    timerStore.mode === "focus" ? setMinutes(25) : setMinutes(5);
+    mainStore.mode === "focus" ? setMinutes(25) : setMinutes(5);
   }, [timerStore.mode]);
 
   useEffect(() => {
-    if (timerStore.mode === "focus") {
+    if (mainStore.mode === "focus") {
       timerStore.setTime = minutes * 60 + seconds;
     } else {
       timerStore.setTime = minutes * 60 + seconds;
@@ -58,7 +59,7 @@ const SetTimerComp = observer(() => {
   return (
     <SetTimer>
       <SetTimerInner
-        background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}
+        background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}
       >
         <TimeInputSet>
           <Icon onClick={() => TimeSet("minutes", "increase", minutes)}>

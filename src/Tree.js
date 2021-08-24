@@ -11,10 +11,27 @@ import Leaderboard from "./pages/Leaderboard";
 import Me from "./pages/Me";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
+import { auth } from "./firebase";
 
 const Tree = observer(() => {
   const { timerStore, todosStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
+
+  // User Authentication
+  useEffect(() => {
+    auth().onAuthStateChanged((user) => {
+      if (user === null) {
+        auth()
+          .signInAnonymously()
+          .then(() => {
+            mainStore.registered();
+            mainStore.UserUid = user.uid;
+          });
+      } else {
+        mainStore.UserUid = user.uid;
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (timerStore.isFinish && timerStore.status === "end") {
@@ -22,9 +39,15 @@ const Tree = observer(() => {
       mainStore.setFinishTask(todosStore.finishedTask);
       timerStore.resetSaveFocusTime();
       todosStore.clearTodo();
-      timerStore.setMode();
+      mainStore.setMode();
     }
+
+    console.log(timerStore.maxTime);
   }, [timerStore.isFinish]);
+
+  useEffect(() => {
+    console.log(timerStore.maxTime);
+  }, [timerStore.maxTime]);
   return (
     <>
       <Router>

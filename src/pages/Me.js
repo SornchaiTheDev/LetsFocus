@@ -7,7 +7,6 @@ import { FiEdit3 } from "react-icons/fi";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 import styled from "styled-components";
-import { auth } from "../firebase";
 
 const ProfileName = styled.div`
   display: flex;
@@ -34,28 +33,12 @@ const Me = observer(() => {
   const mainStore = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
 
-  // User Authentication
-  useEffect(() => {
-    auth().onAuthStateChanged((user) => {
-      if (user === null) {
-        auth()
-          .signInAnonymously()
-          .then(() => {
-            mainStore.registered();
-            mainStore.UserUid = user.uid;
-          });
-      } else {
-        mainStore.UserUid = user.uid;
-      }
-    });
-  }, []);
-
   const getFocusTime = () => {
     const focusTime = mainStore.focusTime;
 
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
-    const minutes = parseInt(focusTime / 60 % 60);
+    const minutes = parseInt((focusTime / 60) % 60);
 
     if (hour >= 1) {
       if (minutes > 0) {
@@ -74,7 +57,7 @@ const Me = observer(() => {
     setIsChange(false);
   };
   return (
-    <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
+    <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
       <TopBar />
       <Container gap={20}>
         {/* <LoginBox /> */}

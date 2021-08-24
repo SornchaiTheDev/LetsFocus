@@ -11,16 +11,23 @@ class mainStore {
   focusTime = 0;
   finishTask = [];
   isMember = false;
+  mode = "focus";
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
     this.todosStore = new TodosStore(this);
     makePersistable(this, {
       name: "MeStore",
-      properties: ["username", "focusTime", "finishTask", "isMember"],
+      properties: ["username", "focusTime", "finishTask", "isMember", "mode"],
       storage: localforage,
       stringify: false,
     });
+  }
+
+  setMode() {
+    return this.mode === "focus"
+      ? ((this.mode = "rest"), (this.status = "idle"))
+      : ((this.mode = "focus"), (this.status = "idle"));
   }
 
   set UserUid(uid) {
@@ -61,7 +68,6 @@ class mainStore {
   }
 
   setFocus(focusTime) {
-    console.log(this.focusTime + focusTime);
     return (this.focusTime += focusTime);
   }
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
 import TopBar from "../components/TopBar";
@@ -28,35 +28,39 @@ const Divider = styled.div`
 `;
 
 const UserRank = [
-  { rank: 2, username: "โชกุนนน", focusTime: 3660 },
-  { rank: 1, username: "wrtk", focusTime: 123456 },
-  { rank: 3, username: "ปลาทูใจรว้าย", focusTime: 2341 },
-  { rank: 4, username: "Apricotneonmagenta", focusTime: 2330 },
-  { rank: 5, username: "มดซี้แดงง", focusTime: 1456 },
-  { rank: 6, username: "หนูแหวนน", focusTime: 1220 },
+  { username: "wrtk", focusTime: 12345 },
+  { username: "SornchaiTheDev KU82", focusTime: 3660 },
+  { username: "ปลาทูใจรว้าย", focusTime: 2341 },
+  { username: "Apricotneonmagenta", focusTime: 2330 },
+  { username: "มดซี้แดงง", focusTime: 1456 },
+  { username: "หนูแหวนน", focusTime: 1220 },
 ];
 
 const myRank = { rank: 2, username: "โชกุนน", focusTime: 3660 };
-function Leaderboard() {
-  const { timerStore } = useContext(MainStore);
+const Leaderboard = observer(() => {
+  const mainStore = useContext(MainStore);
 
   return (
-    <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
+    <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
       <TopBar />
       <Container>
         <LeaderBox>
           <LeaderboardCard
-            rank={myRank.rank}
-            username={myRank.username}
-            focusTime={myRank.focusTime}
+            rank={
+              UserRank.findIndex(
+                (user) => user.username === mainStore.username
+              ) + 1
+            }
+            username={mainStore.username}
+            focusTime={mainStore.focusTime}
           />
 
           <Divider />
           {UserRank.sort((a, b) => b.focusTime - a.focusTime).map(
-            ({ rank, username, focusTime }, index) => (
+            ({ username, focusTime }, index) => (
               <LeaderboardCard
                 key={index}
-                rank={rank}
+                rank={index + 1}
                 username={username}
                 focusTime={focusTime}
               />
@@ -66,6 +70,6 @@ function Leaderboard() {
       </Container>
     </Base>
   );
-}
+});
 
 export default Leaderboard;

@@ -8,11 +8,11 @@ const data = {
       label: "เวลาโฟกัส",
       data: [
         { day: "จันทร์", seconds: 3600, hour: 1 },
-        { day: "อังคาร", seconds: 7200, hour: 2 },
+        { day: "อังคาร", seconds: 52200, hour: 4.5 },
         { day: "พุธ", seconds: 3600, hour: 1 },
-        { day: "พฤหัส", seconds: 1800, hour: 0.5 },
-        { day: "ศุกร์", seconds: 978, hour: 0.27 },
-        { day: "เสาร์", seconds: 654, hour: 0.18 },
+        { day: "พฤหัส", seconds: 1800, hour: 2 },
+        { day: "ศุกร์", seconds: 978, hour: 2 },
+        { day: "เสาร์", seconds: 654, hour: 1 },
         { day: "อาทิตย์", seconds: 6541, hour: 1.81 },
       ],
 

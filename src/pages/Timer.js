@@ -38,7 +38,7 @@ const Timer = observer(() => {
           ]}
         />
       )}
-      <Base background={timerStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
+      <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
         <TopBar />
         <Container>
           <TimerClock stopConfirm={() => setStopConfirm(true)} />

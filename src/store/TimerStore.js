@@ -8,18 +8,12 @@ class TimerStore {
   maxFocusTime = 0;
   maxRestTime = 0;
   status = "idle";
-  mode = "focus";
+
   isFinish = true;
   rootStore;
   constructor(rootStore) {
     makeAutoObservable(this, { rootStore: false });
     this.rootStore = rootStore;
-  }
-
-  setMode() {
-    return this.mode === "focus"
-      ? ((this.mode = "rest"), (this.status = "idle"))
-      : ((this.mode = "focus"), (this.status = "idle"));
   }
 
   set setFinish(status) {
@@ -46,7 +40,9 @@ class TimerStore {
   }
 
   set updateTimer(time) {
-    this.mode === "focus" ? (this.focusTime = time) : (this.restTime = time);
+    this.rootStore.mode === "focus"
+      ? (this.focusTime = time)
+      : (this.restTime = time);
   }
 
   resetSaveFocusTime() {
@@ -54,22 +50,24 @@ class TimerStore {
   }
 
   set setTime(time) {
-    if (this.mode === "focus") {
+    if (this.rootStore.mode === "focus") {
       this.focusTime = time;
       this.maxFocusTime = time;
     }
-    if (this.mode === "rest") {
+    if (this.rootStore.mode === "rest") {
       this.restTime = time;
       this.maxRestTime = time;
     }
   }
 
   get timer() {
-    return this.mode === "focus" ? this.focusTime : this.restTime;
+    return this.rootStore.mode === "focus" ? this.focusTime : this.restTime;
   }
   get maxTime() {
     this.saveFocusTime = this.maxFocusTime;
-    return this.mode === "focus" ? this.maxFocusTime : this.maxRestTime;
+    return this.rootStore.mode === "focus"
+      ? this.maxFocusTime
+      : this.maxRestTime;
   }
 
   get currentTime() {
