@@ -43,6 +43,8 @@ const Leaderboard = observer(() => {
   const mainStore = useContext(MainStore);
   const { leaderBoardStore } = useContext(MainStore);
   const users = leaderBoardStore.userRank;
+  const userRank =
+    users.findIndex((user) => user.username === mainStore.username) + 1;
 
   // const _onScroll = () => {
   //   let startAt = 0;
@@ -64,10 +66,7 @@ const Leaderboard = observer(() => {
       <Container>
         <LeaderBox>
           <LeaderboardCard
-            rank={
-              users.findIndex((user) => user.username === mainStore.username) +
-              1
-            }
+            rank={userRank}
             username={mainStore.username}
             focusTime={mainStore.focusTime}
           />
