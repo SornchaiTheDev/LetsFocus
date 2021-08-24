@@ -53,7 +53,6 @@ const Tree = observer(() => {
       .getRedirectResult()
       .then((result) => {
         if (result.credential) {
-          console.log(result);
           mainStore.linkwithGoogle();
         }
       });
@@ -108,7 +107,6 @@ const Tree = observer(() => {
 
   useEffect(() => {
     focusTimeOnDb();
-    // console.log(timerStore.status);
   }, [timerStore.isFinish]);
 
   return (

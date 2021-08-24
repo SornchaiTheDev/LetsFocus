@@ -22,6 +22,7 @@ class LeaderBoardStore {
       .onSnapshot((snapshot) => {
         const allUser = [];
         snapshot.forEach((user) => allUser.push(user.data()));
+
         this.leaderboard = allUser;
       });
   };

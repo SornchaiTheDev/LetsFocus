@@ -75,7 +75,7 @@ const Leaderboard = observer(() => {
           <Divider />
         </LeaderBox>
         {/* <ScrollBox id="leaderboard" onScroll={_onScroll}> */}
-        <LeaderBox>
+        <LeaderBox style={{ marginBottom: 50 }}>
           {users
             .sort((a, b) => b.focusTime - a.focusTime)
             .map(({ username, focusTime }, index) => (
