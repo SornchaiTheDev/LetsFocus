@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Text } from "../../css/main";
 import { AiFillTrophy } from "react-icons/ai";
 const Card = styled.div`
-  width: 100%;
+  width: 91%;
   padding: 20px;
   background: white;
   border-radius: 10px;

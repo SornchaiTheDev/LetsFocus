@@ -5,22 +5,20 @@ import TopBar from "../components/TopBar";
 import { Base, Container, Text } from "../css/main";
 import styled from "styled-components";
 import LeaderboardCard from "../components/Leaderboard/LeaderboardCard";
-import { firestore } from "../firebase";
 
+// Styles
 const LeaderBox = styled.div`
   @media (min-width: 320px) {
     width: 80%;
   }
   @media (min-width: 928px) {
-    width: 50%;
+    width: 70%;
   }
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  margin-bottom: 30px;
 `;
 
 const Divider = styled.div`
@@ -28,36 +26,27 @@ const Divider = styled.div`
   border-bottom: 3px solid white;
 `;
 
-const UserRank = [
-  { username: "wrtk", focusTime: 12345 },
-  { username: "SornchaiTheDev KU82", focusTime: 3660 },
-  { username: "ปลาทูใจรว้าย", focusTime: 2341 },
-  { username: "Apricotneonmagenta", focusTime: 2330 },
-  { username: "มดซี้แดงง", focusTime: 1456 },
-  { username: "หนูแหวนน", focusTime: 1220 },
-];
+const ScrollBox = styled.div`
+  width: 80%;
+  padding: 20px;
+  height: 500px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+`;
 
-const myRank = { rank: 2, username: "โชกุนน", focusTime: 3660 };
 const Leaderboard = observer(() => {
   const mainStore = useContext(MainStore);
-  const [users, setUsers] = useState([]);
+  const { leaderBoardStore } = useContext(MainStore);
+  const users = leaderBoardStore.leaderboard;
 
-  const getUserRank = async () => {
-    const getAllUser = await firestore().collection("users").get();
-
-    const allUser = [];
-    getAllUser.forEach((user) => allUser.push(user.data()));
-    setUsers(allUser);
+  const _onScroll = () => {
+    const leaderboard = document.getElementById("leaderboard");
+    console.log(leaderboard);
   };
-
-  useEffect(() => {
-    getUserRank();
-  }, []);
-
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
-
   return (
     <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
       <TopBar />
@@ -73,7 +62,10 @@ const Leaderboard = observer(() => {
           />
 
           <Divider />
+        </LeaderBox>
+        <ScrollBox id="leaderboard" onScroll={_onScroll}>
           {users
+            .slice()
             .sort((a, b) => b.focusTime - a.focusTime)
             .map(({ username, focusTime }, index) => (
               <LeaderboardCard
@@ -83,7 +75,7 @@ const Leaderboard = observer(() => {
                 focusTime={focusTime}
               />
             ))}
-        </LeaderBox>
+        </ScrollBox>
       </Container>
     </Base>
   );

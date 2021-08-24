@@ -2,6 +2,7 @@ import React, { createContext, useContext } from "react";
 import { makeAutoObservable, toJS, autorun } from "mobx";
 import TimerStore from "./TimerStore";
 import TodosStore from "./TodosStore";
+import LeaderBoardStore from "./LeaderboardStore";
 import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
 import { firestore } from "../firebase";
@@ -17,6 +18,7 @@ class mainStore {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
     this.todosStore = new TodosStore(this);
+    this.leaderBoardStore = new LeaderBoardStore(this);
     makePersistable(this, {
       name: "MeStore",
       properties: [
@@ -31,6 +33,7 @@ class mainStore {
       storage: localforage,
       stringify: false,
     });
+    this.leaderBoardStore.updateRank();
   }
 
   setMode() {
