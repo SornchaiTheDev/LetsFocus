@@ -43,10 +43,6 @@ class mainStore {
       : ((this.mode = "focus"), (this.timerStore.status = "idle"));
   }
 
-  get username() {
-    return this.user.username;
-  }
-
   async clearLinkwithGoogle() {
     await clearPersistedStore(this);
     console.log("clear!");

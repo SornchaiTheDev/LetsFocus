@@ -42,9 +42,9 @@ const ScrollBox = styled.div`
 const Leaderboard = observer(() => {
   const mainStore = useContext(MainStore);
   const { leaderBoardStore } = useContext(MainStore);
-  const [userRank, setUserRank] = useState(null);
-  const users = leaderBoardStore.userRank;
+  const users = leaderBoardStore.usersRank;
 
+  // For lots user make lazy loading -- Plan
   // const _onScroll = () => {
   //   let startAt = 0;
   //   const leaderboard = document.getElementById("leaderboard");
@@ -59,26 +59,20 @@ const Leaderboard = observer(() => {
   //   }
   // };
 
-  useEffect(() => {
-    setUserRank(
-      users.findIndex((user) => user.username === mainStore.username) + 1
-    );
-  }, [users]);
-
   return (
     <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
       <TopBar />
       <Container>
         <LeaderBox>
           <LeaderboardCard
-            rank={userRank}
-            username={mainStore.username}
-            focusTime={mainStore.focusTime}
+            rank={leaderBoardStore.myRank}
+            username={mainStore.user.username}
+            focusTime={mainStore.user.focusTime}
           />
 
           <Divider />
         </LeaderBox>
-        {/* <ScrollBox id="leaderboard" onScroll={_onScroll}> */}
+
         <LeaderBox style={{ marginBottom: 50 }}>
           {users
             .sort((a, b) => b.focusTime - a.focusTime)
@@ -91,7 +85,6 @@ const Leaderboard = observer(() => {
               />
             ))}
         </LeaderBox>
-        {/* </ScrollBox> */}
       </Container>
     </Base>
   );

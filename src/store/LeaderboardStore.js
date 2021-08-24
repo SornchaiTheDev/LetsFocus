@@ -22,13 +22,23 @@ class LeaderBoardStore {
       .onSnapshot((snapshot) => {
         const allUser = [];
         snapshot.forEach((user) => allUser.push(user.data()));
-
         this.leaderboard = allUser;
       });
   };
 
-  get userRank() {
+  get usersRank() {
     return toJS(this.leaderboard);
+  }
+
+  get myRank() {
+    const allUsers = toJS(this.leaderboard);
+    const sortUsers = allUsers.sort((a, b) => b.focusTime - a.focusTime);
+    const mine =
+      sortUsers.findIndex(
+        (user) => user.username === this.rootStore.user.username
+      ) + 1;
+
+    return mine;
   }
 }
 
