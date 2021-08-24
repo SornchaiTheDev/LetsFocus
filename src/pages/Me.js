@@ -8,6 +8,7 @@ import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 import styled from "styled-components";
 import LoginBox from "../components/Me/LoginBox";
+import { firestore } from "../firebase";
 
 const ProfileName = styled.div`
   display: flex;
@@ -38,10 +39,7 @@ const Me = observer(() => {
   const { timerStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
-
-  useEffect(()=>{
-    console.log(mainStore.isMember)
-  },[mainStore.isMember])
+  const [progressHistory, setProgressHistory] = useState([]);
 
   const getFocusTime = () => {
     const focusTime = mainStore.focusTime;
@@ -59,6 +57,23 @@ const Me = observer(() => {
       return `โฟกัส ${minutes} นาที`;
     }
   };
+
+  const fetchProgressHistory = async () => {
+    const progress_history = [];
+    const week_progress = await firestore()
+      .collection("users")
+      .doc(mainStore.uid)
+      .collection("progress_history")
+      .get();
+
+    week_progress.forEach((progress) => progress_history.push(progress.data()));
+
+    setProgressHistory(progress_history);
+  };
+
+  useEffect(() => {
+    if (mainStore.uid !== null) fetchProgressHistory();
+  }, [mainStore.uid]);
 
   const onChangeName = (e) => {
     e.preventDefault();
@@ -109,7 +124,7 @@ const Me = observer(() => {
         </Card>
 
         <Card height={250}>
-          <ProgressHistory />
+          <ProgressHistory progress={progressHistory} />
         </Card>
 
         <FinishTask />
