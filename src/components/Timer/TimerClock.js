@@ -27,7 +27,7 @@ const SetTimerComp = observer(() => {
 
   useEffect(() => {
     mainStore.mode === "focus" ? setMinutes(25) : setMinutes(5);
-  }, [timerStore.mode]);
+  }, [mainStore.mode]);
 
   useEffect(() => {
     if (mainStore.mode === "focus") {

@@ -26,8 +26,8 @@ class mainStore {
 
   setMode() {
     return this.mode === "focus"
-      ? ((this.mode = "rest"), (this.status = "idle"))
-      : ((this.mode = "focus"), (this.status = "idle"));
+      ? ((this.mode = "rest"), (this.timerStore.status = "idle"))
+      : ((this.mode = "focus"), (this.timerStore.status = "idle"));
   }
 
   set UserUid(uid) {

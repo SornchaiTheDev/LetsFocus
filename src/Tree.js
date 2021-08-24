@@ -11,7 +11,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Me from "./pages/Me";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
-import { auth } from "./firebase";
+import { auth, firestore } from "./firebase";
 
 const Tree = observer(() => {
   const { timerStore, todosStore } = useContext(MainStore);
@@ -33,21 +33,33 @@ const Tree = observer(() => {
     });
   }, []);
 
-  useEffect(() => {
+  const focusTimeOnDb = async () => {
     if (timerStore.isFinish && timerStore.status === "end") {
-      mainStore.setFocus(timerStore.saveFocusTime);
+      const focusTime = timerStore.saveFocusTime;
+      mainStore.setFocus(focusTime);
       mainStore.setFinishTask(todosStore.finishedTask);
       timerStore.resetSaveFocusTime();
       todosStore.clearTodo();
       mainStore.setMode();
+      if (focusTime > 0) {
+        await firestore()
+          .collection("users")
+          .doc(mainStore.uid)
+          .set(
+            {
+              focusTime: firestore.FieldValue.increment(focusTime),
+            },
+            { merge: true }
+          );
+      }
     }
-
-    console.log(timerStore.maxTime);
-  }, [timerStore.isFinish]);
+  };
 
   useEffect(() => {
-    console.log(timerStore.maxTime);
-  }, [timerStore.maxTime]);
+    focusTimeOnDb();
+    console.log(timerStore.status);
+  }, [timerStore.isFinish]);
+
   return (
     <>
       <Router>
