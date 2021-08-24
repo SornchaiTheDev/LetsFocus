@@ -55,7 +55,7 @@ const Me = observer(() => {
 
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
-    const minutes = parseInt((focusTime / 60) % 60);
+    const minutes = parseInt(focusTime / 60 % 60);
 
     if (hour >= 1) {
       if (minutes > 0) {
