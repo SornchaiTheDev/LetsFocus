@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
 import { firestore } from "../firebase";
@@ -25,6 +25,10 @@ class LeaderBoardStore {
         this.leaderboard = allUser;
       });
   };
+
+  get userRank() {
+    return toJS(this.leaderboard);
+  }
 }
 
 export default LeaderBoardStore;

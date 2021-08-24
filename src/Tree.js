@@ -31,6 +31,18 @@ const Tree = observer(() => {
       }
     });
   }, []);
+
+  // useEffect(() => {
+  //   const generateUser = () => {
+  //     new Array(50).fill("").map(
+  //       async (data, index) =>
+  //         await firestore()
+  //           .collection("users")
+  //           .add({ username: `User#${index + 4}`, focusTime: 0 })
+  //     );
+  //   };
+  //   generateUser();
+  // }, []);
   // useEffect(() => {
   //   auth().signOut();
   //   mainStore.clearLinkwithGoogle();
@@ -48,13 +60,15 @@ const Tree = observer(() => {
   }, []);
 
   // Fetch User Data
-  const FecthUserData = async () => {
-    const user = await firestore().collection("users").doc(mainStore.uid).get();
-    mainStore.initUser = user.data();
+  const FetchUserData = async () => {
+    await firestore()
+      .collection("users")
+      .doc(mainStore.uid)
+      .onSnapshot((snapshot) => (mainStore.initUser = snapshot.data()));
   };
 
   useEffect(() => {
-    if (mainStore.uid !== null) FecthUserData();
+    if (mainStore.uid !== null) FetchUserData();
   }, [mainStore.uid]);
 
   const focusTimeOnDb = async () => {
@@ -62,9 +76,19 @@ const Tree = observer(() => {
       const focusTime = timerStore.saveFocusTime;
       mainStore.setFocus(focusTime);
       mainStore.setFinishTask(todosStore.finishedTask);
-      timerStore.resetSaveFocusTime();
-      todosStore.clearTodo();
-      mainStore.setMode();
+
+      await firestore()
+        .collection("users")
+        .doc(mainStore.uid)
+        .set(
+          {
+            finishTask: firestore.FieldValue.arrayUnion(
+              ...todosStore.finishedTask
+            ),
+          },
+          { merge: true }
+        );
+
       if (focusTime > 0) {
         await firestore()
           .collection("users")
@@ -76,6 +100,9 @@ const Tree = observer(() => {
             { merge: true }
           );
       }
+      timerStore.resetSaveFocusTime();
+      todosStore.clearTodo();
+      mainStore.setMode();
     }
   };
 

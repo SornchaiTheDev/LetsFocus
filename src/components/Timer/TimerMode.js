@@ -19,12 +19,12 @@ const TimerSelector = styled.div`
 `;
 
 const TimerMode = observer(() => {
-  const { timerStore } = useContext(MainStore);
+  const mainStore = useContext(MainStore);
 
   return (
     <TimerSelector>
       <Text color="black" size={1} weight="700">
-        {timerStore.mode === "focus" ? "ช่วงโฟกัส" : "ช่วงพัก"}
+        {mainStore.mode === "focus" ? "ช่วงโฟกัส" : "ช่วงพัก"}
       </Text>
     </TimerSelector>
   );
