@@ -2,12 +2,13 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
-import { Base, Container, Text, Card, Icon } from "../css/main";
+import { Base, Container, Text, Card, Group } from "../css/main";
 import { FiEdit3 } from "react-icons/fi";
 import TopBar from "../components/TopBar";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 import LoginBox from "../components/Me/LoginBox";
+import { auth } from "../firebase";
 
 // Styling
 const ProfileName = styled.div`
@@ -69,7 +70,7 @@ const Me = observer(() => {
       <TopBar />
       <Container gap={20}>
         <Card>
-          <ProfileName>
+          {/* <ProfileName>
             {isChange ? (
               <form style={{ width: "100%" }} onSubmit={onChangeName}>
                 <NameEdit
@@ -96,12 +97,40 @@ const Me = observer(() => {
                 </Icon>
               </>
             )}
-          </ProfileName>
-          <Text weight="300">{getFocusTime()}</Text>
+          </ProfileName> */}
+          {/* <Text weight="300">{getFocusTime()}</Text> */}
+          {/* <Divider /> */}
           {!mainStore.isMember && (
             <>
-              <Divider />
-              <LoginBox />
+              <Text weight="400" size={1}>
+                เข้าสู่ระบบ / สมัครสมาชิก
+              </Text>
+              <Text weight="400" size={1}>
+                เพื่อบันทึกข้อมูลของคุณ
+              </Text>
+
+              <LoginBox
+                type="google"
+                text="เข้าสู่ระบบด้วยกูเกิ้ล"
+                onClick={() => {
+                  const provider = new auth.GoogleAuthProvider();
+                  auth().signInWithCredential(provider);
+                }}
+              />
+
+              <Text weight="400" size={1}>
+                หรือ
+              </Text>
+              <LoginBox
+                text="ทดลองใช้"
+                onClick={() => {
+                  auth()
+                    .signInAnonymously()
+                    .then(() => {
+                      mainStore.registered();
+                    });
+                }}
+              />
             </>
           )}
         </Card>

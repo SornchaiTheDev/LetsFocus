@@ -20,6 +20,16 @@ export const Base = styled.div`
   user-select: none;
 `;
 
+export const Group = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: ${(props) => (props.direction ? props.direction : "row")};
+  justify-content: ${(props) => (props.justify ? props.justify : "flex-start")};
+  align-items: ${(props) => (props.align ? props.align : "flex-start")};
+  gap: ${(props) => (props.gap ? props.gap : 0)}px;
+`;
+
 export const Container = styled.div`
   @media (min-width: 320px) {
     width: 100%;

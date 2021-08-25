@@ -4,13 +4,20 @@ import { MainStore } from "../store/MainStore";
 import { observer } from "mobx-react-lite";
 const PrivateRoute = observer(({ component: Component, ...rest }) => {
   const mainStore = useContext(MainStore);
-  console.log(mainStore.isRegister);
+
   return (
     <Route
       {...rest}
-      render={(props) =>
-        true ? <Component {...props} /> : <Redirect to="/" />
-      }
+      render={(props) => {
+        if (mainStore.isRegister === null) {
+          return;
+        }
+        if (mainStore.isRegister) {
+          return <Component {...props} />;
+        } else {
+          return <Redirect to="/" />;
+        }
+      }}
     />
   );
 });

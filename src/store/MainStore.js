@@ -9,10 +9,9 @@ import { firestore } from "../firebase";
 class mainStore {
   user = { username: null, focusTime: 0, finishTask: [] };
   uid = null;
-  isRegister = false;
-  isMember = false; // use Google to Save Account
+  isRegister = null;
+  isGoogle = false; // use Google to Save Account
   mode = "focus";
-  rank = null;
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
@@ -20,17 +19,7 @@ class mainStore {
     this.leaderBoardStore = new LeaderBoardStore(this);
     makePersistable(this, {
       name: "MeStore",
-      properties: [
-        "username",
-        "focusTime",
-        "finishTask",
-        "isRegister",
-        "mode",
-        "isMember",
-        "uid",
-        "rank",
-        "user",
-      ],
+      properties: ["isRegister", "mode", "isGoogle", "uid", "user"],
       storage: localforage,
       stringify: false,
     });
@@ -48,15 +37,11 @@ class mainStore {
     console.log("clear!");
   }
   linkwithGoogle() {
-    this.isMember = true;
+    this.isGoogle = true;
   }
 
   setUserFromDb(user) {
     this.user = user;
-  }
-
-  set userRank(rank) {
-    this.userRank = rank;
   }
 
   set UserUid(uid) {
@@ -91,7 +76,6 @@ class mainStore {
       .collection("users")
       .doc(user.uid)
       .set({ username: user.name }, { merge: true });
-    console.log("Change Completed!");
   }
 
   get doneTask() {
