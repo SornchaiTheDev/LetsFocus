@@ -12,6 +12,7 @@ class mainStore {
   isRegister = null;
   isGoogle = false; // use Google to Save Account
   mode = "focus";
+  isNotificationAllow = false;
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
@@ -30,6 +31,10 @@ class mainStore {
     return this.mode === "focus"
       ? ((this.mode = "rest"), (this.timerStore.status = "idle"))
       : ((this.mode = "focus"), (this.timerStore.status = "idle"));
+  }
+
+  set allowNotification(bool) {
+    this.isNotificationAllow = bool;
   }
 
   async clearLinkwithGoogle() {

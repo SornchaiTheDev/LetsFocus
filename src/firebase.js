@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import "firebase/messaging";
 const firebaseConfig = {
   apiKey: "AIzaSyDaB7C08E4fvsrb2ZvqztssTQrbuemhaAE",
   authDomain: "letmakeyoufocus.firebaseapp.com",
@@ -17,3 +18,4 @@ export default !firebase.apps.length
 
 export const firestore = firebase.firestore;
 export const auth = firebase.auth;
+export const messaging = firebase.messaging;

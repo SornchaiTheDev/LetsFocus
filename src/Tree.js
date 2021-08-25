@@ -12,11 +12,30 @@ import PrivateRoute from "./components/PrivateRoute";
 import Me from "./pages/Me";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
-import { auth, firestore } from "./firebase";
+import { auth, firestore, messaging } from "./firebase";
 
 const Tree = observer(() => {
   const { timerStore, todosStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
+
+  // Notification
+  useEffect(() => {
+    messaging()
+      .getToken({
+        vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY,
+      })
+      .then((token) => {
+        if (token) {
+          mainStore.allowNotification = true;
+          console.log(token);
+        } else {
+          mainStore.allowNotification = false;
+        }
+      })
+      .catch((err) => {
+        console.log("เกิดข้อผิดพลาดโปรดลองอีกครั้งภายหลัง.");
+      });
+  }, []);
 
   // User Authentication
   useEffect(() => {

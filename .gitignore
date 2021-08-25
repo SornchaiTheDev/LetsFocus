@@ -8,6 +8,9 @@
 #cloud functions
 /functions
 
+#certificate
+/cert
+
 # testing
 /coverage
 
