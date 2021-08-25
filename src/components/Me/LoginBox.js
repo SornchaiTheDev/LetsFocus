@@ -49,7 +49,6 @@ function LoginBox() {
   };
   return (
     <>
-      {/* <LoginCard> */}
       <Text weight="400" size={1}>
         เข้าสู่ระบบเพื่อบันทึกข้อมูลของคุณ
       </Text>
@@ -59,7 +58,6 @@ function LoginBox() {
           เข้าสู่ระบบด้วยกูเกิ้ล
         </Text>
       </GoogleSignInBtn>
-      {/* </LoginCard> */}
     </>
   );
 }

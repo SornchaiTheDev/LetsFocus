@@ -31,10 +31,6 @@ const FinishTask = observer(() => {
     setMode(0);
   };
 
-  // useEffect(() => {
-  //   alert(JSON.stringify(mainStore.user));
-  // }, []);
-
   useEffect(() => {
     if (mode === 0) setCurrentMode("วันนี้");
     if (mode === 1) setCurrentMode("สัปดาห์นี้");

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Text } from "../css/main";
 import { AiFillAlert } from "react-icons/ai";
-import TimerMode from "./Timer/TimerMode";
+
 const AlertContainer = styled.div`
   width: 100vw;
   height: 100vh;

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
-
-function PrivateRoute({ component: Component, ...rest }) {
+import { MainStore } from "../store/MainStore";
+import { observer } from "mobx-react-lite";
+const PrivateRoute = observer(({ component: Component, ...rest }) => {
+  const mainStore = useContext(MainStore);
+  console.log(mainStore.isRegister);
   return (
     <Route
       {...rest}
@@ -10,6 +13,6 @@ function PrivateRoute({ component: Component, ...rest }) {
       }
     />
   );
-}
+});
 
 export default PrivateRoute;

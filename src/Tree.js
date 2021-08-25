@@ -7,7 +7,9 @@ import {
 } from "react-router-dom";
 
 import Timer from "./pages/Timer";
+import Login from "./pages/Login";
 import Leaderboard from "./pages/Leaderboard";
+import PrivateRoute from "./components/PrivateRoute";
 import Me from "./pages/Me";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
@@ -105,9 +107,10 @@ const Tree = observer(() => {
     <>
       <Router>
         <Switch>
-          <Route path="/" exact component={Timer} />
-          <Route path="/leaderboard" exact component={Leaderboard} />
-          <Route path="/me" exact component={Me} />
+          <Route path="/" exact component={Login} />
+          <PrivateRoute path="/timer" exact component={Timer} />
+          <PrivateRoute path="/leaderboard" exact component={Leaderboard} />
+          <PrivateRoute path="/me" exact component={Me} />
           <Redirect to="/" />
         </Switch>
       </Router>
