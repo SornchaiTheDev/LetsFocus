@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
-import { Base, Container, Text, Card, Group } from "../css/main";
+import { Base, Container, Text, Card, Group, Icon } from "../css/main";
 import { FiEdit3 } from "react-icons/fi";
 import TopBar from "../components/TopBar";
 import FinishTask from "../components/Me/FinishTask";
@@ -59,6 +59,23 @@ const Me = observer(() => {
     }
   };
 
+  const getRestTime = () => {
+    const restTime = mainStore.user.restTime;
+
+    if (restTime === undefined) return "error";
+    const hour = Math.floor(restTime / 3600);
+    const minutes = parseInt((restTime / 60) % 60);
+
+    if (hour >= 1) {
+      if (minutes > 0) {
+        return `พักผ่อน ${hour} ชม. ${minutes} นาที`;
+      }
+      return `พักผ่อน ${hour} ชม.`;
+    } else {
+      return `พักผ่อน ${minutes} นาที`;
+    }
+  };
+
   const onChangeName = (e) => {
     e.preventDefault();
     const username = document.getElementById("username").value;
@@ -70,37 +87,7 @@ const Me = observer(() => {
       <TopBar />
       <Container gap={20}>
         <Card>
-          {/* <ProfileName>
-            {isChange ? (
-              <form style={{ width: "100%" }} onSubmit={onChangeName}>
-                <NameEdit
-                  id="username"
-                  placeholder="ชื่อผู้ใช้"
-                  value={mainStore.user.username}
-                  onChange={(e) => (mainStore.user.username = e.target.value)}
-                  onBlur={onChangeName}
-                  autoFocus
-                />
-              </form>
-            ) : (
-              <>
-                <Text weight="600" size={2}>
-                  {mainStore.user.username !== null
-                    ? mainStore.user.username
-                    : "กำลังโหลด"}
-                </Text>
-                <Icon
-                  style={{ alignSelf: "flex-end" }}
-                  onClick={() => setIsChange(true)}
-                >
-                  <FiEdit3 size="1rem" color="black" />
-                </Icon>
-              </>
-            )}
-          </ProfileName> */}
-          {/* <Text weight="300">{getFocusTime()}</Text> */}
-          {/* <Divider /> */}
-          {!mainStore.isMember && (
+          {!mainStore.isMember ? (
             <>
               <Text weight="400" size={1}>
                 เข้าสู่ระบบ / สมัครสมาชิก
@@ -131,6 +118,44 @@ const Me = observer(() => {
                     });
                 }}
               />
+            </>
+          ) : (
+            <>
+              <ProfileName>
+                {isChange ? (
+                  <form style={{ width: "100%" }} onSubmit={onChangeName}>
+                    <NameEdit
+                      id="username"
+                      placeholder="ชื่อผู้ใช้"
+                      value={mainStore.user.username}
+                      onChange={(e) =>
+                        (mainStore.user.username = e.target.value)
+                      }
+                      onBlur={onChangeName}
+                      autoFocus
+                    />
+                  </form>
+                ) : (
+                  <>
+                    <Text weight="600" size={2}>
+                      {mainStore.user.username !== null
+                        ? mainStore.user.username
+                        : "กำลังโหลด"}
+                    </Text>
+                    <Icon
+                      style={{ alignSelf: "flex-end" }}
+                      onClick={() => setIsChange(true)}
+                    >
+                      <FiEdit3 size="1rem" color="black" />
+                    </Icon>
+                  </>
+                )}
+              </ProfileName>
+              <Group justify="center" align="center" gap={20}>
+                <Text weight="300">{getFocusTime()}</Text>
+                <Text weight="300">{getRestTime()}</Text>
+              </Group>
+              <Divider />
             </>
           )}
         </Card>

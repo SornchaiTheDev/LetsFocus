@@ -7,7 +7,7 @@ import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
 import { firestore } from "../firebase";
 class mainStore {
-  user = { username: null, focusTime: 0, finishTask: [] };
+  user = { username: null, focusTime: 0, restTime: 0, finishTask: [] };
   uid = null;
   isRegister = null;
   isGoogle = false; // use Google to Save Account
@@ -52,6 +52,10 @@ class mainStore {
     return (this.isRegister = true);
   }
 
+  get isMember() {
+    return this.isGoogle || this.isRegister;
+  }
+
   async userProgressHistory() {
     const progress_history = [];
     const week_progress = await firestore()
@@ -88,6 +92,9 @@ class mainStore {
 
   setFocus(focusTime) {
     return (this.user.focusTime += focusTime);
+  }
+  setRest(restTime) {
+    return (this.user.restTime += restTime);
   }
 }
 

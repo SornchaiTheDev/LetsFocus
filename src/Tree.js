@@ -44,12 +44,16 @@ const Tree = observer(() => {
 
   // Fetch User Data
   const FetchUserData = async () => {
-    const userData = await firestore()
-      .collection("users")
-      .doc(mainStore.uid)
-      .get();
+    const sleep = (timeout) =>
+      new Promise((resolve) => setTimeout(resolve, timeout));
 
-    mainStore.setUserFromDb(userData.data());
+    sleep(2000).then(async () => {
+      const userData = await firestore()
+        .collection("users")
+        .doc(mainStore.uid)
+        .get();
+      mainStore.setUserFromDb(userData.data());
+    });
   };
 
   useEffect(() => {
@@ -59,8 +63,10 @@ const Tree = observer(() => {
   const focusTimeOnDb = async () => {
     if (timerStore.isFinish && timerStore.status === "end") {
       const focusTime = timerStore.saveFocusTime;
-      console.log(focusTime);
+      const restTime = timerStore.saveRestTime;
+
       mainStore.setFocus(focusTime);
+      mainStore.setRest(restTime);
       mainStore.setFinishTask(todosStore.finishedTask);
 
       await firestore()
@@ -75,13 +81,14 @@ const Tree = observer(() => {
           { merge: true }
         );
 
-      if (focusTime > 0) {
+      if (focusTime || restTime) {
         await firestore()
           .collection("users")
           .doc(mainStore.uid)
           .set(
             {
               focusTime: firestore.FieldValue.increment(focusTime),
+              restTime: firestore.FieldValue.increment(restTime),
             },
             { merge: true }
           );

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
 import TopBar from "../components/TopBar";
-import { Base, Container } from "../css/main";
+import { Base, Container, Text } from "../css/main";
 import styled from "styled-components";
 import LeaderboardCard from "../components/Leaderboard/LeaderboardCard";
 
@@ -64,11 +64,15 @@ const Leaderboard = observer(() => {
       <TopBar />
       <Container>
         <LeaderBox>
-          <LeaderboardCard
-            rank={leaderBoardStore.myRank}
-            username={mainStore.user.username}
-            focusTime={mainStore.user.focusTime}
-          />
+          {mainStore.user.username === null ? (
+            <Text size={1} weight="600" color="white">เข้าสู่ระบบเพื่อจัดอันดับคะแนน</Text>
+          ) : (
+            <LeaderboardCard
+              rank={leaderBoardStore.myRank}
+              username={mainStore.user.username}
+              focusTime={mainStore.user.focusTime}
+            />
+          )}
 
           <Divider />
         </LeaderBox>

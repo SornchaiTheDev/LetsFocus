@@ -4,6 +4,7 @@ const timer = new Worker("./worker/timer.js");
 class TimerStore {
   focusTime = 25;
   saveFocusTime = 0;
+  saveRestTime = 0;
   restTime = 5;
   maxFocusTime = 0;
   maxRestTime = 0;
@@ -51,10 +52,12 @@ class TimerStore {
 
   set setTime(time) {
     if (this.rootStore.mode === "focus") {
+      if (this.status === "idle") this.saveFocusTime = time;
       this.focusTime = time;
       this.maxFocusTime = time;
     }
     if (this.rootStore.mode === "rest") {
+      if (this.status === "idle") this.saveRestTime = time;
       this.restTime = time;
       this.maxRestTime = time;
     }
@@ -64,7 +67,6 @@ class TimerStore {
     return this.rootStore.mode === "focus" ? this.focusTime : this.restTime;
   }
   get maxTime() {
-    this.saveFocusTime = this.maxFocusTime;
     return this.rootStore.mode === "focus"
       ? this.maxFocusTime
       : this.maxRestTime;
