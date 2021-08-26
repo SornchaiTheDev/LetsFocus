@@ -9,6 +9,7 @@ class TimerStore {
   maxFocusTime = 0;
   maxRestTime = 0;
   status = "idle";
+  startTime = null;
 
   isFinish = true;
   rootStore;
@@ -27,13 +28,18 @@ class TimerStore {
     timer.postMessage({
       status: "start",
       time: this.timer,
-      uid: this.rootStore.uid,
+      pageVisible: this.rootStore.isPageVisible,
     });
     timer.addEventListener("message", async (e) => {
       this.updateTimer = e.data.time;
+
       if (e.data.status === "finish") {
-        this.setFinish = true;
-        this.status = "end";
+        if (this.rootStore.isPageVisible) {
+          this.setFinish = true;
+          this.status = "end";
+        } else {
+          this.status = "extra";
+        }
       }
     });
   }
@@ -48,6 +54,11 @@ class TimerStore {
     this.rootStore.mode === "focus"
       ? (this.focusTime = time)
       : (this.restTime = time);
+    if (this.status === "extra") {
+      this.rootStore.mode === "focus"
+        ? (this.saveFocusTime = time)
+        : (this.saveRestTime = time);
+    }
   }
 
   resetSaveFocusTime() {

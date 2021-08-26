@@ -1,9 +1,16 @@
 import { firestore } from "./firebase";
 
-export const focusTimeOnDb = async (mainStore, timerStore, todosStore) => {
+export const focusTimeOnDb = async (
+  mainStore,
+  timerStore,
+  todosStore,
+  extraCount
+) => {
   if (timerStore.isFinish && timerStore.status === "end") {
-    const focusTime = timerStore.saveFocusTime;
-    const restTime = timerStore.saveRestTime;
+    const extraCount = parseInt((Date.now() - timerStore.startTime) / 1000);
+
+    const focusTime = timerStore.saveFocusTime + extraCount;
+    const restTime = timerStore.saveRestTime + extraCount;
 
     mainStore.setFocus(focusTime);
     mainStore.setRest(restTime);
@@ -21,12 +28,13 @@ export const focusTimeOnDb = async (mainStore, timerStore, todosStore) => {
           { merge: true }
         );
     }
+
     timerStore.resetSaveFocusTime();
     mainStore.setMode();
   }
 };
 
-export const focusTimeLocal = async (mainStore, timerStore, todosStore) => {
+export const focusTimeLocal = async (mainStore, timerStore) => {
   if (timerStore.isFinish && timerStore.status === "end") {
     const focusTime = timerStore.saveFocusTime;
     const restTime = timerStore.saveRestTime;

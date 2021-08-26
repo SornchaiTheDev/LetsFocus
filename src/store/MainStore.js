@@ -13,6 +13,7 @@ class mainStore {
   isGoogle = false; // use Google to Save Account
   mode = "focus";
   isNotificationAllow = false;
+  isPageVisible = true;
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);

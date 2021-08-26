@@ -26,10 +26,10 @@ const Tree = observer(() => {
     });
   }, []);
 
-  useEffect(() => {
-    auth().signOut();
-    mainStore.clearLinkwithGoogle();
-  }, []);
+  // useEffect(() => {
+  //   auth().signOut();
+  //   mainStore.clearLinkwithGoogle();
+  // }, []);
 
   useEffect(() => {
     auth()
@@ -43,11 +43,36 @@ const Tree = observer(() => {
 
   useEffect(() => {
     if (mainStore.uid !== null) {
-      focusTimeOnDb(mainStore, timerStore, todosStore);
+      focusTimeOnDb(mainStore, timerStore, todosStore, timerStore.timer);
     } else {
-      focusTimeLocal(mainStore, timerStore, todosStore);
+      focusTimeLocal(mainStore, timerStore, timerStore.timer);
     }
-  }, [timerStore.isFinish]);
+  }, [timerStore.isFinish, timerStore.status]);
+
+  //User More Focus
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (timerStore.status === "extra") {
+        timerStore.updateTimer =
+          parseInt((Date.now() - timerStore.startTime) / 1000) +
+          timerStore.maxTime;
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const PageViewState = () => {
+    const isPageVisible = document.visibilityState === "visible";
+    mainStore.isPageVisible = isPageVisible;
+  };
+  useEffect(() => {
+    document.addEventListener("visibilitychange", PageViewState);
+
+    return () =>
+      document.removeEventListener("visibilitychange", PageViewState);
+  }, []);
 
   return (
     <>

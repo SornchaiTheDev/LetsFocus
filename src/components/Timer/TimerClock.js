@@ -90,15 +90,22 @@ const SetTimerComp = observer(() => {
 const TimerClock = observer(({ stopConfirm }) => {
   const { timerStore } = useContext(MainStore);
 
+  const getCircularValue = () => {
+    if (timerStore.status !== "extra")
+      return (timerStore.timer / timerStore.maxTime) * 100;
+
+    return 100;
+  };
+
   return (
     <>
       <TimerMode />
       <div style={{ width: 250 }}>
-        {timerStore.isFinish ? (
+        {timerStore.isFinish && timerStore.status !== "extra" ? (
           <SetTimerComp />
         ) : (
           <CircularProgressbar
-            value={(timerStore.timer / timerStore.maxTime) * 100}
+            value={getCircularValue()}
             minValue={0}
             maxValue={100}
             text={timerStore.currentTime}
@@ -128,10 +135,21 @@ const TimerClock = observer(({ stopConfirm }) => {
             timerStore.status === "idle" &&
             timerStore.timer > 0
           ) {
+            timerStore.startTime = new Date(
+              Date.now() + timerStore.timer * 1000
+            ).getTime();
             timerStore.countdown();
           }
-          if (timerStore.maxTime - timerStore.timer > 0) {
+          if (
+            timerStore.maxTime - timerStore.timer > 0 &&
+            timerStore.status !== "extra"
+          ) {
             stopConfirm();
+          }
+
+          if (timerStore.status === "extra") {
+            timerStore.isFinish = true;
+            timerStore.status = "end";
           }
         }}
       >

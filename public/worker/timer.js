@@ -8,9 +8,11 @@ self.addEventListener("message", (e) => {
     timer = setInterval(async () => {
       const now = Date.now();
       if (Math.ceil((timerEnd - now) / 1000) <= 0) {
+        self.postMessage({
+          time: 0,
+          status: "finish",
+        });
         clearInterval(timer);
-
-        self.postMessage({ time: 0, status: "finish" });
       } else {
         self.postMessage({
           time: Math.abs(Math.ceil((timerEnd - now) / 1000)),
