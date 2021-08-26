@@ -47,6 +47,7 @@ class TimerStore {
   }
 
   set updateTimer(time) {
+    console.log(this.status);
     this.rootStore.mode === "focus"
       ? (this.focusTime = time)
       : (this.restTime = time);

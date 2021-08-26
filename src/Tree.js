@@ -48,7 +48,6 @@ const Tree = observer(() => {
     } else {
       focusTimeLocal(mainStore, timerStore);
     }
- 
   }, [timerStore.isFinish]);
 
   //User More Focus
