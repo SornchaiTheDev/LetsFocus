@@ -13,6 +13,10 @@ const LogoSection = styled.div`
 `;
 
 const LogoGroup = styled.div`
+  border-top: 2px dotted white;
+  border-bottom: 2px dotted white;
+  border-radius: 10px;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,8 +27,8 @@ function TopBar() {
   return (
     <LogoSection>
       <LogoGroup>
-        <Text color="white" size={2} weight="bold">
-          FocusRank
+        <Text color="white" size={1.5} weight="bold">
+          Let's Focus
         </Text>
       </LogoGroup>
 
