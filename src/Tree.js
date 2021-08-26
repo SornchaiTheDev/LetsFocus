@@ -13,6 +13,7 @@ import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
 import { auth, firestore } from "./firebase";
 import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
+import Alert from "./components/Alert";
 const Tree = observer(() => {
   const { timerStore, todosStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
@@ -43,9 +44,9 @@ const Tree = observer(() => {
 
   useEffect(() => {
     if (mainStore.uid !== null) {
-      focusTimeOnDb(mainStore, timerStore, todosStore, timerStore.timer);
+      focusTimeOnDb(mainStore, timerStore, todosStore);
     } else {
-      focusTimeLocal(mainStore, timerStore, timerStore.timer);
+      focusTimeLocal(mainStore, timerStore);
     }
   }, [timerStore.isFinish, timerStore.status]);
 
@@ -63,6 +64,14 @@ const Tree = observer(() => {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const startTime = parseInt((Date.now() - timerStore.startTime) / 1000);
+    if (timerStore.status === "extra" && startTime > 3600) {
+      timerStore.status = "cheat";
+      timerStore.isFinish = true;
+    }
+  }, [timerStore.timer, timerStore.status]);
+
   const PageViewState = () => {
     const isPageVisible = document.visibilityState === "visible";
     mainStore.isPageVisible = isPageVisible;
@@ -76,6 +85,18 @@ const Tree = observer(() => {
 
   return (
     <>
+      {timerStore.status === "cheat" && (
+        <Alert
+          msg="คุณขี้โกงอ่าา"
+          btn={[
+            {
+              title: "ปิด",
+              background: "red",
+              onClick: () => (timerStore.status = "idle"),
+            },
+          ]}
+        />
+      )}
       <Router>
         <Switch>
           {/* <Route path="/" exact component={Login} /> */}

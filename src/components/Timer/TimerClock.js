@@ -132,7 +132,7 @@ const TimerClock = observer(({ stopConfirm }) => {
         onClick={() => {
           if (
             timerStore.isFinish &&
-            timerStore.status === "idle" &&
+            timerStore.status !== "extra" &&
             timerStore.timer > 0
           ) {
             timerStore.startTime = new Date(

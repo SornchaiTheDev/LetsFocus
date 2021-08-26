@@ -31,6 +31,7 @@ const TextSection = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap : 10px;
 `;
 
 const AlertIcon = styled.div`
