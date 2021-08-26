@@ -19,15 +19,6 @@ const Tree = observer(() => {
   const { timerStore, todosStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
 
-  // User Authentication
-  useEffect(() => {
-    auth().onAuthStateChanged((user) => {
-      if (user !== null) {
-        mainStore.UserUid = user.uid;
-      }
-    });
-  }, []);
-
   // useEffect(() => {
   //   auth().signOut();
   //   mainStore.clearLinkwithGoogle();
@@ -39,6 +30,7 @@ const Tree = observer(() => {
       .then((result) => {
         if (result.credential) {
           mainStore.linkwithGoogle();
+          mainStore.fetchUserData();
         }
       });
   }, []);

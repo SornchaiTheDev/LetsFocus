@@ -5,7 +5,7 @@ import TodosStore from "./TodosStore";
 import LeaderBoardStore from "./LeaderboardStore";
 import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
-import { firestore } from "../firebase";
+import { firestore, auth } from "../firebase";
 class mainStore {
   user = {
     username: null,
@@ -31,15 +31,16 @@ class mainStore {
       stringify: false,
     });
     this.leaderBoardStore.updateRank();
+    this.fetchUserData();
   }
 
   // User Authen
   set UserUid(uid) {
-    this.FetchUserData(uid);
     return (this.uid = uid);
   }
 
-  linkwithGoogle() {
+  linkwithGoogle(uid) {
+    this.uid = uid;
     this.isGoogle = true;
   }
 
@@ -58,13 +59,23 @@ class mainStore {
       .set({ username: user.name }, { merge: true });
   }
 
-  FetchUserData = async (uid) => {
-    const sleep = (timeout) =>
-      new Promise((resolve) => setTimeout(resolve, timeout));
-
-    sleep(1000).then(async () => {
-      const userData = await firestore().collection("users").doc(uid).get();
-      this.user = userData.data();
+  fetchUserData = async () => {
+    await auth().onAuthStateChanged(async (user) => {
+      if (user !== null) {
+        const uid = user.uid;
+        const userData = await firestore().collection("users").doc(uid).get();
+        if (!userData.exists) {
+          setInterval(async () => {
+            const userData = await firestore()
+              .collection("users")
+              .doc(uid)
+              .get();
+            this.user = userData.data();
+          }, 1000);
+        } else {
+          this.user = userData.data();
+        }
+      }
     });
   };
 
