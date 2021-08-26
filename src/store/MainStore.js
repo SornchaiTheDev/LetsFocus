@@ -7,7 +7,12 @@ import { clearPersistedStore, makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
 import { firestore } from "../firebase";
 class mainStore {
-  user = { username: null, focusTime: 0, restTime: 0, finishTask: [] };
+  user = {
+    username: null,
+    focusTime: 0,
+    restTime: 0,
+    finishTask: [],
+  };
   uid = null;
   isRegister = null;
   isGoogle = false; // use Google to Save Account
@@ -59,14 +64,13 @@ class mainStore {
 
     sleep(2000).then(async () => {
       const userData = await firestore().collection("users").doc(uid).get();
-      this.user = userData;
+      this.user = userData.data();
     });
   };
 
   setMode() {
-    return this.mode === "focus"
-      ? ((this.mode = "rest"), (this.timerStore.status = "idle"))
-      : ((this.mode = "focus"), (this.timerStore.status = "idle"));
+    this.timerStore.status = "idle";
+    return this.mode === "focus" ? (this.mode = "rest") : (this.mode = "focus");
   }
 
   set allowNotification(bool) {

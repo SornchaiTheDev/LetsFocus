@@ -89,7 +89,7 @@ const Me = observer(() => {
         <Card>
           {!mainStore.isMember ? (
             <>
-              <Text weight="400" size={1}>
+              <Text weight="800" size={1}>
                 เข้าสู่ระบบ / สมัครสมาชิก
               </Text>
               <Text weight="400" size={1}>
@@ -101,21 +101,7 @@ const Me = observer(() => {
                 text="เข้าสู่ระบบด้วยกูเกิ้ล"
                 onClick={() => {
                   const provider = new auth.GoogleAuthProvider();
-                  auth().signInWithCredential(provider);
-                }}
-              />
-
-              <Text weight="400" size={1}>
-                หรือ
-              </Text>
-              <LoginBox
-                text="ทดลองใช้"
-                onClick={() => {
-                  auth()
-                    .signInAnonymously()
-                    .then(() => {
-                      mainStore.registered();
-                    });
+                  auth().signInWithRedirect(provider);
                 }}
               />
             </>

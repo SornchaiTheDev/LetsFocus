@@ -10,7 +10,7 @@ import { auth } from "../../firebase";
 const GoogleSignInBtn = styled.button`
   cursor: pointer;
   @media (min-width: 320px) {
-    width: 90%;
+    width: 70%;
   }
   @media (min-width: 980px) {
     width: 50%;

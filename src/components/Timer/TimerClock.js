@@ -26,14 +26,14 @@ const SetTimerComp = observer(() => {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    if (mainStore.mode === "focus") {
-      timerStore.setTime = minutes * 60 + seconds;
-    } else {
-      timerStore.setTime = minutes * 60 + seconds;
-    }
-
+    timerStore.setTime = minutes * 60 + seconds;
     if (minutes > 1 && seconds === 60) setSeconds(55);
+
+    if (timerStore.status === "idle") {
+      timerStore.saveTime = minutes * 60 + seconds;
+    }
   }, [minutes, seconds]);
+
   const TimeSet = (digit, type, amount) => {
     if (type === "increase") {
       if (digit === "minutes") {
@@ -89,6 +89,10 @@ const SetTimerComp = observer(() => {
 
 const TimerClock = observer(({ stopConfirm }) => {
   const { timerStore } = useContext(MainStore);
+  // useEffect(() => {
+  //   console.log("isFinish : " + timerStore.isFinish);
+  //   console.log("-----------------");
+  // }, [timerStore.isFinish]);
 
   const getCircularValue = () => {
     if (timerStore.status !== "extra")
@@ -138,6 +142,7 @@ const TimerClock = observer(({ stopConfirm }) => {
             timerStore.startTime = new Date(
               Date.now() + timerStore.timer * 1000
             ).getTime();
+
             timerStore.countdown();
           }
           if (

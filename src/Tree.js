@@ -48,7 +48,8 @@ const Tree = observer(() => {
     } else {
       focusTimeLocal(mainStore, timerStore);
     }
-  }, [timerStore.isFinish, timerStore.status]);
+ 
+  }, [timerStore.isFinish]);
 
   //User More Focus
 
@@ -70,7 +71,7 @@ const Tree = observer(() => {
       timerStore.status = "cheat";
       timerStore.isFinish = true;
     }
-  }, [timerStore.timer, timerStore.status]);
+  }, [timerStore.timer]);
 
   const PageViewState = () => {
     const isPageVisible = document.visibilityState === "visible";

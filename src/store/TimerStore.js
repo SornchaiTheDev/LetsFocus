@@ -10,7 +10,6 @@ class TimerStore {
   maxRestTime = 0;
   status = "idle";
   startTime = null;
-
   isFinish = true;
   rootStore;
   constructor(rootStore) {
@@ -18,61 +17,71 @@ class TimerStore {
     this.rootStore = rootStore;
   }
 
-  set setFinish(status) {
-    return (this.isFinish = status);
-  }
-
   countdown() {
-    this.setFinish = false;
+    this.isFinish = false;
     this.status = "start";
     timer.postMessage({
       status: "start",
       time: this.timer,
       pageVisible: this.rootStore.isPageVisible,
     });
-    timer.addEventListener("message", async (e) => {
+
+    timer.onmessage = (e) => {
       this.updateTimer = e.data.time;
 
       if (e.data.status === "finish") {
         if (this.rootStore.isPageVisible) {
-          this.setFinish = true;
+          this.isFinish = true;
           this.status = "end";
         } else {
           this.status = "extra";
         }
       }
-    });
+    };
   }
 
   stop() {
     this.status = "idle";
     timer.postMessage({ status: "stop" });
-    this.setFinish = true;
+    this.isFinish = true;
   }
 
   set updateTimer(time) {
     this.rootStore.mode === "focus"
       ? (this.focusTime = time)
       : (this.restTime = time);
-    if (this.status === "extra") {
-      this.rootStore.mode === "focus"
-        ? (this.saveFocusTime = time)
-        : (this.saveRestTime = time);
-    }
+    // if (this.status === "extra") {
+    //   this.rootStore.mode === "focus"
+    //     ? (this.saveFocusTime = time)
+    //     : (this.saveRestTime = time);
+    // }
   }
 
-  resetSaveFocusTime() {
-    return (this.saveFocusTime = 0);
+  resetSaveTime() {
+    this.saveFocusTime = 0;
+    this.saveRestTime = 0;
+  }
+
+  set saveTime(time) {
+    // console.log("-----Before-----");
+    // console.log("Focus Save : " + this.saveFocusTime);
+    // console.log("Rest Save : " + this.saveRestTime);
+
+    this.rootStore.mode === "focus"
+      ? (this.saveFocusTime = time)
+      : (this.saveRestTime = time);
+    // console.log("-----After-----");
+    // console.log("Focus Save : " + this.saveFocusTime);
+    // console.log("Rest Save : " + this.saveRestTime);
+    // console.log("-----------------");
   }
 
   set setTime(time) {
     if (this.rootStore.mode === "focus") {
-      if (this.status === "idle") this.saveFocusTime = time;
       this.focusTime = time;
       this.maxFocusTime = time;
     }
     if (this.rootStore.mode === "rest") {
-      if (this.status === "idle") this.saveRestTime = time;
       this.restTime = time;
       this.maxRestTime = time;
     }
