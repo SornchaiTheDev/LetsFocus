@@ -4,6 +4,7 @@ import { Text } from "../../css/main";
 import { AiFillTrophy } from "react-icons/ai";
 
 const Card = styled.div`
+  cursor: ${(props) => (props.clickable ? "pointer" : "default")};
   width: 91%;
   padding: 20px;
   background: white;
@@ -21,7 +22,7 @@ const Icon = styled.div`
   border-radius: 50%;
   background: ${(props) => (props.background ? props.background : "black")};
 `;
-const LeaderboardCard = ({ rank, username, focusTime, onClick }) => {
+const LeaderboardCard = ({ rank, username, focusTime, onClick , clickabled }) => {
   const getFocusTime = () => {
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
@@ -37,7 +38,7 @@ const LeaderboardCard = ({ rank, username, focusTime, onClick }) => {
     }
   };
   return (
-    <Card onClick={onClick}>
+    <Card onClick={onClick} clickable={clickabled}>
       <div
         style={{
           flex: 1,

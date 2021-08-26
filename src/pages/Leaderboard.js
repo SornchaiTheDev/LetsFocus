@@ -83,7 +83,11 @@ const Leaderboard = observer(({ history }) => {
             .sort((a, b) => b.focusTime - a.focusTime)
             .map(({ username, focusTime }, index) => (
               <LeaderboardCard
-                onClick={() => history.push(`/user/${username}`)}
+                clickabled={username !== mainStore.user.username}
+                onClick={() =>
+                  username !== mainStore.user.username &&
+                  history.push(`/user/${username}`)
+                }
                 key={index}
                 rank={index + 1}
                 username={username}

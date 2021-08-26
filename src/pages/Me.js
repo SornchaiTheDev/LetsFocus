@@ -149,11 +149,11 @@ const Me = observer(() => {
         <Card height={250}>
           <ProgressHistory progress={mainStore.userProgressHistory()} />
         </Card>
+        <FinishTask
+          task={mainStore.user.finishTask}
+          amount={mainStore.allFinishTask}
+        />
       </Container>
-      <FinishTask
-        task={mainStore.user.finishTask}
-        amount={mainStore.allFinishTask}
-      />
     </Base>
   );
 });

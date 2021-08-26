@@ -55,7 +55,7 @@ class mainStore {
   async updateUser(user) {
     await firestore()
       .collection("users")
-      .doc(user.uid)
+      .doc(this.uid)
       .set({ username: user.name }, { merge: true });
   }
 
@@ -63,6 +63,7 @@ class mainStore {
     await auth().onAuthStateChanged(async (user) => {
       if (user !== null) {
         const uid = user.uid;
+
         const userData = await firestore().collection("users").doc(uid).get();
         if (!userData.exists) {
           setInterval(async () => {
@@ -75,6 +76,7 @@ class mainStore {
         } else {
           this.user = userData.data();
         }
+        this.uid = uid;
       }
     });
   };

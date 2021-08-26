@@ -24,16 +24,16 @@ const Tree = observer(() => {
   //   mainStore.clearLinkwithGoogle();
   // }, []);
 
-  useEffect(() => {
-    auth()
-      .getRedirectResult()
-      .then((result) => {
-        if (result.credential) {
-          mainStore.linkwithGoogle();
-          mainStore.fetchUserData();
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   auth()
+  //     .getRedirectResult()
+  //     .then((result) => {
+  //       if (result.credential) {
+  //         mainStore.linkwithGoogle(result.user.uid);
+  //         mainStore.fetchUserData();
+  //       }
+  //     });
+  // }, []);
 
   useEffect(() => {
     if (mainStore.uid !== null) {
