@@ -5,10 +5,11 @@ self.addEventListener("message", (e) => {
     const timerEnd = new Date(Date.now() + e.data.time * 1000).getTime();
     // const timerEnd = new Date(Date.now() + 500).getTime();
 
-    timer = setInterval(() => {
+    timer = setInterval(async () => {
       const now = Date.now();
       if (Math.ceil((timerEnd - now) / 1000) <= 0) {
         clearInterval(timer);
+
         self.postMessage({ time: 0, status: "finish" });
       } else {
         self.postMessage({
@@ -18,5 +19,7 @@ self.addEventListener("message", (e) => {
     }, 1000);
   }
 
-  if (e.data.status === "stop") clearInterval(timer);
+  if (e.data.status === "stop") {
+    clearInterval(timer);
+  }
 });

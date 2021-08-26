@@ -24,7 +24,11 @@ class TimerStore {
   countdown() {
     this.setFinish = false;
     this.status = "start";
-    timer.postMessage({ status: "start", time: this.timer });
+    timer.postMessage({
+      status: "start",
+      time: this.timer,
+      uid: this.rootStore.uid,
+    });
     timer.addEventListener("message", async (e) => {
       this.updateTimer = e.data.time;
       if (e.data.status === "finish") {

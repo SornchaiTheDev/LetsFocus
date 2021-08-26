@@ -1,6 +1,7 @@
 import { makeAutoObservable, toJS } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import localforage from "localforage";
+import { firestore } from "../firebase";
 
 class TodosStore {
   todos = [];
@@ -46,6 +47,24 @@ class TodosStore {
     return (this.todos = remain);
   }
 
+  addFinishTask = async () => {
+    if (this.rootStore.uid !== null) {
+      this.rootStore.setFinishTask(this.finishedTask);
+      this.clearTodo();
+      await firestore()
+        .collection("users")
+        .doc(this.rootStore.uid)
+        .set(
+          {
+            finishTask: firestore.FieldValue.arrayUnion(...this.finishedTask),
+          },
+          { merge: true }
+        );
+    } else {
+      this.clearTodo();
+    }
+  };
+
   changeTodo(id) {
     const currentId = this.todos.findIndex((todo) => todo.id === id);
     this.todos[currentId] = {
@@ -54,6 +73,8 @@ class TodosStore {
       completed: !this.todos[currentId].completed,
       dated: this.todos[currentId].dated,
     };
+
+    this.addFinishTask();
   }
 }
 

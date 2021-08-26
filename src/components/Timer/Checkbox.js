@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { MainStore } from "../../store/MainStore";
 
 import styled from "styled-components";

@@ -27,6 +27,41 @@ class mainStore {
     this.leaderBoardStore.updateRank();
   }
 
+  // User Authen
+  set UserUid(uid) {
+    this.FetchUserData(uid);
+    return (this.uid = uid);
+  }
+
+  linkwithGoogle() {
+    this.isGoogle = true;
+  }
+
+  registered() {
+    return (this.isRegister = true);
+  }
+
+  get isMember() {
+    return this.isGoogle || this.isRegister;
+  }
+
+  async updateUser(user) {
+    await firestore()
+      .collection("users")
+      .doc(user.uid)
+      .set({ username: user.name }, { merge: true });
+  }
+
+  FetchUserData = async (uid) => {
+    const sleep = (timeout) =>
+      new Promise((resolve) => setTimeout(resolve, timeout));
+
+    sleep(2000).then(async () => {
+      const userData = await firestore().collection("users").doc(uid).get();
+      this.user = userData;
+    });
+  };
+
   setMode() {
     return this.mode === "focus"
       ? ((this.mode = "rest"), (this.timerStore.status = "idle"))
@@ -40,25 +75,6 @@ class mainStore {
   async clearLinkwithGoogle() {
     await clearPersistedStore(this);
     console.log("clear!");
-  }
-  linkwithGoogle() {
-    this.isGoogle = true;
-  }
-
-  setUserFromDb(user) {
-    this.user = user;
-  }
-
-  set UserUid(uid) {
-    return (this.uid = uid);
-  }
-
-  registered() {
-    return (this.isRegister = true);
-  }
-
-  get isMember() {
-    return this.isGoogle || this.isRegister;
   }
 
   async userProgressHistory() {
@@ -78,13 +94,6 @@ class mainStore {
 
   async clearStore() {
     await clearPersistedStore();
-  }
-
-  async updateUser(user) {
-    await firestore()
-      .collection("users")
-      .doc(user.uid)
-      .set({ username: user.name }, { merge: true });
   }
 
   get doneTask() {
