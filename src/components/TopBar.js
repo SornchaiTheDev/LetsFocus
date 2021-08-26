@@ -4,7 +4,7 @@ import MenuBar from "./MenuBar";
 import styled from "styled-components";
 
 const LogoSection = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   width: 70%;
   display: flex;
   flex-direction: column;

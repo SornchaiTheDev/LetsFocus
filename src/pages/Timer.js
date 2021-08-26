@@ -39,7 +39,7 @@ const Timer = observer(() => {
       )}
       <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
         <TopBar />
-        <Container>
+        <Container gap={30}>
           <TimerClock stopConfirm={() => setStopConfirm(true)} />
           <TodoList />
         </Container>

@@ -6,12 +6,14 @@ import {
   SetTimerInner,
   TimeInputSet,
   Icon,
+  Group,
 } from "../../css/main";
 import {
   BsStop,
   BsPlay,
   BsFillCaretUpFill,
   BsFillCaretDownFill,
+  BsSkipEnd,
 } from "react-icons/bs";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -132,38 +134,43 @@ const TimerClock = observer(({ stopConfirm }) => {
         )}
       </div>
 
-      <Button
-        onClick={() => {
-          if (
-            timerStore.isFinish &&
-            timerStore.status !== "extra" &&
-            timerStore.timer > 0
-          ) {
-            timerStore.startTime = new Date(
-              Date.now() + timerStore.timer * 1000
-            ).getTime();
+      <Group direction="column" gap={16} align="center">
+        <Button
+          onClick={() => {
+            if (
+              timerStore.isFinish &&
+              timerStore.status !== "extra" &&
+              timerStore.timer > 0
+            ) {
+              timerStore.startTime = new Date(
+                Date.now() + timerStore.timer * 1000
+              ).getTime();
 
-            timerStore.countdown();
-          }
-          if (
-            timerStore.maxTime - timerStore.timer > 0 &&
-            timerStore.status !== "extra"
-          ) {
-            stopConfirm();
-          }
+              timerStore.countdown();
+            }
+            if (
+              timerStore.maxTime - timerStore.timer > 0 &&
+              timerStore.status !== "extra"
+            ) {
+              stopConfirm();
+            }
 
-          if (timerStore.status === "extra") {
-            timerStore.isFinish = true;
-            timerStore.status = "end";
-          }
-        }}
-      >
-        {timerStore.isFinish ? (
-          <BsPlay size="2rem" color="#0F1108" />
-        ) : (
-          <BsStop size="2rem" color="#0F1108" />
-        )}
-      </Button>
+            if (timerStore.status === "extra") {
+              timerStore.isFinish = true;
+              timerStore.status = "end";
+            }
+          }}
+        >
+          {timerStore.isFinish ? (
+            <BsPlay size="2rem" color="#0F1108" />
+          ) : (
+            <BsStop size="2rem" color="#0F1108" />
+          )}
+        </Button>
+        <Text size={1} weight="500">
+          เริ่มจับเวลา
+        </Text>
+      </Group>
     </>
   );
 });
