@@ -91,10 +91,6 @@ const SetTimerComp = observer(() => {
 
 const TimerClock = observer(({ stopConfirm }) => {
   const { timerStore } = useContext(MainStore);
-  // useEffect(() => {
-  //   console.log("isFinish : " + timerStore.isFinish);
-  //   console.log("-----------------");
-  // }, [timerStore.isFinish]);
 
   const getCircularValue = () => {
     if (timerStore.status !== "extra")

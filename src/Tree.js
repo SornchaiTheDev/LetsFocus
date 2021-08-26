@@ -9,6 +9,7 @@ import {
 import Timer from "./pages/Timer";
 import Leaderboard from "./pages/Leaderboard";
 import Me from "./pages/Me";
+import Friend from "./pages/Friend";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
 import { auth, firestore } from "./firebase";
@@ -97,12 +98,13 @@ const Tree = observer(() => {
           ]}
         />
       )}
-      <Router>
+      <Router basename="/">
         <Switch>
           {/* <Route path="/" exact component={Login} /> */}
           <Route path="/" exact component={Timer} />
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route path="/me" exact component={Me} />
+          <Route path="/user/:username" exact component={Friend} />
           <Redirect to="/" />
         </Switch>
       </Router>

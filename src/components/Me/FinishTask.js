@@ -22,10 +22,10 @@ const Mode = styled.button`
   box-shadow: 2px 4px 1px 0.5px rgba(0, 0, 0, 0.25);
 `;
 
-const FinishTask = observer(() => {
+const FinishTask = observer(({ task, amount }) => {
   const [mode, setMode] = useState(0);
   const [currentMode, setCurrentMode] = useState("วันนี้");
-  const mainStore = useContext(MainStore);
+
   const modeCycle = () => {
     if (mode < 2) return setMode((prev) => prev + 1);
     setMode(0);
@@ -40,14 +40,14 @@ const FinishTask = observer(() => {
   return (
     <Card>
       <TaskTopBar>
-        <Text>รายการที่ทำเสร็จอาทิตย์นี้ ({mainStore.allFinishTask})</Text>
+        <Text>รายการที่ทำเสร็จอาทิตย์นี้ ({amount})</Text>
         {/* <Mode onClick={modeCycle}>
           <Text size={1} color="white">
             {currentMode}
           </Text>
         </Mode> */}
       </TaskTopBar>
-      {mainStore.user.finishTask
+      {task
         .filter((todo) => {
           const today =
             new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
@@ -58,7 +58,8 @@ const FinishTask = observer(() => {
           if (mode === 1 && today - todoDated <= 7) filtering = true;
           if (mode === 2 && today - todoDated <= 30) filtering = true;
 
-          return filtering && todo.completed === true;
+          return todo.completed === true;
+          // return filtering && todo.completed === true;
         })
         .sort((a, b) => a.dated - b.dated)
         .map(({ event }) => (

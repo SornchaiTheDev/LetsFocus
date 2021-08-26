@@ -21,7 +21,7 @@ const Icon = styled.div`
   border-radius: 50%;
   background: ${(props) => (props.background ? props.background : "black")};
 `;
-const LeaderboardCard = ({ rank, username, focusTime }) => {
+const LeaderboardCard = ({ rank, username, focusTime, onClick }) => {
   const getFocusTime = () => {
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
@@ -37,7 +37,7 @@ const LeaderboardCard = ({ rank, username, focusTime }) => {
     }
   };
   return (
-    <Card>
+    <Card onClick={onClick}>
       <div
         style={{
           flex: 1,

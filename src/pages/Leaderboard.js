@@ -36,10 +36,9 @@ const ScrollBox = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
-  // padding-bottom: 20vh;
 `;
 
-const Leaderboard = observer(() => {
+const Leaderboard = observer(({ history }) => {
   const mainStore = useContext(MainStore);
   const { leaderBoardStore } = useContext(MainStore);
   const users = leaderBoardStore.usersRank;
@@ -61,11 +60,13 @@ const Leaderboard = observer(() => {
 
   return (
     <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
-      <TopBar />
+      <TopBar menu />
       <Container>
         <LeaderBox>
           {mainStore.user.username === null ? (
-            <Text size={1} weight="600" color="white">เข้าสู่ระบบเพื่อจัดอันดับคะแนน</Text>
+            <Text size={1} weight="600" color="white">
+              เข้าสู่ระบบเพื่อจัดอันดับคะแนน
+            </Text>
           ) : (
             <LeaderboardCard
               rank={leaderBoardStore.myRank}
@@ -82,6 +83,7 @@ const Leaderboard = observer(() => {
             .sort((a, b) => b.focusTime - a.focusTime)
             .map(({ username, focusTime }, index) => (
               <LeaderboardCard
+                onClick={() => history.push(`/user/${username}`)}
                 key={index}
                 rank={index + 1}
                 username={username}

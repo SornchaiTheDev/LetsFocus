@@ -23,7 +23,7 @@ const LogoGroup = styled.div`
   gap: 5px;
 `;
 
-function TopBar() {
+function TopBar({ menu }) {
   return (
     <LogoSection>
       <LogoGroup>
@@ -32,7 +32,7 @@ function TopBar() {
         </Text>
       </LogoGroup>
 
-      <MenuBar />
+      {menu && <MenuBar />}
     </LogoSection>
   );
 }

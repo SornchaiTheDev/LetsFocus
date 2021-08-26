@@ -21,7 +21,8 @@ export const Base = styled.div`
 `;
 
 export const Group = styled.div`
-  width: 100%;
+  width: ${(props) => (props.width ? props.width : "100%")};
+  margin-top: ${(props) => (props.marginTop ? props.marginTop : 0)};
   height: 100%;
   display: flex;
   flex-direction: ${(props) => (props.direction ? props.direction : "row")};
@@ -106,6 +107,7 @@ export const Card = styled.div`
   @media (min-width: 928px) {
     width: 50%;
   }
+  margin-top: ${(props) => (props.marginTop ? props.marginTop : "0px")};
   height: ${(props) => (props.height ? props.height + "px" : "100%")};
   background: white;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.25);

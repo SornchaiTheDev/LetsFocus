@@ -45,7 +45,7 @@ const Me = observer(() => {
   const getFocusTime = () => {
     const focusTime = mainStore.user.focusTime;
 
-    if (focusTime === undefined) return "error";
+    if (focusTime === undefined) return "กำลังโหลด";
     const hour = Math.floor(focusTime / 3600);
     const minutes = parseInt((focusTime / 60) % 60);
 
@@ -62,7 +62,7 @@ const Me = observer(() => {
   const getRestTime = () => {
     const restTime = mainStore.user.restTime;
 
-    if (restTime === undefined) return "error";
+    if (restTime === undefined) return "กำลังโหลด";
     const hour = Math.floor(restTime / 3600);
     const minutes = parseInt((restTime / 60) % 60);
 
@@ -84,7 +84,7 @@ const Me = observer(() => {
   };
   return (
     <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
-      <TopBar />
+      <TopBar menu />
       <Container gap={20}>
         <Card>
           {!mainStore.isMember ? (
@@ -149,9 +149,11 @@ const Me = observer(() => {
         <Card height={250}>
           <ProgressHistory progress={mainStore.userProgressHistory()} />
         </Card>
-
-        <FinishTask />
       </Container>
+      <FinishTask
+        task={mainStore.user.finishTask}
+        amount={mainStore.allFinishTask}
+      />
     </Base>
   );
 });
