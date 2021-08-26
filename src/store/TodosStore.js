@@ -50,13 +50,14 @@ class TodosStore {
   addFinishTask = async () => {
     if (this.rootStore.uid !== null) {
       this.rootStore.setFinishTask(this.finishedTask);
+      const finishTask = this.finishedTask;
       this.clearTodo();
       await firestore()
         .collection("users")
         .doc(this.rootStore.uid)
         .set(
           {
-            finishTask: firestore.FieldValue.arrayUnion(...this.finishedTask),
+            finishTask: firestore.FieldValue.arrayUnion(...finishTask),
           },
           { merge: true }
         );

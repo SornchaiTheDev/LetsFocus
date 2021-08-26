@@ -62,7 +62,7 @@ class mainStore {
     const sleep = (timeout) =>
       new Promise((resolve) => setTimeout(resolve, timeout));
 
-    sleep(2000).then(async () => {
+    sleep(1000).then(async () => {
       const userData = await firestore().collection("users").doc(uid).get();
       this.user = userData.data();
     });
