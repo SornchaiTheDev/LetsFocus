@@ -50,11 +50,11 @@ class TimerStore {
     this.rootStore.mode === "focus"
       ? (this.focusTime = time)
       : (this.restTime = time);
-    // if (this.status === "extra") {
-    //   this.rootStore.mode === "focus"
-    //     ? (this.saveFocusTime = time)
-    //     : (this.saveRestTime = time);
-    // }
+    if (this.status === "extra") {
+      this.rootStore.mode === "focus"
+        ? (this.saveFocusTime = time)
+        : (this.saveRestTime = time);
+    }
   }
 
   resetSaveTime() {
@@ -63,17 +63,9 @@ class TimerStore {
   }
 
   set saveTime(time) {
-    // console.log("-----Before-----");
-    // console.log("Focus Save : " + this.saveFocusTime);
-    // console.log("Rest Save : " + this.saveRestTime);
-
     this.rootStore.mode === "focus"
       ? (this.saveFocusTime = time)
       : (this.saveRestTime = time);
-    // console.log("-----After-----");
-    // console.log("Focus Save : " + this.saveFocusTime);
-    // console.log("Rest Save : " + this.saveRestTime);
-    // console.log("-----------------");
   }
 
   set setTime(time) {
