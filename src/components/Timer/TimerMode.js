@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 
 import { Text } from "../../css/main";
 const TimerSelector = styled.div`
+  cursor: pointer;
   user-select: none;
   width: 100px;
   height: 30px;
@@ -23,7 +24,7 @@ const TimerMode = observer(() => {
   const mainStore = useContext(MainStore);
 
   return (
-    <TimerSelector>
+    <TimerSelector onClick={() => mainStore.setMode()}>
       <Text color="black" size={1} weight="700">
         {mainStore.mode === "focus" ? "ช่วงโฟกัส" : "ช่วงพัก"}
       </Text>
