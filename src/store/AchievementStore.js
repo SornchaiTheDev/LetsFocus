@@ -70,6 +70,7 @@ class AchievementStore {
   focus_overall_day = 0;
   focus_overall_week = 0;
   rest_overall = 0;
+  started_day = null;
 
   get all() {
     return toJS(this.all_achieved);

@@ -91,6 +91,7 @@ const SetTimerComp = observer(() => {
 
 const TimerClock = observer(({ stopConfirm }) => {
   const { timerStore } = useContext(MainStore);
+  const mainStore = useContext(MainStore);
 
   const getCircularValue = () => {
     if (timerStore.status !== "extra")
@@ -149,13 +150,12 @@ const TimerClock = observer(({ stopConfirm }) => {
               timerStore.status !== "extra"
             ) {
               stopConfirm();
-              timerStore.setStopStatus();
             }
 
             if (timerStore.status === "extra") {
               timerStore.isFinish = true;
               timerStore.status = "end";
-              timerStore.setStopStatus();
+              mainStore.uid !== null && timerStore.setStopStatus();
             }
           }}
         >

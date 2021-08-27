@@ -19,11 +19,13 @@ const Timer = observer(() => {
       {stopConfirm && (
         <Alert
           title="หยุดจับเวลา"
+          msg="ระบบจะไม่บันทึกเวลาของคุณ"
           btn={[
             {
               title: "ตกลง",
               onClick: () => {
                 timerStore.stop();
+                mainStore.uid !== null && timerStore.setStopStatus();
                 setStopConfirm(false);
               },
               background: "#85CB33",
