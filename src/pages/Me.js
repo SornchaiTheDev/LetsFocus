@@ -125,7 +125,8 @@ const Me = observer(() => {
                 ) : (
                   <>
                     <Text weight="600" size={2}>
-                      {mainStore.user.username !== null
+                      {mainStore.user !== undefined &&
+                      mainStore.user.username !== null
                         ? mainStore.user.username
                         : "กำลังโหลด"}
                     </Text>

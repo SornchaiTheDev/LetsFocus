@@ -84,7 +84,9 @@ class mainStore {
                 .collection("users")
                 .doc(uid)
                 .get();
-              this.user = userData.data();
+              if (userData.exists) {
+                this.user = userData.data();
+              }
             }, 1000);
           } else {
             this.user = userData.data();
