@@ -154,6 +154,7 @@ const TimerClock = observer(({ stopConfirm }) => {
             if (timerStore.status === "extra") {
               timerStore.isFinish = true;
               timerStore.status = "end";
+              timerStore.setStopStatus();
             }
           }}
         >

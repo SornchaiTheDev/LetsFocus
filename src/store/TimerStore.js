@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { firestore } from "../firebase";
 
 const timer = new Worker("./worker/timer.js");
 class TimerStore {
@@ -20,6 +21,7 @@ class TimerStore {
   countdown() {
     this.isFinish = false;
     this.status = "start";
+    this.rootStore.uid !== null && this.setStartStatus();
     timer.postMessage({
       status: "start",
       time: this.timer,
@@ -33,11 +35,26 @@ class TimerStore {
         if (this.rootStore.isPageVisible) {
           this.isFinish = true;
           this.status = "end";
+          this.rootStore.uid !== null && this.setStopStatus();
         } else {
           this.status = "extra";
         }
       }
     };
+  }
+
+  async setStartStatus() {
+    await firestore()
+      .collection("users")
+      .doc(this.rootStore.uid)
+      .update({ status: this.rootStore.mode });
+  }
+
+  async setStopStatus() {
+    await firestore()
+      .collection("users")
+      .doc(this.rootStore.uid)
+      .update({ status: "idle" });
   }
 
   stop() {

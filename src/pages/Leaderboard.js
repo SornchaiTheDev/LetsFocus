@@ -69,6 +69,7 @@ const Leaderboard = observer(({ history }) => {
             </Text>
           ) : (
             <LeaderboardCard
+              status="me"
               rank={leaderBoardStore.myRank}
               username={mainStore.user.username}
               focusTime={mainStore.user.focusTime}
@@ -81,13 +82,14 @@ const Leaderboard = observer(({ history }) => {
         <LeaderBox style={{ marginBottom: 50 }}>
           {users
             .sort((a, b) => b.focusTime - a.focusTime)
-            .map(({ username, focusTime }, index) => (
+            .map(({ username, focusTime, status }, index) => (
               <LeaderboardCard
                 clickabled={username !== mainStore.user.username}
                 onClick={() =>
                   username !== mainStore.user.username &&
                   history.push(`/user/${username}`)
                 }
+                status={status}
                 key={index}
                 rank={index + 1}
                 username={username}

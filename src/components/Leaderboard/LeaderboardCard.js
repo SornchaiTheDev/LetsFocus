@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Text } from "../../css/main";
+import { Group, Text } from "../../css/main";
 import { AiFillTrophy } from "react-icons/ai";
 
 const Card = styled.div`
@@ -22,7 +22,14 @@ const Icon = styled.div`
   border-radius: 50%;
   background: ${(props) => (props.background ? props.background : "black")};
 `;
-const LeaderboardCard = ({ rank, username, focusTime, onClick , clickabled }) => {
+const LeaderboardCard = ({
+  rank,
+  username,
+  focusTime,
+  onClick,
+  clickabled,
+  status,
+}) => {
   const getFocusTime = () => {
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
@@ -66,11 +73,22 @@ const LeaderboardCard = ({ rank, username, focusTime, onClick , clickabled }) =>
           )}
         </Icon>
 
-        <Text weight="600">{username}</Text>
+        <Text weight="600" size={1} style={{ flex: 1 }}>
+          {username}
+        </Text>
       </div>
-      <Text size={1} weight="500">
-        {getFocusTime()}
-      </Text>
+      <Group direction="column" width="35%" align="flex-end" gap={5}>
+        <Text size={0.9} weight="500">
+          {getFocusTime()}
+        </Text>
+        <Text size={1}>
+          {status === "focus"
+            ? "กำลังโฟกัส 📖"
+            : status === "rest"
+            ? "กำลังพัก 🦥"
+            : status !== "me" && "ไม่อยู่ว ⛱"}
+        </Text>
+      </Group>
     </Card>
   );
 };
