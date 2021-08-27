@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
@@ -42,6 +42,7 @@ const Divider = styled.div`
 const Friend = observer(({ history }) => {
   const { username } = useParams();
   const [user, setUser] = useState([]);
+  const mainStore = useContext(MainStore);
   const [progressHist, setProgressHist] = useState([]);
   const getUser = async () => {
     let docId = null;
@@ -121,7 +122,7 @@ const Friend = observer(({ history }) => {
   };
 
   return (
-    <Base background={true === "focus" ? "#eb3c27" : "#3F7CAC"}>
+    <Base background={mainStore.mode === "focus" ? "#D33F49" : "#3F7CAC"}>
       <Container gap={20}>
         <TopBar />
         <Group justify="flex-start" align="center" width="90%" marginTop="10px">

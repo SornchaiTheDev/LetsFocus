@@ -44,7 +44,7 @@ const TodoList = observer(() => {
       <TodoGroup>
         <TopGroup>
           <Text color="white" weight="600" size={1.5}>
-            ที่ต้องทำ ({todosStore.TodosLength})
+            รายการที่ต้องทำ ({todosStore.TodosLength})
           </Text>
           <AddTodoBtn onClick={() => setAddClick(!addClick)}>
             <FaPlus size="1rem" />

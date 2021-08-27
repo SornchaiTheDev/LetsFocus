@@ -6,7 +6,7 @@ import { VscLoading } from "react-icons/vsc";
 const Modal = styled.div`
   width: 100vw;
   height: 100vh;
-  background: #eb3c27;
+  background: #D33F49;
   display: flex;
   justify-content: center;
   align-items: center;

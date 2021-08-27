@@ -13,6 +13,7 @@ const Card = styled.div`
   gap: 20px;
   flex-direction: row;
   align-items: center;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.25);
 `;
 const Icon = styled.div`
   padding: 10px;
@@ -48,7 +49,6 @@ const LeaderboardCard = ({
     <Card onClick={onClick} clickable={clickabled}>
       <div
         style={{
-          flex: 1,
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "center",
@@ -72,13 +72,12 @@ const LeaderboardCard = ({
             <AiFillTrophy size="1rem" color="white" />
           )}
         </Icon>
-
-        <Text weight="600" size={1} style={{ flex: 1 }}>
+      </div>
+      <Group direction="column" width="100%" align="flex-start" gap={5}>
+        <Text weight="600" size={1.5} style={{ flex: 1 }}>
           {username}
         </Text>
-      </div>
-      <Group direction="column" width="35%" align="flex-end" gap={5}>
-        <Text size={0.9} weight="500">
+        <Text size={1.15} weight="500">
           {getFocusTime()}
         </Text>
         <Text size={1}>

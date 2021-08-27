@@ -49,7 +49,7 @@ const AcceptBtn = styled.button`
   cursor: pointer;
   padding: 10px 40px;
   border-radius: 20px;
-  background: ${(props) => (props.background ? props.background : "#eb3c27")};
+  background: ${(props) => (props.background ? props.background : "#D33F49")};
   box-shadow: 2px 4px 1px 0.5px rgba(0, 0, 0, 0.25);
   outline: none;
   border: none;

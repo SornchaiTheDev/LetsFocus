@@ -59,7 +59,7 @@ const Leaderboard = observer(({ history }) => {
   // };
 
   return (
-    <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
+    <Base background={mainStore.mode === "focus" ? "#D33F49" : "#3F7CAC"}>
       <TopBar menu />
       <Container>
         <LeaderBox>

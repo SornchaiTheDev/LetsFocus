@@ -84,7 +84,7 @@ const Me = observer(() => {
     setIsChange(false);
   };
   return (
-    <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
+    <Base background={mainStore.mode === "focus" ? "#D33F49" : "#3F7CAC"}>
       <TopBar menu />
       <Container gap={20}>
         <Card>
@@ -115,9 +115,10 @@ const Me = observer(() => {
                       id="username"
                       placeholder="ชื่อผู้ใช้"
                       value={mainStore.user.username}
-                      onChange={(e) =>
-                        (mainStore.user.username = e.target.value)
-                      }
+                      onChange={(e) => {
+                        if (e.target.value.length < 20)
+                          mainStore.user.username = e.target.value;
+                      }}
                       onBlur={onChangeName}
                       autoFocus
                     />

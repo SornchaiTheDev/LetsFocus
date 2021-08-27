@@ -34,12 +34,12 @@ const Timer = observer(() => {
             {
               title: "ยกเลิก",
               onClick: () => setStopConfirm(false),
-              background: "#eb3c27",
+              background: "#D33F49",
             },
           ]}
         />
       )}
-      <Base background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}>
+      <Base background={mainStore.mode === "focus" ? "#D33F49" : "#3F7CAC"}>
         <TopBar menu />
         <Container gap={30}>
           <TimerClock stopConfirm={() => setStopConfirm(true)} />

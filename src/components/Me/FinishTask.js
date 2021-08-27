@@ -40,7 +40,7 @@ const FinishTask = observer(({ task, amount }) => {
   return (
     <Card>
       <TaskTopBar>
-        <Text>รายการที่ทำเสร็จอาทิตย์นี้ ({amount})</Text>
+        <Text>รายการที่ทำเสร็จวันนี้ ({amount})</Text>
         {/* <Mode onClick={modeCycle}>
           <Text size={1} color="white">
             {currentMode}

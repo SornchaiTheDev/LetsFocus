@@ -57,7 +57,7 @@ const SetTimerComp = observer(() => {
   return (
     <SetTimer>
       <SetTimerInner
-        background={mainStore.mode === "focus" ? "#eb3c27" : "#3F7CAC"}
+        background={mainStore.mode === "focus" ? "#D33F49" : "#3F7CAC"}
       >
         <TimeInputSet>
           <Icon onClick={() => TimeSet("minutes", "increase", minutes)}>
