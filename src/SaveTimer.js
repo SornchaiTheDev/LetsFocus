@@ -10,17 +10,18 @@ export const focusTimeOnDb = async (mainStore, timerStore, todosStore) => {
     mainStore.setFinishTask(todosStore.finishedTask);
     timerStore.resetSaveTime();
     mainStore.setMode();
-
-    await firestore()
-      .collection("users")
-      .doc(mainStore.uid)
-      .set(
-        {
-          focusTime: firestore.FieldValue.increment(focusTime),
-          restTime: firestore.FieldValue.increment(restTime),
-        },
-        { merge: true }
-      );
+    try {
+      await firestore()
+        .collection("users")
+        .doc(mainStore.uid)
+        .set(
+          {
+            focusTime: firestore.FieldValue.increment(focusTime),
+            restTime: firestore.FieldValue.increment(restTime),
+          },
+          { merge: true }
+        );
+    } catch {}
   }
 };
 

@@ -45,22 +45,24 @@ const Friend = observer(({ history }) => {
   const [progressHist, setProgressHist] = useState([]);
   const getUser = async () => {
     let docId = null;
-    const getUserdoc = await firestore()
-      .collection("users")
-      .where("username", "==", username)
-      .get();
-
-    getUserdoc.forEach(async (doc) => {
-      setUser(doc.data());
-      const getProgressHistory = await firestore()
+    try {
+      const getUserdoc = await firestore()
         .collection("users")
-        .doc(doc.id)
-        .collection("progress_history")
+        .where("username", "==", username)
         .get();
-      const progressHistCol = [];
-      getProgressHistory.forEach((doc) => progressHistCol.push(doc.data()));
-      setProgressHist(progressHistCol);
-    });
+
+      getUserdoc.forEach(async (doc) => {
+        setUser(doc.data());
+        const getProgressHistory = await firestore()
+          .collection("users")
+          .doc(doc.id)
+          .collection("progress_history")
+          .get();
+        const progressHistCol = [];
+        getProgressHistory.forEach((doc) => progressHistCol.push(doc.data()));
+        setProgressHist(progressHistCol);
+      });
+    } catch {}
   };
 
   useEffect(() => {

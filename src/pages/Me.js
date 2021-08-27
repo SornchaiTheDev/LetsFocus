@@ -8,6 +8,7 @@ import TopBar from "../components/TopBar";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 import LoginBox from "../components/Me/LoginBox";
+import Badge from "../components/Me/Badge";
 import { auth } from "../firebase";
 
 // Styling
@@ -87,7 +88,7 @@ const Me = observer(() => {
       <TopBar menu />
       <Container gap={20}>
         <Card>
-          {!mainStore.isMember ? (
+          {mainStore.uid === null ? (
             <>
               <Text weight="800" size={1}>
                 เข้าสู่ระบบ / สมัครสมาชิก
@@ -145,6 +146,8 @@ const Me = observer(() => {
             </>
           )}
         </Card>
+
+        <Badge />
 
         <Card height={250}>
           <ProgressHistory progress={mainStore.userProgressHistory()} />

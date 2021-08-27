@@ -63,7 +63,7 @@ const FinishTask = observer(({ task, amount }) => {
         })
         .sort((a, b) => a.dated - b.dated)
         .map(({ event }) => (
-          <TodoBox event={event} />
+          <TodoBox key={event} event={event} />
         ))}
     </Card>
   );

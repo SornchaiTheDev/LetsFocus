@@ -17,13 +17,15 @@ class LeaderBoardStore {
   }
 
   updateRank = async () => {
-    await firestore()
-      .collection("users")
-      .onSnapshot((snapshot) => {
-        const allUser = [];
-        snapshot.forEach((user) => allUser.push(user.data()));
-        this.leaderboard = allUser;
-      });
+    try {
+      await firestore()
+        .collection("users")
+        .onSnapshot((snapshot) => {
+          const allUser = [];
+          snapshot.forEach((user) => allUser.push(user.data()));
+          this.leaderboard = allUser;
+        });
+    } catch {}
   };
 
   get usersRank() {

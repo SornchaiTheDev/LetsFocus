@@ -3,9 +3,19 @@ import { makeAutoObservable, toJS, autorun } from "mobx";
 import TimerStore from "./TimerStore";
 import TodosStore from "./TodosStore";
 import LeaderBoardStore from "./LeaderboardStore";
-import { clearPersistedStore, makePersistable } from "mobx-persist-store";
+import AchievementStore from "./AchievementStore";
+import {
+  clearPersistedStore,
+  makePersistable,
+  configurePersistable,
+} from "mobx-persist-store";
 import localforage from "localforage";
 import { firestore, auth } from "../firebase";
+
+configurePersistable(
+  { storage: localforage, stringify: false },
+  { fireImmediately: true }
+);
 class mainStore {
   user = {
     username: null,
@@ -19,16 +29,16 @@ class mainStore {
   mode = "focus";
   isNotificationAllow = false;
   isPageVisible = true;
+  isReceived = false;
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
     this.todosStore = new TodosStore(this);
     this.leaderBoardStore = new LeaderBoardStore(this);
+    this.achievementStore = new AchievementStore(this);
     makePersistable(this, {
       name: "MeStore",
       properties: ["isRegister", "mode", "isGoogle", "uid", "user"],
-      storage: localforage,
-      stringify: false,
     });
     this.leaderBoardStore.updateRank();
     this.fetchUserData();
@@ -53,32 +63,36 @@ class mainStore {
   }
 
   async updateUser(user) {
-    await firestore()
-      .collection("users")
-      .doc(this.uid)
-      .set({ username: user.name }, { merge: true });
+    try {
+      await firestore()
+        .collection("users")
+        .doc(this.uid)
+        .set({ username: user.name }, { merge: true });
+    } catch {}
   }
 
   fetchUserData = async () => {
-    await auth().onAuthStateChanged(async (user) => {
-      if (user !== null) {
-        const uid = user.uid;
+    try {
+      await auth().onAuthStateChanged(async (user) => {
+        if (user !== null) {
+          const uid = user.uid;
 
-        const userData = await firestore().collection("users").doc(uid).get();
-        if (!userData.exists) {
-          setInterval(async () => {
-            const userData = await firestore()
-              .collection("users")
-              .doc(uid)
-              .get();
+          const userData = await firestore().collection("users").doc(uid).get();
+          if (!userData.exists) {
+            setInterval(async () => {
+              const userData = await firestore()
+                .collection("users")
+                .doc(uid)
+                .get();
+              this.user = userData.data();
+            }, 1000);
+          } else {
             this.user = userData.data();
-          }, 1000);
-        } else {
-          this.user = userData.data();
+          }
+          this.uid = uid;
         }
-        this.uid = uid;
-      }
-    });
+      });
+    } catch {}
   };
 
   setMode() {
@@ -97,13 +111,17 @@ class mainStore {
 
   async userProgressHistory() {
     const progress_history = [];
-    const week_progress = await firestore()
-      .collection("users")
-      .doc(mainStore.uid)
-      .collection("progress_history")
-      .get();
+    try {
+      const week_progress = await firestore()
+        .collection("users")
+        .doc(mainStore.uid)
+        .collection("progress_history")
+        .get();
 
-    week_progress.forEach((progress) => progress_history.push(progress.data()));
+      week_progress.forEach((progress) =>
+        progress_history.push(progress.data())
+      );
+    } catch {}
     return progress_history;
   }
   get allFinishTask() {

@@ -115,8 +115,9 @@ export const Card = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: ${(props) => (props.justify ? props.justify : "center")};
+  align-items: ${(props) => (props.align ? props.align : "center")};
   gap: 20px;
   margin-bottom: 30px;
+  overflow-x: auto;
 `;

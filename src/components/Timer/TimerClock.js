@@ -163,8 +163,8 @@ const TimerClock = observer(({ stopConfirm }) => {
             <BsStop size="2rem" color="#0F1108" />
           )}
         </Button>
-        <Text size={1} weight="500">
-          เริ่มจับเวลา
+        <Text size={1} weight="500" color="white">
+          {timerStore.status === "idle" ? "เริ่มจับเวลา" : "หยุดจับเวลา"}
         </Text>
       </Group>
     </>

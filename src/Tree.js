@@ -15,6 +15,7 @@ import { MainStore } from "./store/MainStore";
 import { auth, firestore } from "./firebase";
 import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
 import Alert from "./components/Alert";
+import BadgeReceive from "./components/Me/BadgeReceive";
 const Tree = observer(() => {
   const { timerStore, todosStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
@@ -22,17 +23,6 @@ const Tree = observer(() => {
   // useEffect(() => {
   //   auth().signOut();
   //   mainStore.clearLinkwithGoogle();
-  // }, []);
-
-  // useEffect(() => {
-  //   auth()
-  //     .getRedirectResult()
-  //     .then((result) => {
-  //       if (result.credential) {
-  //         mainStore.linkwithGoogle(result.user.uid);
-  //         mainStore.fetchUserData();
-  //       }
-  //     });
   // }, []);
 
   useEffect(() => {
@@ -76,6 +66,10 @@ const Tree = observer(() => {
       document.removeEventListener("visibilitychange", PageViewState);
   }, []);
 
+  // useEffect(() => {
+  //   console.log(mainStore.isReceived);
+  // }, [mainStore.isReceived]);
+
   return (
     <>
       {timerStore.status === "cheat" && (
@@ -89,6 +83,10 @@ const Tree = observer(() => {
             },
           ]}
         />
+      )}
+
+      {mainStore.isReceived && (
+        <BadgeReceive onClick={() => (mainStore.isReceived = false)} />
       )}
       <Router basename="/">
         <Switch>
