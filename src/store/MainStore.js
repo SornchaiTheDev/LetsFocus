@@ -24,12 +24,11 @@ class mainStore {
     finishTask: [],
   };
   uid = null;
-  isRegister = null;
-  isGoogle = false; // use Google to Save Account
   mode = "focus";
   isNotificationAllow = false;
   isPageVisible = true;
   isReceived = false;
+  week_progress = [];
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
@@ -38,7 +37,7 @@ class mainStore {
     this.achievementStore = new AchievementStore(this);
     makePersistable(this, {
       name: "MeStore",
-      properties: ["isRegister", "mode", "isGoogle", "uid", "user"],
+      properties: ["mode", "isGoogle", "uid", "user"],
     });
     this.leaderBoardStore.updateRank();
     this.fetchUserData();
@@ -52,14 +51,6 @@ class mainStore {
   linkwithGoogle(uid) {
     this.uid = uid;
     this.isGoogle = true;
-  }
-
-  registered() {
-    return (this.isRegister = true);
-  }
-
-  get isMember() {
-    return this.isGoogle || this.isRegister;
   }
 
   async updateUser(user) {
@@ -79,23 +70,60 @@ class mainStore {
 
           const userData = await firestore().collection("users").doc(uid).get();
           if (!userData.exists) {
-            setInterval(async () => {
+            let fetchUser;
+            fetchUser = setInterval(async () => {
+              console.log("call");
               const userData = await firestore()
                 .collection("users")
                 .doc(uid)
                 .get();
               if (userData.exists) {
                 this.user = userData.data();
+                clearInterval(fetchUser);
               }
-            }, 1000);
+            }, 2000);
           } else {
             this.user = userData.data();
+            const week_progress_fetch = await firestore()
+              .collection("users")
+              .doc(uid)
+              .collection("progress_history")
+              .get();
+
+            const progress_history = [];
+            week_progress_fetch.forEach((progress) => {
+              progress_history.push(progress.data());
+            });
+
+            this.week_progress = progress_history;
           }
           this.uid = uid;
         }
       });
     } catch {}
   };
+
+  get getWeekProgress() {
+    const progress_db = toJS(this.week_progress);
+    const template = [
+      { day: "จันทร์", hour: 0, seconds: 0 },
+      { day: "อังคาร", hour: 0, seconds: 0 },
+      { day: "พุธ", hour: 0, seconds: 0 },
+      { day: "พฤหัส", hour: 0, seconds: 0 },
+      { day: "ศุกร์", hour: 0, seconds: 0 },
+      { day: "เสาร์", hour: 0, seconds: 0 },
+      { day: "อาทิตย์", hour: 0, seconds: 0 },
+    ];
+
+    if (progress_db.length > 0) {
+      progress_db.map((db) => {
+        const index = template.findIndex((data) => data.day === db.day);
+        template[index] = db;
+      });
+    }
+
+    return template;
+  }
 
   setMode() {
     this.timerStore.status = "idle";
@@ -111,21 +139,6 @@ class mainStore {
     console.log("clear!");
   }
 
-  async userProgressHistory() {
-    const progress_history = [];
-    try {
-      const week_progress = await firestore()
-        .collection("users")
-        .doc(mainStore.uid)
-        .collection("progress_history")
-        .get();
-
-      week_progress.forEach((progress) =>
-        progress_history.push(progress.data())
-      );
-    } catch {}
-    return progress_history;
-  }
   get allFinishTask() {
     return this.user.finishTask.length;
   }

@@ -60,7 +60,24 @@ const Friend = observer(({ history }) => {
           .get();
         const progressHistCol = [];
         getProgressHistory.forEach((doc) => progressHistCol.push(doc.data()));
-        setProgressHist(progressHistCol);
+
+        const template = [
+          { day: "จันทร์", hour: 0, seconds: 0 },
+          { day: "อังคาร", hour: 0, seconds: 0 },
+          { day: "พุธ", hour: 0, seconds: 0 },
+          { day: "พฤหัส", hour: 0, seconds: 0 },
+          { day: "ศุกร์", hour: 0, seconds: 0 },
+          { day: "เสาร์", hour: 0, seconds: 0 },
+          { day: "อาทิตย์", hour: 0, seconds: 0 },
+        ];
+
+        if (progressHistCol.length > 0) {
+          progressHistCol.map((db) => {
+            const index = template.findIndex((data) => data.day === db.day);
+            template[index] = db;
+          });
+        }
+        setProgressHist(template);
       });
     } catch {}
   };

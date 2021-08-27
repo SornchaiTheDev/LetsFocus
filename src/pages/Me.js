@@ -151,7 +151,7 @@ const Me = observer(() => {
         <Badge />
 
         <Card height={250}>
-          <ProgressHistory progress={mainStore.userProgressHistory()} />
+          <ProgressHistory progress={mainStore.getWeekProgress} />
         </Card>
         <FinishTask
           task={mainStore.user.finishTask}
