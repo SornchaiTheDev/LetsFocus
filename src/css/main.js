@@ -6,6 +6,8 @@ export const Text = styled.h1`
   font-weight: ${(props) => (props.weight ? props.weight : "normal")};
   color: ${(props) => (props.color ? props.color : "#0F1108")};
   line-break: anywhere;
+  text-align: ${(props) => (props.align ? props.align : "left")};
+  line-height: ${(props) => (props.height ? props.height : "30px")};
 `;
 
 export const Base = styled.div`

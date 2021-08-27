@@ -8,6 +8,7 @@ import {
   clearPersistedStore,
   makePersistable,
   configurePersistable,
+  isHydrated,
 } from "mobx-persist-store";
 import localforage from "localforage";
 import { firestore, auth } from "../firebase";
@@ -25,10 +26,11 @@ class mainStore {
   };
   uid = null;
   mode = "focus";
-  isNotificationAllow = false;
   isPageVisible = true;
-  isReceived = false;
+  isHideHowto = false;
   week_progress = [];
+  isLoading = true;
+
   constructor() {
     makeAutoObservable(this);
     this.timerStore = new TimerStore(this);
@@ -37,10 +39,15 @@ class mainStore {
     this.achievementStore = new AchievementStore(this);
     makePersistable(this, {
       name: "MeStore",
-      properties: ["mode", "isGoogle", "uid", "user"],
+      properties: ["mode", "uid", "user", "isHideHowto"],
     });
     this.leaderBoardStore.updateRank();
     this.fetchUserData();
+    if (isHydrated(this)) this.isLoading = false;
+  }
+
+  set setIsLoading(bool) {
+    return (this.isLoading = bool);
   }
 
   // User Authen
@@ -66,6 +73,7 @@ class mainStore {
     try {
       await auth().onAuthStateChanged(async (user) => {
         if (user !== null) {
+          this.isLoading = true;
           const uid = user.uid;
 
           const userData = await firestore().collection("users").doc(uid).get();
@@ -99,6 +107,7 @@ class mainStore {
           }
           this.uid = uid;
         }
+        this.isLoading = false;
       });
     } catch {}
   };
@@ -130,10 +139,6 @@ class mainStore {
     return this.mode === "focus" ? (this.mode = "rest") : (this.mode = "focus");
   }
 
-  set allowNotification(bool) {
-    this.isNotificationAllow = bool;
-  }
-
   async clearLinkwithGoogle() {
     await clearPersistedStore(this);
     console.log("clear!");
@@ -160,6 +165,11 @@ class mainStore {
   }
   setRest(restTime) {
     return (this.user.restTime += restTime);
+  }
+
+  // Hide How to
+  hideHowto() {
+    this.isHideHowto = true;
   }
 }
 

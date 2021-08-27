@@ -16,16 +16,14 @@ import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
 import Alert from "./components/Alert";
 import BadgeReceive from "./components/Me/BadgeReceive";
 import { autorun } from "mobx";
+import Howto from "./components/Howto";
+import Preloader from "./components/Preloader";
+import { auth } from "./firebase";
 
 const Tree = observer(() => {
   const { timerStore, todosStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
 
-  useEffect(() => {
-    autorun(() => {
-      // console.log(timerStore.timer);
-    });
-  }, []);
   // useEffect(() => {
   //   auth().signOut();
   //   mainStore.clearLinkwithGoogle();
@@ -72,12 +70,10 @@ const Tree = observer(() => {
       document.removeEventListener("visibilitychange", PageViewState);
   }, []);
 
-  // useEffect(() => {
-  //   console.log(mainStore.isReceived);
-  // }, [mainStore.isReceived]);
-
   return (
     <>
+      {mainStore.isLoading && <Preloader />}
+      {!mainStore.isHideHowto && <Howto />}
       {timerStore.status === "cheat" && (
         <Alert
           msg="คุณขี้โกงอ่าา"

@@ -11,7 +11,7 @@ const AlertContainer = styled.div`
   justify-content: center;
   align-items: center;
   position: fixed;
-  z-index: 9999;
+  z-index: 10;
 `;
 const AlertBox = styled.div`
   width: 300px;
