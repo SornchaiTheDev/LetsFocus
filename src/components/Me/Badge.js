@@ -8,7 +8,7 @@ const BadgeCard = styled.div`
   background: white;
   border-radius: 10px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.15);
-  border-bottom: 10px solid #eb3c27;
+  border-bottom: 10px solid #ffa500;
   width: 200px;
   padding: 20px;
   margin-right: 20px;
@@ -25,7 +25,7 @@ const BadgeIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: gold;
+  background: ${(props) => (props.completed ? "#FFA500" : "#C88100")};
   padding: 20px;
   border-radius: 100px;
 `;
@@ -63,9 +63,12 @@ const Badge = observer(() => {
       <BadgeGroup>
         {achievementStore.all.map(
           ({ alias, name, completed, received_dated }) => (
-            <BadgeCard key={alias} onClick={() => achievementStore.change()}>
-              <BadgeIcon>
-                <GiMeditation size="3rem" color="black" />
+            <BadgeCard key={alias}>
+              <BadgeIcon completed={completed}>
+                <GiMeditation
+                  size="3rem"
+                  color={completed ? "white" : "#CED3D1"}
+                />
               </BadgeIcon>
               <Text weight="900" size={1}>
                 {name}

@@ -149,6 +149,7 @@ const TimerClock = observer(({ stopConfirm }) => {
               timerStore.status !== "extra"
             ) {
               stopConfirm();
+              timerStore.setStopStatus();
             }
 
             if (timerStore.status === "extra") {
