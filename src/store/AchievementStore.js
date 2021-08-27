@@ -1,13 +1,13 @@
-import { makeAutoObservable, toJS } from "mobx";
+import { makeAutoObservable, toJS, autorun } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 class AchievementStore {
   constructor(rootStore) {
-    this.rootStore = rootStore;
-    makeAutoObservable(this);
+    makeAutoObservable(this, { rootStore: false });
     makePersistable(this, {
       name: "Achievements",
       properties: ["all_achieved"],
     });
+    this.rootStore = rootStore;
   }
 
   all_achieved = [
@@ -67,8 +67,17 @@ class AchievementStore {
     },
   ];
 
+  focus_overall_day = 0;
+  focus_overall_week = 0;
+  rest_overall = 0;
+
   get all() {
     return toJS(this.all_achieved);
+  }
+
+  change() {
+    this.all_achieved[1].completed = false;
+    this.all_achieved[1].received_dated = null;
   }
 }
 

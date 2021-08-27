@@ -46,21 +46,38 @@ const Badge = observer(() => {
   const { achievementStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
 
+  const getDated = (date) => {
+    const achiveDated = new Date(date * 1000);
+
+    return `${achiveDated.getDate()}.${achiveDated
+      .getMonth()
+      .toString()
+      .padStart(2, "0")}.${achiveDated.getFullYear()}`;
+  };
+
   return (
-    <Card justify="flex-start" align="flex-start">
-      <Text weight="900" size={1.25}>รางวัล</Text>
+    <Card justify="flex-start" align="flex-start" overflow="scroll">
+      <Text weight="900" size={1.25}>
+        รางวัล
+      </Text>
       <BadgeGroup>
-        {achievementStore.all.map(({ alias, name }) => (
-          <BadgeCard key={alias} onClick={() => (mainStore.isReceived = true)}>
-            <BadgeIcon>
-              <GiMeditation size="3rem" color="black" />
-            </BadgeIcon>
-            <Text weight="900" size={1}>
-              {name}
-            </Text>
-            <Text size={0.9}>ได้รับเมื่อ 26.08.2021</Text>
-          </BadgeCard>
-        ))}
+        {achievementStore.all.map(
+          ({ alias, name, completed, received_dated }) => (
+            <BadgeCard key={alias} onClick={() => achievementStore.change()}>
+              <BadgeIcon>
+                <GiMeditation size="3rem" color="black" />
+              </BadgeIcon>
+              <Text weight="900" size={1}>
+                {name}
+              </Text>
+              {completed ? (
+                <Text size={0.9}>ได้รับเมื่อ {getDated(received_dated)}</Text>
+              ) : (
+                <Text size={0.9}>ยังไม่ปลดล็อค</Text>
+              )}
+            </BadgeCard>
+          )
+        )}
       </BadgeGroup>
     </Card>
   );

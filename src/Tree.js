@@ -12,14 +12,20 @@ import Me from "./pages/Me";
 import Friend from "./pages/Friend";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
-import { auth, firestore } from "./firebase";
 import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
 import Alert from "./components/Alert";
 import BadgeReceive from "./components/Me/BadgeReceive";
+import { autorun } from "mobx";
+
 const Tree = observer(() => {
   const { timerStore, todosStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
 
+  useEffect(() => {
+    autorun(() => {
+      // console.log(timerStore.timer);
+    });
+  }, []);
   // useEffect(() => {
   //   auth().signOut();
   //   mainStore.clearLinkwithGoogle();

@@ -119,5 +119,5 @@ export const Card = styled.div`
   align-items: ${(props) => (props.align ? props.align : "center")};
   gap: 20px;
   margin-bottom: 30px;
-  overflow-x: auto;
+  overflow-x: ${(props) => (props.overflow ? props.overflow : "visible")};
 `;
