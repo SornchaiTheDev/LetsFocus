@@ -25,6 +25,8 @@ class mainStore {
     finishTask: [],
   };
   uid = null;
+  realtimeFocus = 0;
+  realtimeRest = 0;
   mode = "focus";
   isPageVisible = true;
   isHideHowto = false;
@@ -81,6 +83,39 @@ class mainStore {
     this.mode === "focus"
       ? (this.user.focusTime += time)
       : (this.user.restTime += time);
+    this.achievementStore.updateAchievementState = {
+      mode: this.mode,
+      time: time,
+    };
+  }
+
+  set setRealtimeFocus(time) {
+    return (this.realtimeFocus = time);
+  }
+  set setRealtimeRest(time) {
+    return (this.realtimeRest = time);
+  }
+
+  realtimeFocusTimer() {
+    const startTime = this.timerStore.startTime;
+
+    if (startTime !== 0 && this.mode === "focus") {
+      return (this.setRealtimeFocus =
+        parseInt((Date.now() - startTime) / 1000) + this.user.focusTime);
+    } else {
+      return (this.setRealtimeFocus = this.user.focusTime);
+    }
+  }
+
+  realtimeRestTimer() {
+    const startTime = this.timerStore.startTime;
+
+    if (startTime !== 0 && this.mode === "rest") {
+      return (this.setRealtimeRest =
+        parseInt((Date.now() - startTime) / 1000) + this.user.restTime);
+    } else {
+      return (this.setRealtimeRest = this.user.restTime);
+    }
   }
 
   set setWeekProgress(data) {

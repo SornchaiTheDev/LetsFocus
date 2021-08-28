@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -25,7 +25,7 @@ import { autorun } from "mobx";
 const Tree = observer(() => {
   const { timerStore, todosStore, achievementStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
-
+  const [count, setCount] = useState(0);
   // useEffect(() => {
   //   auth().signOut();
   //   mainStore.clearLinkwithGoogle();
@@ -53,9 +53,7 @@ const Tree = observer(() => {
           achievementStore.clearOverall();
         }
       }
-      achievementStore.setLastest_dated = new Date(
-        "August 27 , 2021 12:34:56"
-      ).getTime();
+      achievementStore.setLastest_dated = new Date().getTime();
     });
   }, []);
 
@@ -66,13 +64,21 @@ const Tree = observer(() => {
     });
   }, []);
 
-  // Update Realtime Time
   useEffect(() => {
     const timer = setInterval(() => {
-      if (timerStore.startTime !== 0) mainStore.setRealtimeTime = 1;
+      mainStore.realtimeFocusTimer();
+      mainStore.realtimeRestTimer();
+      setCount((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [timerStore.startTime]);
+  }, [count]);
+  // Update Realtime Time
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     if (timerStore.startTime !== 0) mainStore.setRealtimeTime = 1;
+  //   }, 1000);
+  //   return () => clearInterval(timer);
+  // }, [timerStore.startTime]);
 
   useEffect(() => {
     if (mainStore.uid !== null) {
@@ -100,8 +106,9 @@ const Tree = observer(() => {
       )}
 
       {achievementStore.isReceived &&
-        achievementStore.received.map((data) => (
+        achievementStore.received.map((data, index) => (
           <BadgeReceive
+            key={index}
             data={data}
             onClick={() => achievementStore.acceptReceived()}
           />

@@ -1,5 +1,6 @@
 import { makeAutoObservable, toJS } from "mobx";
 import { makePersistable } from "mobx-persist-store";
+import { firestore } from "../firebase";
 class AchievementStore {
   constructor(rootStore) {
     makeAutoObservable(this, { rootStore: false });
@@ -149,6 +150,15 @@ class AchievementStore {
       received_dated: new Date(),
     };
     this.received.push(this.all_achieved[index]);
+    this.updateToFirestore(this.all_achieved[index]);
+  }
+
+  async updateToFirestore(achieved) {
+    await firestore()
+      .collection("users")
+      .doc(this.rootStore.uid)
+      .collection("achievements")
+      .add(achieved);
   }
 
   checkAvailable() {
@@ -156,9 +166,12 @@ class AchievementStore {
       (data) => data.completed === false
     );
 
+    const started_dated =
+      new Date(this.started_date).setHours(0, 0, 0, 0).valueOf() / 86400000;
+    const today =
+      new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
     achievementLeft.map((data) => {
       if (data.alias === "focus_1_hour") {
-        console.log(this.focus_overall);
         if (this.focus_overall === 3600) this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_3_hours") {
@@ -166,25 +179,12 @@ class AchievementStore {
           this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_for_3_days") {
-        const started_dated =
-          new Date(this.started_date).setHours(0, 0, 0, 0).valueOf() / 86400000;
-        const today =
-          new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
-
         if (today - started_dated === 3) this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_for_1_week") {
-        const started_dated =
-          new Date(this.started_date).setHours(0, 0, 0, 0).valueOf() / 86400000;
-        const today =
-          new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
         if (today - started_dated === 7) this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_for_1_month") {
-        const started_dated =
-          new Date(this.started_date).setHours(0, 0, 0, 0).valueOf() / 86400000;
-        const today =
-          new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
         if (today - started_dated === 30)
           this.completed_Achievement(data.alias);
       }

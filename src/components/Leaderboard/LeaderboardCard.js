@@ -30,15 +30,16 @@ const LeaderboardCard = ({
   startTime,
   onClick,
   clickabled,
-  status,
+  mode,
   onDbFocus,
+  me,
 }) => {
   const [count, setCount] = useState(0);
   const getFocusTime = () => {
     let focusTime;
 
-    if (startTime !== 0) {
-      if (startTime > 0 && status !== "idle") {
+    if (startTime !== 0 && mode === "focus") {
+      if (startTime > 0) {
         focusTime = parseInt((Date.now() - startTime) / 1000) + onDbFocus;
       }
     } else {
@@ -101,13 +102,15 @@ const LeaderboardCard = ({
         <Text size={1.15} weight="500">
           {getFocusTime()}
         </Text>
-        <Text size={1}>
-          {status === "focus"
-            ? "กำลังโฟกัส 📖"
-            : status === "rest"
-            ? "กำลังพัก 🦥"
-            : status !== "me" && "ไม่อยู่ว ⛱"}
-        </Text>
+        {!me && (
+          <Text size={1}>
+            {mode === "focus"
+              ? "กำลังโฟกัส 📖"
+              : mode === "rest"
+              ? "กำลังพัก 🦥"
+              : mode !== "me" && "ไม่อยู่ว ⛱"}
+          </Text>
+        )}
       </Group>
     </Card>
   );

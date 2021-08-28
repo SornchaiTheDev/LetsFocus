@@ -45,17 +45,17 @@ const Leaderboard = observer(({ history }) => {
             </Text>
           ) : (
             <LeaderboardCard
-              status="me"
+              me
+              mode={mainStore.mode}
               rank={leaderBoardStore.myRank}
               username={mainStore.user.username}
               onDbFocus={mainStore.user.focusTime}
-              startTime={0}
+              startTime={timerStore.startTime}
             />
           )}
 
           <Divider />
         </LeaderBox>
-
         <LeaderBox style={{ marginBottom: 50 }}>
           {users
             .sort((a, b) => b.focusTime - a.focusTime)
@@ -66,7 +66,7 @@ const Leaderboard = observer(({ history }) => {
                   username !== mainStore.user.username &&
                   history.push(`/user/${username}`)
                 }
-                status={status}
+                mode={status}
                 key={index}
                 rank={index + 1}
                 username={username}

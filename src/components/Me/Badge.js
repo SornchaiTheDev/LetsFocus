@@ -60,15 +60,7 @@ const Badge = observer(() => {
         {achievementStore.all
           .sort((a, b) => b.received_dated - a.received_dated)
           .map(({ alias, name, completed, received_dated }) => (
-            <BadgeCard
-              key={alias}
-              onClick={() =>
-                (achievementStore.updateAchievementState = {
-                  mode: "focus",
-                  time: 3600,
-                })
-              }
-            >
+            <BadgeCard key={alias}>
               <BadgeIcon completed={completed}>
                 <Icons completed={completed} alias={alias} />
               </BadgeIcon>

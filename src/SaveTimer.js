@@ -17,7 +17,8 @@ export const focusTimeOnDb = async (
       mode: mainStore.mode,
       time: achieveTime,
     };
-
+    mainStore.setFocus(focusTime);
+    mainStore.setRest(restTime);
     mainStore.setFinishTask(todosStore.finishedTask);
     timerStore.resetSaveTime();
     mainStore.setMode();
