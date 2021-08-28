@@ -42,6 +42,7 @@ class TimerStore {
       this.saveRestTime = this.timer;
     }
     timer.postMessage({ status: "stop" });
+    this.rootStore.uid !== null && this.setStopStatus();
   }
 
   countdown() {
