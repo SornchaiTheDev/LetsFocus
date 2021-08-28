@@ -1,17 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { Text, Card } from "../../css/main";
-import {
-  GiMeditation,
-  GiArcher,
-  GiBabyFace,
-  GiBeamsAura,
-  GiBiceps,
-  GiBullseye,
-  GiBurningMeteor,
-  GiDonut,
-  GiFlyingFlag,
-} from "react-icons/gi";
+import Icons from "./Icons";
 import { MainStore } from "../../store/MainStore";
 import { observer } from "mobx-react-lite";
 
@@ -49,45 +39,11 @@ const BadgeGroup = styled.div`
   gap: 10px;
 `;
 
-const Icons = ({ completed, alias }) => {
-  if (alias === "focus_1_hour") {
-    return <GiArcher size="3rem" color={completed ? "white" : "#CED3D1"} />;
-  }
-  if (alias === "focus_3_hours") {
-    return <GiMeditation size="3rem" color={completed ? "white" : "#CED3D1"} />;
-  }
-  if (alias === "focus_for_3_days") {
-    return <GiBabyFace size="3rem" color={completed ? "white" : "#CED3D1"} />;
-  }
-  if (alias === "focus_for_5_days") {
-    return <GiBiceps size="3rem" color={completed ? "white" : "#CED3D1"} />;
-  }
-  if (alias === "focus_1_week") {
-    return <GiBeamsAura size="3rem" color={completed ? "white" : "#CED3D1"} />;
-  }
-  if (alias === "focus_more_than_3_hours_a_week") {
-    return <GiBullseye size="3rem" color={completed ? "white" : "#CED3D1"} />;
-  }
-  if (alias === "focus_more_than_5_hours_a_week") {
-    return (
-      <GiBurningMeteor size="3rem" color={completed ? "white" : "#CED3D1"} />
-    );
-  }
-  if (alias === "rest_for_1_hour") {
-    return <GiDonut size="3rem" color={completed ? "white" : "#CED3D1"} />;
-  }
-  if (alias === "completed_10_todos") {
-    return <GiFlyingFlag size="3rem" color={completed ? "white" : "#CED3D1"} />;
-  } else {
-    return <></>;
-  }
-};
-
 const Badge = observer(() => {
   const { achievementStore } = useContext(MainStore);
 
   const getDated = (date) => {
-    const achiveDated = new Date(date * 1000);
+    const achiveDated = new Date(date);
 
     return `${achiveDated.getDate()}.${achiveDated
       .getMonth()
@@ -101,13 +57,22 @@ const Badge = observer(() => {
         รางวัล
       </Text>
       <BadgeGroup>
-        {achievementStore.all.map(
-          ({ alias, name, completed, received_dated }) => (
-            <BadgeCard key={alias}>
+        {achievementStore.all
+          .sort((a, b) => b.received_dated - a.received_dated)
+          .map(({ alias, name, completed, received_dated }) => (
+            <BadgeCard
+              key={alias}
+              onClick={() =>
+                (achievementStore.updateAchievementState = {
+                  mode: "focus",
+                  time: 3600,
+                })
+              }
+            >
               <BadgeIcon completed={completed}>
                 <Icons completed={completed} alias={alias} />
               </BadgeIcon>
-              <Text weight="900" size={1} style={{ textAlign: "center" }}>
+              <Text weight="900" size={1} style={{ textAlign: "justify" }}>
                 {name}
               </Text>
               {completed ? (
@@ -116,8 +81,7 @@ const Badge = observer(() => {
                 <Text size={0.9}>ยังไม่ปลดล็อค</Text>
               )}
             </BadgeCard>
-          )
-        )}
+          ))}
       </BadgeGroup>
     </Card>
   );

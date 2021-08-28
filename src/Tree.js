@@ -35,7 +35,7 @@ const Tree = observer(() => {
   useEffect(() => {
     autorun(() => {
       if (achievementStore.started_date === null) {
-        achievementStore.setStarted_date = new Date().getTime();
+        achievementStore.setStarted_dated = new Date().getTime();
       }
       if (achievementStore.started_date !== null) {
         const lastest_dated =
@@ -52,8 +52,17 @@ const Tree = observer(() => {
         if (today - lastest_dated === 7) {
           achievementStore.clearOverall();
         }
-        achievementStore.setLastest_date = new Date().getTime();
       }
+      achievementStore.setLastest_dated = new Date(
+        "August 27 , 2021 12:34:56"
+      ).getTime();
+    });
+  }, []);
+
+  // Achievement Validate
+  useEffect(() => {
+    autorun(() => {
+      achievementStore.checkAvailable();
     });
   }, []);
 
@@ -73,39 +82,6 @@ const Tree = observer(() => {
     }
   }, [timerStore.isFinish]);
 
-  //User More Focus
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (timerStore.status === "extra") {
-        timerStore.updateTimer =
-          parseInt((Date.now() - timerStore.startTime) / 1000) +
-          timerStore.maxTime;
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  // useEffect(() => {
-  //   const startTime = parseInt((Date.now() - timerStore.startTime) / 1000);
-  //   if (timerStore.status === "extra" && startTime > 3600) {
-  //     timerStore.status = "cheat";
-  //     timerStore.isFinish = true;
-  //   }
-  // }, [timerStore.timer]);
-
-  const PageViewState = () => {
-    const isPageVisible = document.visibilityState === "visible";
-    mainStore.isPageVisible = isPageVisible;
-  };
-  useEffect(() => {
-    document.addEventListener("visibilitychange", PageViewState);
-
-    return () =>
-      document.removeEventListener("visibilitychange", PageViewState);
-  }, []);
-
   return (
     <>
       {mainStore.isLoading && <Preloader />}
@@ -123,12 +99,13 @@ const Tree = observer(() => {
         />
       )}
 
-      {mainStore.isReceived && (
-        <BadgeReceive
-          data={achievementStore.received}
-          onClick={() => (mainStore.isReceived = false)}
-        />
-      )}
+      {achievementStore.isReceived &&
+        achievementStore.received.map((data) => (
+          <BadgeReceive
+            data={data}
+            onClick={() => achievementStore.acceptReceived()}
+          />
+        ))}
       <Router basename="/">
         <Switch>
           <Route path="/" exact component={Timer} />

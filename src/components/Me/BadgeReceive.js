@@ -1,17 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Text } from "../../css/main";
-import {
-  GiMeditation,
-  GiArcher,
-  GiBabyFace,
-  GiBeamsAura,
-  GiBiceps,
-  GiBullseye,
-  GiBurningMeteor,
-  GiDonut,
-  GiFlyingFlag,
-} from "react-icons/gi";
+import Icons from "./Icons";
+
 const AlertContainer = styled.div`
   width: 100vw;
   height: 100vh;
@@ -89,39 +80,15 @@ const BadgeBG = styled.div`
   }
 `;
 
-const Icons = ({ alias }) => {
-  if (alias === "focus_1_hour") {
-    return <GiArcher size="3rem" color="white" style={{ zIndex: 999 }} />;
-  }
-  if (alias === "focus_3_hours") {
-    return <GiMeditation size="3rem" color="white" style={{ zIndex: 999 }} />;
-  }
-  if (alias === "focus_for_3_days") {
-    return <GiBabyFace size="3rem" color="white" style={{ zIndex: 999 }} />;
-  }
-  if (alias === "focus_for_5_days") {
-    return <GiBiceps size="3rem" color="white" style={{ zIndex: 999 }} />;
-  }
-  if (alias === "focus_1_week") {
-    return <GiBeamsAura size="3rem" color="white" style={{ zIndex: 999 }} />;
-  }
-  if (alias === "focus_more_than_3_hours_a_week") {
-    return <GiBullseye size="3rem" color="white" style={{ zIndex: 999 }} />;
-  }
-  if (alias === "focus_more_than_5_hours_a_week") {
-    return (
-      <GiBurningMeteor size="3rem" color="white" style={{ zIndex: 999 }} />
-    );
-  }
-  if (alias === "rest_for_1_hour") {
-    return <GiDonut size="3rem" color="white" style={{ zIndex: 999 }} />;
-  }
-  if (alias === "completed_10_todos") {
-    return <GiFlyingFlag size="3rem" color="white" style={{ zIndex: 999 }} />;
-  } else {
-    return <></>;
-  }
-};
+const Paragraph = styled.p`
+  font-size: ${(props) => (props.size ? props.size : 1)}rem;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: ${(props) => (props.weight ? props.weight : "normal")};
+  color: ${(props) => (props.color ? props.color : "#0F1108")};
+  line-break: anywhere;
+  text-align: ${(props) => (props.align ? props.align : "left")};
+  line-height: ${(props) => (props.height ? props.height : "30px")};
+`;
 
 function BadgeReceive({ title, msg, btn, onClick, data }) {
   const { alias, name } = data;
@@ -131,13 +98,12 @@ function BadgeReceive({ title, msg, btn, onClick, data }) {
         <Text weight="900">ปลดล็อครางวัล</Text>
         <BadgeIcon>
           <BadgeBG />
-          {/* <IconAni> */}
-
-          <Icons alias={alias} />
-          {/* </IconAni> */}
+          <Icons received completed={true} alias={alias} />
         </BadgeIcon>
         <TextSection>
-          <Text weight="600">{name}</Text>
+          <Text weight="600" size={1.15}>
+            {name}
+          </Text>
           <Text weight="400" size={1}>
             รางวัลที่ปลดล็อคจะอยู่ในเมนูฉัน
           </Text>
