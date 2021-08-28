@@ -4,37 +4,18 @@ import { firestore } from "../firebase";
 class AchievementStore {
   constructor(rootStore) {
     makeAutoObservable(this, { rootStore: false });
-    makePersistable(this, {
-      name: "Achievements",
-      properties: [
-        "all_achieved",
-        "started_date",
-        "lastest_date",
-        "focus_overall",
-        "rest_overall",
-        "focus_overall_day",
-        "focus_overall_week",
-        "streak_day",
-        "streak_week",
-        "received",
-      ],
-    });
     this.rootStore = rootStore;
   }
-  //Dated
-  started_date = null;
-  lastest_date = null;
-
-  //Lifetime Achievements
-  focus_overall = 0;
-  rest_overall = 0;
-  finishTask = 0;
-
-  //Streak Achievements
-  focus_overall_day = 0;
-  focus_overall_week = 0;
-  streak_day = 0;
-  streak_week = 0;
+  stats = {
+    started_date: "",
+    lastest_date: "",
+    focus_overall: 0,
+    rest_overall: 0,
+    finishTask: 0,
+    focus_overall_day: 0,
+    focus_overall_week: 0,
+    streak_day: 0,
+  };
 
   received = [];
 
@@ -207,7 +188,43 @@ class AchievementStore {
         if (this.finishTask === 10) this.completed_Achievement(data.alias);
       }
     });
-    return;
+    return this.uploadStatsToFirestore();
+  }
+
+  set setStats(stats) {
+    return (this.stats = stats);
+  }
+  async fetchAchievements() {
+    const stats = await firestore()
+      .collection("users")
+      .doc(this.rootStore.uid)
+      .collection("achievements")
+      .doc("stats")
+      .get();
+
+    this.stats = stats.data().stats;
+  }
+
+  async uploadStatsToFirestore() {
+    if (this.rootStore.uid !== null)
+      await firestore()
+        .collection("users")
+        .doc(this.rootStore.uid)
+        .set(
+          {
+            stats: {
+              started_date: this.stats.started_date,
+              lastest_date: this.stats.lastest_date,
+              focus_overall: this.stats.focus_overall,
+              rest_overall: this.stats.rest_overall,
+              finishTask: this.stats.finishTask,
+              focus_overall_day: this.stats.focus_overall_day,
+              focus_overall_week: this.stats.focus_overall_week,
+              streak_day: this.stats.streak_day,
+            },
+          },
+          { merge: true }
+        );
   }
 
   acceptReceived() {
