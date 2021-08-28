@@ -77,6 +77,16 @@ class mainStore {
     } catch {}
   }
 
+  set setRealtimeTime(time) {
+    this.mode === "focus"
+      ? (this.user.focusTime += time)
+      : (this.user.restTime += time);
+  }
+
+  set setWeekProgress(data) {
+    this.week_progress = data;
+  }
+
   fetchUserData = async () => {
     try {
       await auth().onAuthStateChanged(async (user) => {
@@ -93,12 +103,13 @@ class mainStore {
                 .doc(uid)
                 .get();
               if (userData.exists) {
-                this.SetUser = userData.data();
+                this.setUser = userData.data();
                 clearInterval(fetchUser);
               }
             }, 2000);
           } else {
-            this.SetUser = userData.data();
+            this.setUser = userData.data();
+
             const week_progress_fetch = await firestore()
               .collection("users")
               .doc(uid)
@@ -110,7 +121,7 @@ class mainStore {
               progress_history.push(progress.data());
             });
 
-            this.week_progress = progress_history;
+            this.setWeekProgress = progress_history;
           }
           this.setUid = uid;
         }

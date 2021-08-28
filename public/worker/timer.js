@@ -3,6 +3,8 @@ let timer = null;
 self.addEventListener("message", (e) => {
   if (e.data.status === "start") {
     const timerEnd = new Date(Date.now() + e.data.time * 1000).getTime();
+    const startTime = new Date().getTime();
+    self.postMessage({ startTime: startTime, time: e.data.time });
 
     timer = setInterval(async () => {
       const now = Date.now();
@@ -21,6 +23,8 @@ self.addEventListener("message", (e) => {
 
   if (e.data.status === "countup") {
     const startTime = new Date().getTime();
+    self.postMessage({ startTime: startTime });
+
     timer = setInterval(() => {
       self.postMessage({
         time: parseInt((Date.now() - startTime) / 1000),

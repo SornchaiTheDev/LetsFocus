@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
 import TopBar from "../components/TopBar";
 import { Base, Container, Text } from "../css/main";
 import styled from "styled-components";
 import LeaderboardCard from "../components/Leaderboard/LeaderboardCard";
+import { clear } from "localforage";
 
 // Styles
 const LeaderBox = styled.div`
@@ -28,7 +29,9 @@ const Divider = styled.div`
 
 const Leaderboard = observer(({ history }) => {
   const mainStore = useContext(MainStore);
-  const { leaderBoardStore } = useContext(MainStore);
+
+  const { timerStore, leaderBoardStore } = useContext(MainStore);
+
   const users = leaderBoardStore.usersRank;
 
   return (

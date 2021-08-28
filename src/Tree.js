@@ -34,7 +34,6 @@ const Tree = observer(() => {
   // Achievement Run
   useEffect(() => {
     autorun(() => {
-      console.log(timerStore.status);
       if (achievementStore.started_date === null) {
         achievementStore.setStarted_date = new Date().getTime();
       }
@@ -57,6 +56,14 @@ const Tree = observer(() => {
       }
     });
   }, []);
+
+  // Update Realtime Time
+  useEffect(() => {
+    const timer = setInterval(() => {
+      mainStore.setRealtimeTime = 1;
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [mainStore.user.focusTime]);
 
   useEffect(() => {
     if (mainStore.uid !== null) {

@@ -99,7 +99,6 @@ const TimerClock = observer(({ stopConfirm }) => {
     return 100;
   };
   const clickEvent = () => {
-    console.log(timerStore.status);
     if (timerStore.isFinish && timerStore.timer === 0) {
       timerStore.countup();
     }
@@ -112,7 +111,7 @@ const TimerClock = observer(({ stopConfirm }) => {
       timerStore.timer > 0 &&
       timerStore.status === "idle"
     ) {
-      timerStore.startTime = new Date(
+      timerStore.setStartTime = new Date(
         Date.now() + timerStore.timer * 1000
       ).getTime();
 

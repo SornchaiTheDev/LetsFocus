@@ -17,8 +17,7 @@ export const focusTimeOnDb = async (
       mode: mainStore.mode,
       time: achieveTime,
     };
-    mainStore.setFocus(focusTime);
-    mainStore.setRest(restTime);
+
     mainStore.setFinishTask(todosStore.finishedTask);
     timerStore.resetSaveTime();
     mainStore.setMode();
@@ -30,6 +29,7 @@ export const focusTimeOnDb = async (
           {
             focusTime: firestore.FieldValue.increment(focusTime),
             restTime: firestore.FieldValue.increment(restTime),
+            startTime: 0,
           },
           { merge: true }
         );
@@ -42,11 +42,6 @@ export const focusTimeLocal = (mainStore, timerStore) => {
     (timerStore.isFinish && timerStore.status === "end") ||
     timerStore.status === "end_countup"
   ) {
-    const focusTime = timerStore.saveFocusTime;
-    const restTime = timerStore.saveRestTime;
-
-    mainStore.setFocus(focusTime);
-    mainStore.setRest(restTime);
     timerStore.resetSaveTime();
     mainStore.setMode();
   }

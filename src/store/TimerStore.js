@@ -2,10 +2,10 @@ import { makeAutoObservable } from "mobx";
 import { firestore } from "../firebase";
 const timer = new Worker("./worker/timer.js");
 class TimerStore {
-  focusTime = 25;
+  focusTime = 0;
   saveFocusTime = 0;
   saveRestTime = 0;
-  restTime = 5;
+  restTime = 0;
   maxFocusTime = 0;
   maxRestTime = 0;
   status = "idle";
@@ -20,14 +20,17 @@ class TimerStore {
   countup() {
     this.isFinish = false;
     this.status = "countup";
-    this.rootStore.uid !== null && this.setStartStatus();
+
     timer.postMessage({
       status: "countup",
-      time: this.timer,
     });
 
     timer.onmessage = (e) => {
-      this.updateTimer = e.data.time;
+      this.updateTimer = e.data.time !== undefined ? e.data.time : 0;
+      if (e.data.startTime !== undefined) {
+        this.setStartTime = e.data.startTime;
+        this.rootStore.uid !== null && this.setStartStatus(e.data.startTime);
+      }
     };
   }
   stopCountup() {
@@ -44,7 +47,7 @@ class TimerStore {
   countdown() {
     this.isFinish = false;
     this.status = "start";
-    this.rootStore.uid !== null && this.setStartStatus();
+
     timer.postMessage({
       status: "start",
       time: this.timer,
@@ -52,6 +55,11 @@ class TimerStore {
 
     timer.onmessage = (e) => {
       this.updateTimer = e.data.time;
+
+      if (e.data.startTime !== undefined) {
+        this.setStartTime = e.data.startTime;
+        this.rootStore.uid !== null && this.setStartStatus(e.data.startTime);
+      }
 
       if (e.data.status === "finish") {
         if (this.rootStore.isPageVisible) {
@@ -65,11 +73,11 @@ class TimerStore {
     };
   }
 
-  async setStartStatus() {
+  async setStartStatus(time) {
     await firestore()
       .collection("users")
       .doc(this.rootStore.uid)
-      .update({ status: this.rootStore.mode, startTime: this.startTime });
+      .update({ status: this.rootStore.mode, startTime: time });
   }
 
   async setStopStatus() {
@@ -99,6 +107,7 @@ class TimerStore {
   resetSaveTime() {
     this.saveFocusTime = 0;
     this.saveRestTime = 0;
+    this.startTime = 0;
     this.status = "idle";
   }
 
@@ -106,6 +115,10 @@ class TimerStore {
     this.rootStore.mode === "focus"
       ? (this.saveFocusTime = time)
       : (this.saveRestTime = time);
+  }
+
+  set setStartTime(time) {
+    return (this.startTime = time);
   }
 
   set setTime(time) {
@@ -137,6 +150,15 @@ class TimerStore {
     return `${Math.floor(this.timer / 60)}:${(this.timer % 60)
       .toString()
       .padEnd(2, 0)}`;
+  }
+
+  get getRealtimeTimer() {
+    let realtimeTime = 0;
+    if (this.status !== "idle" && this.startTime !== null) {
+      realtimeTime = parseInt((Date.now() - this.startTime) / 1000);
+    }
+
+    return realtimeTime;
   }
 }
 
