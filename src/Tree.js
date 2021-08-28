@@ -15,13 +15,14 @@ import { MainStore } from "./store/MainStore";
 import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
 import Alert from "./components/Alert";
 import BadgeReceive from "./components/Me/BadgeReceive";
-import { autorun } from "mobx";
+
 import Howto from "./components/Howto";
 import Preloader from "./components/Preloader";
 import { auth } from "./firebase";
+import { autorun } from "mobx";
 
 const Tree = observer(() => {
-  const { timerStore, todosStore } = useContext(MainStore);
+  const { timerStore, todosStore, achievementStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
 
   // useEffect(() => {
@@ -29,9 +30,36 @@ const Tree = observer(() => {
   //   mainStore.clearLinkwithGoogle();
   // }, []);
 
+  // Achievement Run
+  useEffect(() => {
+    autorun(() => {
+      console.log("call");
+      if (achievementStore.started_date === null) {
+        achievementStore.setStarted_date = new Date().getTime();
+      }
+      if (achievementStore.started_date !== null) {
+        const lastest_dated =
+          new Date(achievementStore.lastest_date)
+            .setHours(0, 0, 0, 0)
+            .valueOf() / 86400000;
+        const today =
+          new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
+        if (today - lastest_dated === 1) {
+          achievementStore.updateStreak();
+        } else {
+          achievementStore.clearStreak();
+        }
+        if (today - lastest_dated === 7) {
+          achievementStore.clearOverall();
+        }
+        achievementStore.setLastest_date = new Date().getTime();
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (mainStore.uid !== null) {
-      focusTimeOnDb(mainStore, timerStore, todosStore);
+      focusTimeOnDb(mainStore, timerStore, todosStore, achievementStore);
     } else {
       focusTimeLocal(mainStore, timerStore);
     }
@@ -87,9 +115,12 @@ const Tree = observer(() => {
         />
       )}
 
-      {mainStore.isReceived && (
-        <BadgeReceive onClick={() => (mainStore.isReceived = false)} />
-      )}
+      {/* {mainStore.isReceived && ( */}
+      {/* <BadgeReceive
+        data={achievementStore.received}
+        onClick={() => (mainStore.isReceived = false)}
+      /> */}
+      {/* )} */}
       <Router basename="/">
         <Switch>
           {/* <Route path="/" exact component={Login} /> */}

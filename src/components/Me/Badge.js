@@ -1,15 +1,26 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { Text, Icon, Card } from "../../css/main";
-import { GiMeditation } from "react-icons/gi";
+import {
+  GiMeditation,
+  GiArcher,
+  GiBabyFace,
+  GiBeamsAura,
+  GiBiceps,
+  GiBullseye,
+  GiBurningMeteor,
+  GiDonut,
+  GiFlyingFlag,
+} from "react-icons/gi";
 import { MainStore } from "../../store/MainStore";
 import { observer } from "mobx-react-lite";
+
 const BadgeCard = styled.div`
   background: white;
   border-radius: 10px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.15);
   border-bottom: 10px solid #ffa500;
-  width: 200px;
+  width: 260px;
   padding: 20px;
   margin-right: 20px;
   display: flex;
@@ -42,6 +53,40 @@ const Scroll = styled.div`
   flex-grow: 1;
 `;
 
+const Icons = ({ completed, alias }) => {
+  if (alias === "focus_1_hour") {
+    return <GiArcher size="3rem" color={completed ? "white" : "#CED3D1"} />;
+  }
+  if (alias === "focus_3_hours") {
+    return <GiMeditation size="3rem" color={completed ? "white" : "#CED3D1"} />;
+  }
+  if (alias === "focus_for_3_days") {
+    return <GiBabyFace size="3rem" color={completed ? "white" : "#CED3D1"} />;
+  }
+  if (alias === "focus_for_5_days") {
+    return <GiBiceps size="3rem" color={completed ? "white" : "#CED3D1"} />;
+  }
+  if (alias === "focus_1_week") {
+    return <GiBeamsAura size="3rem" color={completed ? "white" : "#CED3D1"} />;
+  }
+  if (alias === "focus_more_than_3_hours_a_week") {
+    return <GiBullseye size="3rem" color={completed ? "white" : "#CED3D1"} />;
+  }
+  if (alias === "focus_more_than_5_hours_a_week") {
+    return (
+      <GiBurningMeteor size="3rem" color={completed ? "white" : "#CED3D1"} />
+    );
+  }
+  if (alias === "rest_for_1_hour") {
+    return <GiDonut size="3rem" color={completed ? "white" : "#CED3D1"} />;
+  }
+  if (alias === "completed_10_todos") {
+    return <GiFlyingFlag size="3rem" color={completed ? "white" : "#CED3D1"} />;
+  } else {
+    return <></>;
+  }
+};
+
 const Badge = observer(() => {
   const { achievementStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
@@ -65,12 +110,9 @@ const Badge = observer(() => {
           ({ alias, name, completed, received_dated }) => (
             <BadgeCard key={alias}>
               <BadgeIcon completed={completed}>
-                <GiMeditation
-                  size="3rem"
-                  color={completed ? "white" : "#CED3D1"}
-                />
+                <Icons completed={completed} alias={alias} />
               </BadgeIcon>
-              <Text weight="900" size={1}>
+              <Text weight="900" size={1} style={{ textAlign: "center" }}>
                 {name}
               </Text>
               {completed ? (

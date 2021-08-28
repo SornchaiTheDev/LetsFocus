@@ -50,9 +50,17 @@ class mainStore {
     return (this.isLoading = bool);
   }
 
+  set setUid(uid) {
+    this.uid = uid;
+  }
+
   // User Authen
   set UserUid(uid) {
     return (this.uid = uid);
+  }
+
+  set setUser(user) {
+    this.user = user;
   }
 
   linkwithGoogle(uid) {
@@ -73,25 +81,24 @@ class mainStore {
     try {
       await auth().onAuthStateChanged(async (user) => {
         if (user !== null) {
-          this.isLoading = true;
+          this.setIsLoading = true;
           const uid = user.uid;
 
           const userData = await firestore().collection("users").doc(uid).get();
           if (!userData.exists) {
             let fetchUser;
             fetchUser = setInterval(async () => {
-              console.log("call");
               const userData = await firestore()
                 .collection("users")
                 .doc(uid)
                 .get();
               if (userData.exists) {
-                this.user = userData.data();
+                this.SetUser = userData.data();
                 clearInterval(fetchUser);
               }
             }, 2000);
           } else {
-            this.user = userData.data();
+            this.SetUser = userData.data();
             const week_progress_fetch = await firestore()
               .collection("users")
               .doc(uid)
@@ -105,9 +112,9 @@ class mainStore {
 
             this.week_progress = progress_history;
           }
-          this.uid = uid;
+          this.setUid = uid;
         }
-        this.isLoading = false;
+        this.setIsLoading = false;
       });
     } catch {}
   };

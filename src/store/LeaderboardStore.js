@@ -16,6 +16,10 @@ class LeaderBoardStore {
     this.rootStore = rootStore;
   }
 
+  set setLeaderboard(data) {
+    this.leaderboard = data;
+  }
+
   updateRank = async () => {
     try {
       await firestore()
@@ -23,7 +27,7 @@ class LeaderBoardStore {
         .onSnapshot((snapshot) => {
           const allUser = [];
           snapshot.forEach((user) => allUser.push(user.data()));
-          this.leaderboard = allUser;
+          this.setLeaderboard = allUser;
         });
     } catch {}
   };
