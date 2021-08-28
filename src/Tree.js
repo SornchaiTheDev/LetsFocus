@@ -34,12 +34,12 @@ const Tree = observer(() => {
   // Achievement Run
   useEffect(() => {
     autorun(() => {
-      if (achievementStore.started_date === null) {
+      if (achievementStore.stats.started_date === "") {
         achievementStore.setStarted_dated = new Date().getTime();
       }
-      if (achievementStore.started_date !== null) {
+      if (achievementStore.stats.started_date !== "") {
         const lastest_dated =
-          new Date(achievementStore.lastest_date)
+          new Date(achievementStore.stats.lastest_date)
             .setHours(0, 0, 0, 0)
             .valueOf() / 86400000;
         const today =
@@ -60,8 +60,12 @@ const Tree = observer(() => {
   // Achievement Validate
   useEffect(() => {
     autorun(() => {
-      achievementStore.checkAvailable();
+      if (!mainStore.isLoading) achievementStore.checkAvailable();
     });
+    // achievementStore.setStats = {
+    //   ...achievementStore.stats,
+    //   focus_overall: 3590,
+    // };
   }, []);
 
   useEffect(() => {
@@ -105,7 +109,7 @@ const Tree = observer(() => {
         />
       )}
 
-      {achievementStore.isReceived &&
+      {achievementStore.received.length > 0 &&
         achievementStore.received.map((data, index) => (
           <BadgeReceive
             key={index}

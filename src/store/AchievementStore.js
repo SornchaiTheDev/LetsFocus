@@ -5,6 +5,10 @@ class AchievementStore {
   constructor(rootStore) {
     makeAutoObservable(this, { rootStore: false });
     this.rootStore = rootStore;
+    makePersistable(this, {
+      name: "Achievements",
+      properties: ["received", "stats", "all_achieved"],
+    });
   }
   stats = {
     started_date: "",
@@ -105,36 +109,35 @@ class AchievementStore {
 
   set updateAchievementState({ mode, time }) {
     if (mode === "focus") {
-      this.focus_overall_day += time;
-      this.focus_overall += time;
-      this.focus_overall_week += time;
+      this.stats.focus_overall_day += time;
+      this.stats.focus_overall += time;
+      this.stats.focus_overall_week += time;
     }
     if (mode === "rest") this.rest_overall += time;
   }
 
   set setStarted_dated(date) {
-    this.started_date = date;
+    this.stats.started_date = date;
   }
   set setLastest_dated(date) {
-    this.lastest_date = date;
-  }
-
-  get isReceived() {
-    return this.all_achieved.some((data) => data.completed === true);
+    this.stats.lastest_date = date;
   }
 
   completed_Achievement(alias) {
     const index = this.all_achieved.findIndex((data) => data.alias === alias);
-    this.all_achieved[index] = {
-      ...this.all_achieved[index],
-      completed: true,
-      received_dated: new Date(),
-    };
-    this.received.push(this.all_achieved[index]);
-    this.updateToFirestore(this.all_achieved[index]);
+    if (!this.all_achieved[index].completed) {
+      this.all_achieved[index] = {
+        ...this.all_achieved[index],
+        completed: true,
+        received_dated: new Date().getTime(),
+      };
+      this.received.push(this.all_achieved[index]);
+      this.updateToFirestore(this.all_achieved[index]);
+    }
   }
 
   async updateToFirestore(achieved) {
+    console.log("call");
     await firestore()
       .collection("users")
       .doc(this.rootStore.uid)
@@ -148,15 +151,17 @@ class AchievementStore {
     );
 
     const started_dated =
-      new Date(this.started_date).setHours(0, 0, 0, 0).valueOf() / 86400000;
+      new Date(this.stats.started_date).setHours(0, 0, 0, 0).valueOf() /
+      86400000;
     const today =
       new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
     achievementLeft.map((data) => {
       if (data.alias === "focus_1_hour") {
-        if (this.focus_overall === 3600) this.completed_Achievement(data.alias);
+        if (this.stats.focus_overall >= 3600)
+          this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_3_hours") {
-        if (this.focus_overall === 10800)
+        if (this.stats.focus_overall >= 10800)
           this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_for_3_days") {
@@ -174,39 +179,35 @@ class AchievementStore {
           this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_more_than_8_hours_a_week") {
-        if (this.focus_overall_week > 28000)
+        if (this.stats.focus_overall_week > 28000)
           this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_more_than_12_hours_a_week") {
-        if (this.focus_overall_week > 43200)
+        if (this.stats.focus_overall_week > 43200)
           this.completed_Achievement(data.alias);
       }
       if (data.alias === "rest_for_1_hour") {
-        if (this.rest_overall === 3600) this.completed_Achievement(data.alias);
+        if (this.stats.rest_overall >= 3600)
+          this.completed_Achievement(data.alias);
       }
       if (data.alias === "completed_10_tasks") {
-        if (this.finishTask === 10) this.completed_Achievement(data.alias);
+        if (this.stats.finishTask === 10)
+          this.completed_Achievement(data.alias);
       }
     });
-    return this.uploadStatsToFirestore();
+    if (this.stats.focus_overall !== undefined) this.uploadStatsToFirestore();
   }
 
   set setStats(stats) {
     return (this.stats = stats);
   }
-  async fetchAchievements() {
-    const stats = await firestore()
-      .collection("users")
-      .doc(this.rootStore.uid)
-      .collection("achievements")
-      .doc("stats")
-      .get();
-
-    this.stats = stats.data().stats;
+  async fetchAchievements(uid) {
+    const stats = await firestore().collection("users").doc(uid).get();
+    this.setStats = stats.data().stats;
   }
 
   async uploadStatsToFirestore() {
-    if (this.rootStore.uid !== null)
+    if (this.rootStore.uid !== null && this.stats)
       await firestore()
         .collection("users")
         .doc(this.rootStore.uid)
@@ -231,15 +232,15 @@ class AchievementStore {
     this.received.pop();
   }
   updateStreak() {
-    this.streak_day += 1;
-    this.focus_overall_day = 0;
+    this.stats.streak_day += 1;
+    this.stats.focus_overall_day = 0;
   }
   clearStreak() {
-    this.streak_day = 0;
+    this.stats.streak_day = 0;
   }
 
   clearOverall() {
-    this.focus_overall_week = 0;
+    this.stats.focus_overall_week = 0;
   }
 }
 

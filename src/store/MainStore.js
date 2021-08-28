@@ -45,6 +45,7 @@ class mainStore {
     });
     this.leaderBoardStore.updateRank();
     this.fetchUserData();
+
     if (isHydrated(this)) this.isLoading = false;
   }
 
@@ -144,6 +145,7 @@ class mainStore {
             }, 2000);
           } else {
             this.setUser = userData.data();
+            this.achievementStore.fetchAchievements(uid);
 
             await firestore()
               .collection("users")

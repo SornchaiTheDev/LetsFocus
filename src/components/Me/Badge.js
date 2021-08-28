@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Text, Card } from "../../css/main";
 import Icons from "./Icons";
-import { MainStore } from "../../store/MainStore";
 import { observer } from "mobx-react-lite";
 
 const BadgeCard = styled.div`
@@ -39,9 +38,7 @@ const BadgeGroup = styled.div`
   gap: 10px;
 `;
 
-const Badge = observer(() => {
-  const { achievementStore } = useContext(MainStore);
-
+const Badge = observer(({ achievements }) => {
   const getDated = (date) => {
     const achiveDated = new Date(date);
 
@@ -57,7 +54,7 @@ const Badge = observer(() => {
         รางวัล
       </Text>
       <BadgeGroup>
-        {achievementStore.all
+        {achievements
           .sort((a, b) => b.received_dated - a.received_dated)
           .map(({ alias, name, completed, received_dated }) => (
             <BadgeCard key={alias}>

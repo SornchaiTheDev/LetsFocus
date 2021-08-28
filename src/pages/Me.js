@@ -41,6 +41,7 @@ const Divider = styled.div`
 
 const Me = observer(() => {
   const mainStore = useContext(MainStore);
+  const { achievementStore } = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
 
   const getFocusTime = () => {
@@ -149,7 +150,7 @@ const Me = observer(() => {
           )}
         </Card>
 
-        <Badge />
+        <Badge achievements={achievementStore.all} />
 
         <Card height={250}>
           <ProgressHistory progress={mainStore.getWeekProgress} />

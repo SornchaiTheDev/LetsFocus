@@ -8,6 +8,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import TopBar from "../components/TopBar";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
+import Badge from "../components/Me/Badge";
 
 import { firestore } from "../firebase";
 
@@ -32,6 +33,7 @@ const Friend = observer(({ history }) => {
   const [user, setUser] = useState([]);
   const mainStore = useContext(MainStore);
   const [progressHist, setProgressHist] = useState([]);
+  const [achievements, setAchievements] = useState([]);
   const getUser = async () => {
     try {
       const getUserdoc = await firestore()
@@ -67,6 +69,86 @@ const Friend = observer(({ history }) => {
           });
         }
         setProgressHist(template);
+
+        getUserdoc.forEach(async (doc) => {
+          const getAchievements = await firestore()
+            .collection("users")
+            .doc(doc.id)
+            .collection("achievements")
+            .get();
+          const achievements = [
+            {
+              alias: "focus_1_hour",
+              name: "โฟกัสครบ 1 ชั่วโมง",
+              completed: false,
+              received_dated: null,
+            },
+            {
+              alias: "focus_3_hours",
+              name: "โฟกัสครบ 3 ชั่วโมง",
+              completed: false,
+              received_dated: null,
+            },
+            {
+              alias: "focus_for_3_days",
+              name: "โฟกัสครบ 3 วันแล้ว",
+              completed: false,
+              received_dated: null,
+            },
+            {
+              alias: "focus_for_1_week",
+              name: "โฟกัสครบ 1 สัปดาห์แล้ว",
+              completed: false,
+              received_dated: null,
+            },
+
+            {
+              alias: "focus_for_1_month",
+              name: "โฟกัสครบ 1 เดือนแล้ว",
+              completed: false,
+              received_dated: null,
+            },
+
+            {
+              alias: "focus_more_than_5_hours_a_week",
+              name: "โฟกัสมากกว่า 5 ชั่วโมงใน 1 สัปดาห์",
+              completed: false,
+              received_dated: null,
+            },
+            {
+              alias: "focus_more_than_8_hours_a_week",
+              name: "โฟกัสมากกว่า 8 ชั่วโมงใน 1 สัปดาห์",
+              completed: false,
+              received_dated: null,
+            },
+            {
+              alias: "focus_more_than_12_hours_a_week",
+              name: "โฟกัสมากกว่า 12 ชั่วโมงใน 1 สัปดาห์",
+              completed: false,
+              received_dated: null,
+            },
+
+            {
+              alias: "rest_for_1_hour",
+              name: "พักครบ 1 ชั่วโมง",
+              completed: false,
+              received_dated: null,
+            },
+            {
+              alias: "completed_10_tasks",
+              name: "ทำรายการเสร็จ ครบ 10 รายการ",
+              completed: false,
+              received_dated: null,
+            },
+          ];
+          getAchievements.forEach((doc) => {
+            const index = achievements.findIndex(
+              (data) => data.alias === doc.data().alias
+            );
+            achievements[index] = { ...doc.data() };
+          });
+          setAchievements(achievements);
+        });
       });
     } catch {}
   };
@@ -139,6 +221,8 @@ const Friend = observer(({ history }) => {
           </Group>
           <Divider />
         </Card>
+
+        <Badge achievements={achievements} />
 
         <Card height={250}>
           <ProgressHistory progress={progressHist} />
