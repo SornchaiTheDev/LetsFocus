@@ -46,10 +46,10 @@ const Leaderboard = observer(({ history }) => {
           ) : (
             <LeaderboardCard
               status="me"
-              startTime={timerStore.startTime}
               rank={leaderBoardStore.myRank}
               username={mainStore.user.username}
               onDbFocus={mainStore.user.focusTime}
+              startTime={0}
             />
           )}
 

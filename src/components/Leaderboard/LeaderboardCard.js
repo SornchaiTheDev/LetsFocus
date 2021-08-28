@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Group, Text } from "../../css/main";
 import { AiFillTrophy } from "react-icons/ai";
+import { observer } from "mobx-react-lite";
 
 const Card = styled.div`
   cursor: ${(props) => (props.clickable ? "pointer" : "default")};
@@ -32,15 +33,13 @@ const LeaderboardCard = ({
   status,
   onDbFocus,
 }) => {
+  const [count, setCount] = useState(0);
   const getFocusTime = () => {
     let focusTime;
 
     if (startTime !== 0) {
       if (startTime > 0 && status !== "idle") {
         focusTime = parseInt((Date.now() - startTime) / 1000) + onDbFocus;
-      }
-      if (status === "idle") {
-        focusTime = onDbFocus;
       }
     } else {
       focusTime = onDbFocus;
@@ -59,6 +58,14 @@ const LeaderboardCard = ({
       return `โฟกัส ${minutes} นาที`;
     }
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      getFocusTime();
+      setCount((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [count]);
   return (
     <Card onClick={onClick} clickable={clickabled}>
       <div

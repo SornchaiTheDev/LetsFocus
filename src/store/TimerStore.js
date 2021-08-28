@@ -85,7 +85,7 @@ class TimerStore {
     await firestore()
       .collection("users")
       .doc(this.rootStore.uid)
-      .update({ status: "idle" });
+      .update({ status: "idle", startTime: 0 });
   }
 
   stop() {

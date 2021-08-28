@@ -113,7 +113,7 @@ class mainStore {
             await firestore()
               .collection("users")
               .doc(uid)
-              .update({ status: "idle" });
+              .update({ status: "idle", startTime: 0 });
 
             const week_progress_fetch = await firestore()
               .collection("users")
