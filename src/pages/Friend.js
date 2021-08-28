@@ -39,6 +39,7 @@ const Friend = observer(({ history }) => {
         .where("username", "==", username)
         .get();
 
+      if (getUserdoc.empty) history.replace("/404");
       getUserdoc.forEach(async (doc) => {
         setUser(doc.data());
         const getProgressHistory = await firestore()

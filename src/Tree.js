@@ -10,6 +10,7 @@ import Timer from "./pages/Timer";
 import Leaderboard from "./pages/Leaderboard";
 import Me from "./pages/Me";
 import Friend from "./pages/Friend";
+import FouroFour from "./pages/FouroFour";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "./store/MainStore";
 import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
@@ -33,7 +34,6 @@ const Tree = observer(() => {
   // Achievement Run
   useEffect(() => {
     autorun(() => {
-      console.log("call");
       if (achievementStore.started_date === null) {
         achievementStore.setStarted_date = new Date().getTime();
       }
@@ -115,16 +115,16 @@ const Tree = observer(() => {
         />
       )}
 
-      {/* {mainStore.isReceived && ( */}
-      {/* <BadgeReceive
-        data={achievementStore.received}
-        onClick={() => (mainStore.isReceived = false)}
-      /> */}
-      {/* )} */}
+      {mainStore.isReceived && (
+        <BadgeReceive
+          data={achievementStore.received}
+          onClick={() => (mainStore.isReceived = false)}
+        />
+      )}
       <Router basename="/">
         <Switch>
-          {/* <Route path="/" exact component={Login} /> */}
           <Route path="/" exact component={Timer} />
+          <Route path="/404" exact component={FouroFour} />
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route path="/me" exact component={Me} />
           <Route path="/user/:username" exact component={Friend} />
