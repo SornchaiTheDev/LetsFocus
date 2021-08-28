@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { MainStore } from "../../store/MainStore";
 import { observer } from "mobx-react-lite";
 import TodoBoxComp from "./TodoBox";

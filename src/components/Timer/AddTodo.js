@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { MainStore } from "../../store/MainStore";
 import { v4 as uuid } from "uuid";

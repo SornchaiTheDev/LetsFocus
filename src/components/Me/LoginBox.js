@@ -1,11 +1,8 @@
-import React, { useContext } from "react";
-import { observer } from "mobx-react-lite";
-import { MainStore } from "../../store/MainStore";
-import { Base, Container, Text, Card } from "../../css/main";
+import React from "react";
+
+import { Text } from "../../css/main";
 import styled from "styled-components";
 import { FcGoogle } from "react-icons/fc";
-import { AiOutlineSmile } from "react-icons/ai";
-import { auth } from "../../firebase";
 
 const GoogleSignInBtn = styled.button`
   cursor: pointer;

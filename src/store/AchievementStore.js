@@ -1,4 +1,4 @@
-import { makeAutoObservable, toJS, autorun } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 class AchievementStore {
   constructor(rootStore) {

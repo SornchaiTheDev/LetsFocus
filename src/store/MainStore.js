@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from "react";
-import { makeAutoObservable, toJS, autorun } from "mobx";
+import React, { createContext } from "react";
+import { makeAutoObservable, toJS } from "mobx";
 import TimerStore from "./TimerStore";
 import TodosStore from "./TodosStore";
 import LeaderBoardStore from "./LeaderboardStore";
@@ -134,7 +134,7 @@ class mainStore {
     if (progress_db.length > 0) {
       progress_db.map((db) => {
         const index = template.findIndex((data) => data.day === db.day);
-        template[index] = db;
+        return (template[index] = db);
       });
     }
 

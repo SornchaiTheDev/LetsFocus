@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { Text, Icon, Card } from "../../css/main";
+import { Text, Card } from "../../css/main";
 import {
   GiMeditation,
   GiArcher,
@@ -48,10 +48,6 @@ const BadgeGroup = styled.div`
   align-items: center;
   gap: 10px;
 `;
-const Scroll = styled.div`
-  height: 100%;
-  flex-grow: 1;
-`;
 
 const Icons = ({ completed, alias }) => {
   if (alias === "focus_1_hour") {
@@ -89,7 +85,6 @@ const Icons = ({ completed, alias }) => {
 
 const Badge = observer(() => {
   const { achievementStore } = useContext(MainStore);
-  const mainStore = useContext(MainStore);
 
   const getDated = (date) => {
     const achiveDated = new Date(date * 1000);

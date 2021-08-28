@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { MainStore } from "../../store/MainStore";
 import { observer } from "mobx-react-lite";

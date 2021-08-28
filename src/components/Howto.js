@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { Text, Group } from "../css/main";
+import { Text } from "../css/main";
 import { MainStore } from "../store/MainStore";
 
 const AlertContainer = styled.div`

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
 import { Base, Container, Text, Card, Group, Icon } from "../css/main";
-import { BsArrowLeft, BsSkipEnd } from "react-icons/bs";
+import { BsArrowLeft } from "react-icons/bs";
 import TopBar from "../components/TopBar";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
@@ -20,18 +20,6 @@ const ProfileName = styled.div`
   align-items: center;
 `;
 
-const NameEdit = styled.input`
-  width: 100%;
-  padding: 6px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.15);
-  border: none;
-  outline: none;
-  font-family: "Bai Jamjuree", sans-serif;
-  font-weight: 600;
-  font-size: 2rem;
-`;
-
 const Divider = styled.div`
   width: 20%;
   border-bottom: 3px solid #0f1108;
@@ -45,7 +33,6 @@ const Friend = observer(({ history }) => {
   const mainStore = useContext(MainStore);
   const [progressHist, setProgressHist] = useState([]);
   const getUser = async () => {
-    let docId = null;
     try {
       const getUserdoc = await firestore()
         .collection("users")
@@ -75,7 +62,7 @@ const Friend = observer(({ history }) => {
         if (progressHistCol.length > 0) {
           progressHistCol.map((db) => {
             const index = template.findIndex((data) => data.day === db.day);
-            template[index] = db;
+            return (template[index] = db);
           });
         }
         setProgressHist(template);

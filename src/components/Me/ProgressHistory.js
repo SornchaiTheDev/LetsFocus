@@ -1,6 +1,5 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { memo } from "react";
 import { Bar } from "react-chartjs-2";
-import { toJS } from "mobx";
 
 function ProgressHistory({ progress }) {
   const data = {

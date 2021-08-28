@@ -18,7 +18,7 @@ import BadgeReceive from "./components/Me/BadgeReceive";
 
 import Howto from "./components/Howto";
 import Preloader from "./components/Preloader";
-import { auth } from "./firebase";
+
 import { autorun } from "mobx";
 
 const Tree = observer(() => {

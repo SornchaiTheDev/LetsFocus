@@ -13,9 +13,8 @@ import {
   BsPlay,
   BsFillCaretUpFill,
   BsFillCaretDownFill,
-  BsSkipEnd,
 } from "react-icons/bs";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../../store/MainStore";

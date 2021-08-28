@@ -26,37 +26,10 @@ const Divider = styled.div`
   border-bottom: 3px solid white;
 `;
 
-const ScrollBox = styled.div`
-  width: 80%;
-  padding: 20px;
-  max-height: 500px;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
-`;
-
 const Leaderboard = observer(({ history }) => {
   const mainStore = useContext(MainStore);
   const { leaderBoardStore } = useContext(MainStore);
   const users = leaderBoardStore.usersRank;
-
-  // For lots user make lazy loading -- Plan
-  // const _onScroll = () => {
-  //   let startAt = 0;
-  //   const leaderboard = document.getElementById("leaderboard");
-  //   if (
-  //     leaderboard.scrollHeight - leaderboard.offsetHeight ===
-  //     leaderboard.scrollTop
-  //     //   &&
-  //     // startAt + 10 < allUser
-  //   ) {
-  //     console.log(startAt + 10);
-  //     // setStartAt((prev) => prev + 10);
-  //   }
-  // };
 
   return (
     <Base background={mainStore.mode === "focus" ? "#D33F49" : "#3F7CAC"}>

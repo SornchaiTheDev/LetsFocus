@@ -89,21 +89,6 @@ const BadgeBG = styled.div`
   }
 `;
 
-const IconAni = styled.div`
-  position: absolute;
-  z-index: 999;
-  transform: scale(1.25);
-  animation: InOutIcon 3s 1 alternate ease-in-out;
-  @keyframes InOutIcon {
-    from {
-      transform: scale(0.5);
-    }
-    to {
-      transform: scale(1.25);
-    }
-  }
-`;
-
 const Icons = ({ alias }) => {
   if (alias === "focus_1_hour") {
     return <GiArcher size="3rem" color="white" style={{ zIndex: 999 }} />;
