@@ -98,12 +98,45 @@ const TimerClock = observer(({ stopConfirm }) => {
 
     return 100;
   };
+  const clickEvent = () => {
+    console.log(timerStore.status);
+    if (timerStore.isFinish && timerStore.timer === 0) {
+      timerStore.countup();
+    }
+
+    if (timerStore.timer > 0 && timerStore.status === "countup") {
+      timerStore.stopCountup();
+    }
+    if (
+      timerStore.isFinish &&
+      timerStore.timer > 0 &&
+      timerStore.status === "idle"
+    ) {
+      timerStore.startTime = new Date(
+        Date.now() + timerStore.timer * 1000
+      ).getTime();
+
+      timerStore.countdown();
+    }
+    if (
+      timerStore.maxTime - timerStore.timer > 0 &&
+      timerStore.status !== "countup"
+    ) {
+      stopConfirm();
+    }
+
+    if (timerStore.status === "extra") {
+      timerStore.isFinish = true;
+      timerStore.status = "end";
+      mainStore.uid !== null && timerStore.setStopStatus();
+    }
+  };
 
   return (
     <>
       <TimerMode />
       <div style={{ width: 250 }}>
-        {timerStore.isFinish && timerStore.status !== "extra" ? (
+        {timerStore.isFinish ? (
           <SetTimerComp />
         ) : (
           <CircularProgressbar
@@ -131,33 +164,7 @@ const TimerClock = observer(({ stopConfirm }) => {
       </div>
 
       <Group direction="column" gap={16} align="center">
-        <Button
-          onClick={() => {
-            if (
-              timerStore.isFinish &&
-              timerStore.status !== "extra" &&
-              timerStore.timer > 0
-            ) {
-              timerStore.startTime = new Date(
-                Date.now() + timerStore.timer * 1000
-              ).getTime();
-
-              timerStore.countdown();
-            }
-            if (
-              timerStore.maxTime - timerStore.timer > 0 &&
-              timerStore.status !== "extra"
-            ) {
-              stopConfirm();
-            }
-
-            if (timerStore.status === "extra") {
-              timerStore.isFinish = true;
-              timerStore.status = "end";
-              mainStore.uid !== null && timerStore.setStopStatus();
-            }
-          }}
-        >
+        <Button onClick={clickEvent}>
           {timerStore.isFinish ? (
             <BsPlay size="2rem" color="#0F1108" />
           ) : (

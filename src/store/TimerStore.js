@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx";
 import { firestore } from "../firebase";
-
 const timer = new Worker("./worker/timer.js");
 class TimerStore {
   focusTime = 25;
@@ -18,6 +17,30 @@ class TimerStore {
     this.rootStore = rootStore;
   }
 
+  countup() {
+    this.isFinish = false;
+    this.status = "countup";
+    this.rootStore.uid !== null && this.setStartStatus();
+    timer.postMessage({
+      status: "countup",
+      time: this.timer,
+    });
+
+    timer.onmessage = (e) => {
+      this.updateTimer = e.data.time;
+    };
+  }
+  stopCountup() {
+    this.isFinish = true;
+    this.status = "end_countup";
+    if (this.rootStore.mode === "focus") {
+      this.saveFocusTime = this.timer;
+    } else {
+      this.saveRestTime = this.timer;
+    }
+    timer.postMessage({ status: "stop" });
+  }
+
   countdown() {
     this.isFinish = false;
     this.status = "start";
@@ -25,7 +48,6 @@ class TimerStore {
     timer.postMessage({
       status: "start",
       time: this.timer,
-      pageVisible: this.rootStore.isPageVisible,
     });
 
     timer.onmessage = (e) => {
@@ -47,7 +69,7 @@ class TimerStore {
     await firestore()
       .collection("users")
       .doc(this.rootStore.uid)
-      .update({ status: this.rootStore.mode });
+      .update({ status: this.rootStore.mode, startTime: this.startTime });
   }
 
   async setStopStatus() {
@@ -77,6 +99,7 @@ class TimerStore {
   resetSaveTime() {
     this.saveFocusTime = 0;
     this.saveRestTime = 0;
+    this.status = "idle";
   }
 
   set saveTime(time) {

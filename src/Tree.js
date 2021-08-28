@@ -34,6 +34,7 @@ const Tree = observer(() => {
   // Achievement Run
   useEffect(() => {
     autorun(() => {
+      console.log(timerStore.status);
       if (achievementStore.started_date === null) {
         achievementStore.setStarted_date = new Date().getTime();
       }
@@ -79,13 +80,13 @@ const Tree = observer(() => {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    const startTime = parseInt((Date.now() - timerStore.startTime) / 1000);
-    if (timerStore.status === "extra" && startTime > 3600) {
-      timerStore.status = "cheat";
-      timerStore.isFinish = true;
-    }
-  }, [timerStore.timer]);
+  // useEffect(() => {
+  //   const startTime = parseInt((Date.now() - timerStore.startTime) / 1000);
+  //   if (timerStore.status === "extra" && startTime > 3600) {
+  //     timerStore.status = "cheat";
+  //     timerStore.isFinish = true;
+  //   }
+  // }, [timerStore.timer]);
 
   const PageViewState = () => {
     const isPageVisible = document.visibilityState === "visible";

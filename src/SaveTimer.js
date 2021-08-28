@@ -6,7 +6,10 @@ export const focusTimeOnDb = async (
   todosStore,
   achievementStore
 ) => {
-  if (timerStore.isFinish && timerStore.status === "end") {
+  if (
+    (timerStore.isFinish && timerStore.status === "end") ||
+    timerStore.status === "end_countup"
+  ) {
     const focusTime = timerStore.saveFocusTime;
     const restTime = timerStore.saveRestTime;
     const achieveTime = mainStore.mode === "focus" ? focusTime : restTime;
@@ -35,7 +38,10 @@ export const focusTimeOnDb = async (
 };
 
 export const focusTimeLocal = (mainStore, timerStore) => {
-  if (timerStore.isFinish && timerStore.status === "end") {
+  if (
+    (timerStore.isFinish && timerStore.status === "end") ||
+    timerStore.status === "end_countup"
+  ) {
     const focusTime = timerStore.saveFocusTime;
     const restTime = timerStore.saveRestTime;
 
