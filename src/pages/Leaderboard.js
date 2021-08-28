@@ -48,7 +48,7 @@ const Leaderboard = observer(({ history }) => {
               status="me"
               rank={leaderBoardStore.myRank}
               username={mainStore.user.username}
-              focusTime={mainStore.user.focusTime}
+              onDbFocus={mainStore.user.focusTime}
             />
           )}
 
@@ -58,7 +58,7 @@ const Leaderboard = observer(({ history }) => {
         <LeaderBox style={{ marginBottom: 50 }}>
           {users
             .sort((a, b) => b.focusTime - a.focusTime)
-            .map(({ username, focusTime, status }, index) => (
+            .map(({ username, startTime, status, focusTime }, index) => (
               <LeaderboardCard
                 clickabled={username !== mainStore.user.username}
                 onClick={() =>
@@ -69,7 +69,8 @@ const Leaderboard = observer(({ history }) => {
                 key={index}
                 rank={index + 1}
                 username={username}
-                focusTime={focusTime}
+                onDbFocus={focusTime}
+                startTime={startTime}
               />
             ))}
         </LeaderBox>

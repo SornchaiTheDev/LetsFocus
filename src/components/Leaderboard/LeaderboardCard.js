@@ -26,12 +26,24 @@ const Icon = styled.div`
 const LeaderboardCard = ({
   rank,
   username,
-  focusTime,
+  startTime,
   onClick,
   clickabled,
   status,
+  onDbFocus,
 }) => {
   const getFocusTime = () => {
+    let focusTime;
+    if (startTime !== undefined) {
+      if (startTime > 0 && status !== "idle") {
+        focusTime = parseInt((Date.now() - startTime) / 1000);
+      }
+      if (status === "idle") {
+        focusTime = onDbFocus;
+      }
+    }
+    focusTime = onDbFocus;
+
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);
     const minutes = parseInt((focusTime / 60) % 60);

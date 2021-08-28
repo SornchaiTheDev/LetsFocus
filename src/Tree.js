@@ -60,7 +60,7 @@ const Tree = observer(() => {
   // Update Realtime Time
   useEffect(() => {
     const timer = setInterval(() => {
-      mainStore.setRealtimeTime = 1;
+      if (timerStore.status !== "idle") mainStore.setRealtimeTime = 1;
     }, 1000);
     return () => clearInterval(timer);
   }, [mainStore.user.focusTime]);

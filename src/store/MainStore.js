@@ -110,6 +110,11 @@ class mainStore {
           } else {
             this.setUser = userData.data();
 
+            await firestore()
+              .collection("users")
+              .doc(uid)
+              .update({ status: "idle" });
+
             const week_progress_fetch = await firestore()
               .collection("users")
               .doc(uid)
