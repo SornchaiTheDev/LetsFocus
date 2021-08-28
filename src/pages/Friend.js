@@ -76,9 +76,18 @@ const Friend = observer(({ history }) => {
   }, []);
 
   const getFocusTime = () => {
-    const focusTime = user.focusTime;
+    let focusTime;
 
-    if (focusTime === undefined) return "กำลังโหลด";
+    if (user.startTime !== 0) {
+      if (user.startTime > 0 && user.status !== "idle") {
+        focusTime =
+          parseInt((Date.now() - user.startTime) / 1000) + user.focusTime;
+      }
+    } else {
+      focusTime = user.focusTime;
+    }
+
+    if (user.focusTime === undefined) return "กำลังโหลด";
     const hour = Math.floor(focusTime / 3600);
     const minutes = parseInt((focusTime / 60) % 60);
 

@@ -34,15 +34,17 @@ const LeaderboardCard = ({
 }) => {
   const getFocusTime = () => {
     let focusTime;
-    if (startTime !== undefined) {
+
+    if (startTime !== 0) {
       if (startTime > 0 && status !== "idle") {
-        focusTime = parseInt((Date.now() - startTime) / 1000);
+        focusTime = parseInt((Date.now() - startTime) / 1000) + onDbFocus;
       }
       if (status === "idle") {
         focusTime = onDbFocus;
       }
+    } else {
+      focusTime = onDbFocus;
     }
-    focusTime = onDbFocus;
 
     if (focusTime === undefined) return "error";
     const hour = Math.floor(focusTime / 3600);

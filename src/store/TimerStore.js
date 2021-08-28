@@ -9,7 +9,7 @@ class TimerStore {
   maxFocusTime = 0;
   maxRestTime = 0;
   status = "idle";
-  startTime = null;
+  startTime = 0;
   isFinish = true;
   rootStore;
   constructor(rootStore) {
@@ -154,7 +154,7 @@ class TimerStore {
 
   get getRealtimeTimer() {
     let realtimeTime = 0;
-    if (this.status !== "idle" && this.startTime !== null) {
+    if (this.status !== "idle" && this.startTime !== 0) {
       realtimeTime = parseInt((Date.now() - this.startTime) / 1000);
     }
 
