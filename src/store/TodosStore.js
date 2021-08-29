@@ -26,6 +26,7 @@ class TodosStore {
 
   isCompleted(id) {
     const currentId = this.todos.findIndex((todo) => todo.id === id);
+    this.rootStore.achievementStore.updateTaskAchieved()
     return this.todos[currentId].completed;
   }
 

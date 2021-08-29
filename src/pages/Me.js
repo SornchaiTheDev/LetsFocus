@@ -45,7 +45,7 @@ const Me = observer(() => {
   const [isChange, setIsChange] = useState(false);
 
   const getFocusTime = () => {
-    const focusTime = mainStore.realtimeFocus;
+    const focusTime = mainStore.realtimeFocusTimer;
 
     if (focusTime === undefined) return "กำลังโหลด";
     const hour = Math.floor(focusTime / 3600);
@@ -62,7 +62,7 @@ const Me = observer(() => {
   };
 
   const getRestTime = () => {
-    const restTime = mainStore.realtimeRest;
+    const restTime = mainStore.realtimeRestTimer;
 
     if (restTime === undefined) return "กำลังโหลด";
     const hour = Math.floor(restTime / 3600);
@@ -150,7 +150,12 @@ const Me = observer(() => {
           )}
         </Card>
 
-        <Badge achievements={achievementStore.all} />
+        <Card justify="flex-start" align="flex-start" overflow="scroll">
+          <Text weight="900" size={1.25}>
+            รางวัล
+          </Text>
+          <Badge achievements={achievementStore.all} />
+        </Card>
 
         <Card height={250}>
           <ProgressHistory progress={mainStore.getWeekProgress} />

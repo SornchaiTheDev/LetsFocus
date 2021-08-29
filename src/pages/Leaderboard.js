@@ -59,12 +59,12 @@ const Leaderboard = observer(({ history }) => {
         <LeaderBox style={{ marginBottom: 50 }}>
           {users
             .sort((a, b) => b.focusTime - a.focusTime)
-            .map(({ username, startTime, status, focusTime }, index) => (
+            .map(({ username, startTime, status, focusTime, id }, index) => (
               <LeaderboardCard
                 clickabled={username !== mainStore.user.username}
                 onClick={() =>
                   username !== mainStore.user.username &&
-                  history.push(`/user/${username}`)
+                  history.push(`/user/${id}`)
                 }
                 mode={status}
                 key={index}

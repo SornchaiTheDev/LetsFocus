@@ -3,17 +3,28 @@ import { useParams } from "react-router";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { MainStore } from "../store/MainStore";
-import { Base, Container, Text, Card, Group, Icon } from "../css/main";
+import {
+  Base,
+  Container,
+  Text,
+  Card,
+  Group,
+  Icon,
+  TextSkeleton,
+} from "../css/main";
 import { BsArrowLeft } from "react-icons/bs";
 import TopBar from "../components/TopBar";
 import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 import Badge from "../components/Me/Badge";
+import BadgeSkeleton from "../components/Skeleton/BadgeSkeleton";
 
 import { firestore } from "../firebase";
 
 // Styling
 const ProfileName = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   gap: 6px;
@@ -29,7 +40,7 @@ const Divider = styled.div`
 // End Styling
 
 const Friend = observer(({ history }) => {
-  const { username } = useParams();
+  const { id } = useParams();
   const [user, setUser] = useState([]);
   const mainStore = useContext(MainStore);
   const [progressHist, setProgressHist] = useState([]);
@@ -38,11 +49,12 @@ const Friend = observer(({ history }) => {
     try {
       const getUserdoc = await firestore()
         .collection("users")
-        .where("username", "==", username)
+        .where("id", "==", id)
         .get();
 
       if (getUserdoc.empty) history.replace("/404");
       getUserdoc.forEach(async (doc) => {
+        console.log(doc.data());
         setUser(doc.data());
         const getProgressHistory = await firestore()
           .collection("users")
@@ -150,7 +162,9 @@ const Friend = observer(({ history }) => {
           setAchievements(achievements);
         });
       });
-    } catch {}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -212,7 +226,7 @@ const Friend = observer(({ history }) => {
         <Card marginTop="20px">
           <ProfileName>
             <Text weight="600" size={2}>
-              {username}
+              {user.username ? user.username : "กำลังโหลด"}
             </Text>
           </ProfileName>
           <Group justify="center" align="center" gap={20}>
@@ -221,15 +235,26 @@ const Friend = observer(({ history }) => {
           </Group>
           <Divider />
         </Card>
-
-        <Badge achievements={achievements} />
+        <Card justify="flex-start" align="flex-start" overflow="scroll">
+          <Text weight="900" size={1.25}>
+            รางวัล
+          </Text>
+          {achievements.length === 0 ? (
+            <BadgeSkeleton />
+          ) : (
+            <Badge achievements={achievements} />
+          )}
+        </Card>
 
         <Card height={250}>
           <ProgressHistory progress={progressHist} />
         </Card>
-        {user.finishTask !== undefined && (
-          <FinishTask task={user.finishTask} amount={user.finishTask.length} />
-        )}
+
+        <FinishTask
+          task={user.finishTask}
+          loading={user.finishTask === undefined}
+          amount={user.length > 0 ? user.finishTask.length : 0}
+        />
       </Container>
     </Base>
   );

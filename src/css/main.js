@@ -123,3 +123,20 @@ export const Card = styled.div`
   margin-bottom: 30px;
   overflow-x: ${(props) => (props.overflow ? props.overflow : "visible")};
 `;
+
+// Skeletons
+export const TextSkeleton = styled.div`
+  width: ${(props) => (props.width ? props.width : "40%")};
+  height: ${(props) => (props.height ? props.height : "1.25rem")};
+  border-radius: 1rem;
+  background: hsl(50, 20%, 90%);
+  animation: loading 1s infinite alternate;
+  @keyframes loading {
+    from {
+      background: hsl(356, 20%, 90%);
+    }
+    to {
+      background: hsl(356, 20%, 70%);
+    }
+  }
+`;

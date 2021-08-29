@@ -107,6 +107,10 @@ class AchievementStore {
     this.received.push(received);
   }
 
+  updateTaskAchieved() {
+    return (this.stats.finishTask += 1);
+  }
+
   set updateAchievementState({ mode, time }) {
     if (mode === "focus") {
       this.stats.focus_overall_day += time;
@@ -207,7 +211,7 @@ class AchievementStore {
   }
 
   async uploadStatsToFirestore() {
-    if (this.rootStore.uid !== null && this.stats)
+    if (this.rootStore.uid !== null && this.rootStore.user.username !== null)
       await firestore()
         .collection("users")
         .doc(this.rootStore.uid)

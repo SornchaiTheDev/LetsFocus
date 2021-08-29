@@ -49,30 +49,25 @@ const Badge = observer(({ achievements }) => {
   };
 
   return (
-    <Card justify="flex-start" align="flex-start" overflow="scroll">
-      <Text weight="900" size={1.25}>
-        รางวัล
-      </Text>
-      <BadgeGroup>
-        {achievements
-          .sort((a, b) => b.received_dated - a.received_dated)
-          .map(({ alias, name, completed, received_dated }) => (
-            <BadgeCard key={alias}>
-              <BadgeIcon completed={completed}>
-                <Icons completed={completed} alias={alias} />
-              </BadgeIcon>
-              <Text weight="900" size={1} style={{ textAlign: "justify" }}>
-                {name}
-              </Text>
-              {completed ? (
-                <Text size={0.9}>ได้รับเมื่อ {getDated(received_dated)}</Text>
-              ) : (
-                <Text size={0.9}>ยังไม่ปลดล็อค</Text>
-              )}
-            </BadgeCard>
-          ))}
-      </BadgeGroup>
-    </Card>
+    <BadgeGroup>
+      {achievements
+        .sort((a, b) => b.received_dated - a.received_dated)
+        .map(({ alias, name, completed, received_dated }) => (
+          <BadgeCard key={alias}>
+            <BadgeIcon completed={completed}>
+              <Icons completed={completed} alias={alias} />
+            </BadgeIcon>
+            <Text weight="900" size={1} style={{ textAlign: "justify" }}>
+              {name}
+            </Text>
+            {completed ? (
+              <Text size={0.9}>ได้รับเมื่อ {getDated(received_dated)}</Text>
+            ) : (
+              <Text size={0.9}>ยังไม่ปลดล็อค</Text>
+            )}
+          </BadgeCard>
+        ))}
+    </BadgeGroup>
   );
 });
 

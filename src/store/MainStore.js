@@ -25,8 +25,6 @@ class mainStore {
     finishTask: [],
   };
   uid = null;
-  realtimeFocus = 0;
-  realtimeRest = 0;
   mode = "focus";
   isPageVisible = true;
   isHideHowto = false;
@@ -57,18 +55,8 @@ class mainStore {
     this.uid = uid;
   }
 
-  // User Authen
-  set UserUid(uid) {
-    return (this.uid = uid);
-  }
-
   set setUser(user) {
     this.user = user;
-  }
-
-  linkwithGoogle(uid) {
-    this.uid = uid;
-    this.isGoogle = true;
   }
 
   async updateUser(user) {
@@ -97,25 +85,19 @@ class mainStore {
     return (this.realtimeRest = time);
   }
 
-  realtimeFocusTimer() {
-    const startTime = this.timerStore.startTime;
-
-    if (startTime !== 0 && this.mode === "focus") {
-      return (this.setRealtimeFocus =
-        parseInt((Date.now() - startTime) / 1000) + this.user.focusTime);
+  get realtimeFocusTimer() {
+    if (this.timerStore.timer !== 0 && this.mode === "focus") {
+      return this.timerStore.timer + this.user.focusTime;
     } else {
-      return (this.setRealtimeFocus = this.user.focusTime);
+      return this.user.focusTime;
     }
   }
 
-  realtimeRestTimer() {
-    const startTime = this.timerStore.startTime;
-
-    if (startTime !== 0 && this.mode === "rest") {
-      return (this.setRealtimeRest =
-        parseInt((Date.now() - startTime) / 1000) + this.user.restTime);
+  get realtimeRestTimer() {
+    if (this.timerStore.timer !== 0 && this.mode === "rest") {
+      return this.timerStore.timer + this.user.restTime;
     } else {
-      return (this.setRealtimeRest = this.user.restTime);
+      return this.user.restTime;
     }
   }
 
@@ -197,11 +179,6 @@ class mainStore {
   setMode() {
     this.timerStore.status = "idle";
     return this.mode === "focus" ? (this.mode = "rest") : (this.mode = "focus");
-  }
-
-  async clearLinkwithGoogle() {
-    await clearPersistedStore(this);
-    console.log("clear!");
   }
 
   get allFinishTask() {

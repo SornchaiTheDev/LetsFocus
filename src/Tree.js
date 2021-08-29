@@ -16,9 +16,9 @@ import { MainStore } from "./store/MainStore";
 import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
 import Alert from "./components/Alert";
 import BadgeReceive from "./components/Me/BadgeReceive";
-
 import Howto from "./components/Howto";
 import Preloader from "./components/Preloader";
+import { auth } from "./firebase";
 
 import { autorun } from "mobx";
 
@@ -69,22 +69,6 @@ const Tree = observer(() => {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      mainStore.realtimeFocusTimer();
-      mainStore.realtimeRestTimer();
-      setCount((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [count]);
-  // Update Realtime Time
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     if (timerStore.startTime !== 0) mainStore.setRealtimeTime = 1;
-  //   }, 1000);
-  //   return () => clearInterval(timer);
-  // }, [timerStore.startTime]);
-
-  useEffect(() => {
     if (mainStore.uid !== null) {
       focusTimeOnDb(mainStore, timerStore, todosStore, achievementStore);
     } else {
@@ -94,8 +78,8 @@ const Tree = observer(() => {
 
   return (
     <>
-      {mainStore.isLoading && <Preloader />}
-      {!mainStore.isHideHowto && <Howto />}
+      {/* {mainStore.isLoading && <Preloader />} */}
+      {/* {!mainStore.isHideHowto && <Howto />} */}
       {timerStore.status === "cheat" && (
         <Alert
           msg="คุณขี้โกงอ่าา"
@@ -123,7 +107,7 @@ const Tree = observer(() => {
           <Route path="/404" exact component={FouroFour} />
           <Route path="/leaderboard" exact component={Leaderboard} />
           <Route path="/me" exact component={Me} />
-          <Route path="/user/:username" exact component={Friend} />
+          <Route path="/user/:id" exact component={Friend} />
           <Redirect to="/" />
         </Switch>
       </Router>
