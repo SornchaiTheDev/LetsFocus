@@ -143,12 +143,17 @@ class TimerStore {
   }
 
   get currentTime() {
+    const hour = Math.floor(this.timer / 3600);
+    const minutes = parseInt((this.timer / 60) % 60)
+      .toString()
+      .padStart(2, 0);
+    const seconds = this.timer % 60;
     if (this.timer % 60 < 10) {
-      return `${Math.floor(this.timer / 60)}:${(this.timer % 60)
+      return `${hour > 0 ? `${hour}:` : ""}${minutes}:${seconds
         .toString()
         .padStart(2, 0)}`;
     }
-    return `${Math.floor(this.timer / 60)}:${(this.timer % 60)
+    return `${hour > 0 ? `${hour}:` : ""}${minutes}:${seconds
       .toString()
       .padEnd(2, 0)}`;
   }
