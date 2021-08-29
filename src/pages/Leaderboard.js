@@ -58,7 +58,19 @@ const Leaderboard = observer(({ history }) => {
         </LeaderBox>
         <LeaderBox style={{ marginBottom: 50 }}>
           {users
-            .sort((a, b) => b.focusTime - a.focusTime)
+            .sort((a, b) => {
+              const max =
+                a.startTime !== 0
+                  ? parseInt((Date.now() - a.startTime) / 1000) + a.focusTime
+                  : a.focusTime;
+              const min =
+                b.startTime !== 0
+                  ? parseInt((Date.now() - b.startTime) / 1000) + b.focusTime
+                  : b.focusTime;
+
+              return max - min;
+            })
+            .reverse()
             .map(({ username, startTime, status, focusTime, id }, index) => (
               <LeaderboardCard
                 clickabled={username !== mainStore.user.username}

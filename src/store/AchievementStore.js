@@ -103,7 +103,7 @@ class AchievementStore {
       (achieved) => achieved.alias === alias
     );
     this.all_achieved[index] = { ...received, completed: true };
-    console.log(received);
+
     this.received.push(received);
   }
 
@@ -141,7 +141,6 @@ class AchievementStore {
   }
 
   async updateToFirestore(achieved) {
-    console.log("call");
     await firestore()
       .collection("users")
       .doc(this.rootStore.uid)

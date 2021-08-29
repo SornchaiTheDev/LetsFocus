@@ -54,7 +54,6 @@ const Friend = observer(({ history }) => {
 
       if (getUserdoc.empty) history.replace("/404");
       getUserdoc.forEach(async (doc) => {
-        console.log(doc.data());
         setUser(doc.data());
         const getProgressHistory = await firestore()
           .collection("users")
@@ -162,9 +161,7 @@ const Friend = observer(({ history }) => {
           setAchievements(achievements);
         });
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {
