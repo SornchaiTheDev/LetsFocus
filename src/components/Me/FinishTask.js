@@ -28,8 +28,8 @@ const FinishTask = observer(({ task, amount, loading }) => {
               return todo.completed === true;
             })
             .sort((a, b) => a.dated - b.dated)
-            .map(({ event }) => (
-              <TodoBox key={event} event={event} />
+            .map(({ event }, index) => (
+              <TodoBox key={index} event={event} />
             ))}
         </>
       )}

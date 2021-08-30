@@ -112,7 +112,8 @@ class AchievementStore {
   }
 
   updateTaskAchieved() {
-    return (this.stats.finishTask += 1);
+    this.stats.finishTask += 1;
+    return this.uploadStatsToFirestore();
   }
 
   set updateAchievementState({ mode, time }) {
@@ -141,6 +142,7 @@ class AchievementStore {
       };
       this.received.push(this.all_achieved[index]);
       this.updateToFirestore(this.all_achieved[index]);
+      this.uploadStatsToFirestore();
     }
   }
 
@@ -172,17 +174,16 @@ class AchievementStore {
           this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_for_3_days") {
-        if (today - started_dated === 3) this.completed_Achievement(data.alias);
+        if (today - started_dated >= 3) this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_for_1_week") {
-        if (today - started_dated === 7) this.completed_Achievement(data.alias);
+        if (today - started_dated >= 7) this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_for_1_month") {
-        if (today - started_dated === 30)
-          this.completed_Achievement(data.alias);
+        if (today - started_dated >= 30) this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_more_than_5_hours_a_week") {
-        if (this.focus_overall_week > 18000)
+        if (this.stats.focus_overall_week > 18000)
           this.completed_Achievement(data.alias);
       }
       if (data.alias === "focus_more_than_8_hours_a_week") {
@@ -202,15 +203,32 @@ class AchievementStore {
           this.completed_Achievement(data.alias);
       }
     });
-    if (this.stats.focus_overall !== undefined) this.uploadStatsToFirestore();
   }
 
   set setStats(stats) {
     return (this.stats = stats);
   }
-  async fetchAchievements(uid) {
+  async fetchAchievementsStats(uid) {
     const stats = await firestore().collection("users").doc(uid).get();
+    const achievements = await firestore()
+      .collection("users")
+      .doc(uid)
+      .collection("achievements")
+      .get();
+    const claims_achieved = [];
+    achievements.forEach((doc) => claims_achieved.push(doc.data()));
+
+    this.setAcheived = claims_achieved;
     this.setStats = stats.data().stats;
+  }
+
+  set setAcheived(acheivements) {
+    acheivements.map((achieve) => {
+      const index = this.all_achieved.findIndex(
+        (data) => data.alias === achieve.alias
+      );
+      this.all_achieved[index] = achieve;
+    });
   }
 
   async uploadStatsToFirestore() {

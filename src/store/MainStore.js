@@ -22,6 +22,7 @@ class mainStore {
     username: null,
     focusTime: 0,
     restTime: 0,
+    startTime: 0,
     finishTask: [],
   };
   uid = null;
@@ -105,53 +106,42 @@ class mainStore {
     this.week_progress = data;
   }
 
-  fetchUserData = async () => {
-    try {
-      await auth().onAuthStateChanged(async (user) => {
-        if (user !== null) {
-          this.setIsLoading = true;
-          const uid = user.uid;
-
-          const userData = await firestore().collection("users").doc(uid).get();
-          if (!userData.exists) {
-            let fetchUser;
-            fetchUser = setInterval(async () => {
-              const userData = await firestore()
-                .collection("users")
-                .doc(uid)
-                .get();
-              if (userData.exists) {
-                this.setUser = userData.data();
-                clearInterval(fetchUser);
-              }
-            }, 2000);
-          } else {
-            this.setUser = userData.data();
-            this.achievementStore.fetchAchievements(uid);
-
-            await firestore()
+  fetchUserData = () => {
+    auth().onAuthStateChanged(async (user) => {
+      if (user !== null) {
+        this.setIsLoading = true;
+        const uid = user.uid;
+        const userData = await firestore().collection("users").doc(uid).get();
+        if (!userData.exists) {
+          let fetchUser;
+          fetchUser = setInterval(async () => {
+            const userData = await firestore()
               .collection("users")
               .doc(uid)
-              .update({ status: "idle", startTime: 0 });
-
-            const week_progress_fetch = await firestore()
-              .collection("users")
-              .doc(uid)
-              .collection("progress_history")
               .get();
-
-            const progress_history = [];
-            week_progress_fetch.forEach((progress) => {
-              progress_history.push(progress.data());
-            });
-
-            this.setWeekProgress = progress_history;
-          }
-          this.setUid = uid;
+            if (userData.exists) {
+              this.setUser = userData.data();
+              clearInterval(fetchUser);
+            }
+          }, 2000);
+        } else {
+          this.setUser = userData.data();
+          const week_progress_fetch = await firestore()
+            .collection("users")
+            .doc(uid)
+            .collection("progress_history")
+            .get();
+          const progress_history = [];
+          week_progress_fetch.forEach((progress) => {
+            progress_history.push(progress.data());
+          });
+          this.setWeekProgress = progress_history;
         }
-        this.setIsLoading = false;
-      });
-    } catch {}
+        this.setUid = uid;
+        this.achievementStore.fetchAchievementsStats(uid);
+      }
+      this.setIsLoading = false;
+    });
   };
 
   get getWeekProgress() {

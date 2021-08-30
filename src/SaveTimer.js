@@ -21,6 +21,7 @@ export const focusTimeOnDb = async (
     mainStore.setRest(restTime);
     mainStore.setFinishTask(todosStore.finishedTask);
     timerStore.resetSaveTime();
+    achievementStore.uploadStatsToFirestore();
     mainStore.setMode();
     try {
       await firestore()

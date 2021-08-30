@@ -17,7 +17,6 @@ import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
 import Alert from "./components/Alert";
 import BadgeReceive from "./components/Me/BadgeReceive";
 import Howto from "./components/Howto";
-import Preloader from "./components/Preloader";
 import { auth } from "./firebase";
 
 import { autorun } from "mobx";
@@ -25,13 +24,11 @@ import { autorun } from "mobx";
 const Tree = observer(() => {
   const { timerStore, todosStore, achievementStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
-  const [count, setCount] = useState(0);
+
   // useEffect(() => {
   //   auth().signOut();
   //   mainStore.clearLinkwithGoogle();
   // }, []);
-
-  // Analytics
 
   // Achievement Run
   useEffect(() => {
@@ -40,22 +37,25 @@ const Tree = observer(() => {
         achievementStore.setStarted_dated = new Date().getTime();
       }
       if (achievementStore.stats.started_date !== "") {
-        const lastest_dated =
-          new Date(achievementStore.stats.lastest_date)
-            .setHours(0, 0, 0, 0)
-            .valueOf() / 86400000;
-        const today =
-          new Date(Date.now()).setHours(0, 0, 0, 0).valueOf() / 86400000;
-        if (today - lastest_dated === 1) {
-          achievementStore.updateStreak();
-        } else {
-          achievementStore.clearStreak();
+        const lastest_dated = parseInt(
+          new Date(achievementStore.stats.lastest_date).setHours(0, 0, 0, 0) /
+            86400000
+        );
+        const today = parseInt(
+          new Date(Date.now()).setHours(0, 0, 0, 0) / 86400000
+        );
+
+        if (lastest_dated > 0) {
+          console.log("today :" + today);
+          console.log("lastest dated :" + lastest_dated);
+          if (today - lastest_dated === 1) {
+            achievementStore.updateStreak();
+          } else {
+            achievementStore.clearStreak();
+          }
         }
-        if (today - lastest_dated === 7) {
-          achievementStore.clearOverall();
-        }
+        achievementStore.setLastest_dated = new Date().getTime();
       }
-      achievementStore.setLastest_dated = new Date().getTime();
     });
   }, []);
 
@@ -64,10 +64,6 @@ const Tree = observer(() => {
     autorun(() => {
       if (!mainStore.isLoading) achievementStore.checkAvailable();
     });
-    // achievementStore.setStats = {
-    //   ...achievementStore.stats,
-    //   focus_overall: 3590,
-    // };
   }, []);
 
   useEffect(() => {
@@ -80,8 +76,7 @@ const Tree = observer(() => {
 
   return (
     <>
-      {/* {mainStore.isLoading && <Preloader />} */}
-      {/* {!mainStore.isHideHowto && <Howto />} */}
+      {!mainStore.isHideHowto && <Howto />}
       {timerStore.status === "cheat" && (
         <Alert
           msg="คุณขี้โกงอ่าา"
