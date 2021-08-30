@@ -25,6 +25,15 @@ const Tree = observer(() => {
   const { timerStore, todosStore, achievementStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
 
+  // Timer Continuous
+  useEffect(() => {
+    autorun(() => {
+      const startTime = timerStore.startTime;
+
+      if (startTime > 0 && timerStore.status === "idle")
+        timerStore.isAlreadyCount(startTime);
+    });
+  }, []);
   // Achievement Run
   useEffect(() => {
     autorun(() => {

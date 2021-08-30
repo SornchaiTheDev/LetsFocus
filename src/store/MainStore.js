@@ -44,8 +44,6 @@ class mainStore {
     });
     this.leaderBoardStore.updateRank();
     this.fetchUserData();
-
-    if (isHydrated(this)) this.isLoading = false;
   }
 
   set setIsLoading(bool) {
@@ -139,8 +137,6 @@ class mainStore {
         }
         this.setUid = uid;
         this.achievementStore.fetchAchievementsStats(uid);
-        userData.data().startTime > 0 &&
-          this.timerStore.isAlreadyCount(userData.data().startTime);
       }
       this.setIsLoading = false;
     });

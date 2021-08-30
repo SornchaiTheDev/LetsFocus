@@ -1,4 +1,5 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, autorun } from "mobx";
+import { makePersistable } from "mobx-persist-store";
 import { firestore } from "../firebase";
 const timer = new Worker("./worker/timer.js");
 class TimerStore {
@@ -11,9 +12,14 @@ class TimerStore {
   status = "idle";
   startTime = 0;
   isFinish = true;
+  isChangeModeAlert = false;
   rootStore;
   constructor(rootStore) {
     makeAutoObservable(this, { rootStore: false });
+    makePersistable(this, {
+      name: "Timer",
+      properties: ["startTime"],
+    });
     this.rootStore = rootStore;
   }
 
@@ -21,7 +27,12 @@ class TimerStore {
     this.countup(startTime);
   }
 
+  changeModeAlert() {
+    return (this.isChangeModeAlert = !this.isChangeModeAlert);
+  }
+
   countup(startTime = 0) {
+    console.log("count up call");
     this.isFinish = false;
     this.status = "countup";
 
@@ -41,6 +52,7 @@ class TimerStore {
   stopCountup() {
     this.isFinish = true;
     this.status = "end_countup";
+    this.startTime = 0;
     if (this.rootStore.mode === "focus") {
       this.saveFocusTime = this.timer;
     } else {
@@ -68,13 +80,10 @@ class TimerStore {
       }
 
       if (e.data.status === "finish") {
-        if (this.rootStore.isPageVisible) {
-          this.isFinish = true;
-          this.status = "end";
-          this.rootStore.uid !== null && this.setStopStatus();
-        } else {
-          this.status = "extra";
-        }
+        this.isFinish = true;
+        this.status = "end";
+        this.rootStore.uid !== null && this.setStopStatus();
+        this.startTime = 0;
       }
     };
   }

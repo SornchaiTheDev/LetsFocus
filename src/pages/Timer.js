@@ -16,6 +16,19 @@ const Timer = observer(() => {
 
   return (
     <>
+      {timerStore.isChangeModeAlert && (
+        <Alert
+          title="เปลี่ยนโหมดระหว่างจับเวลาไม่ได้"
+          btn={[
+            {
+              title: "ปิด",
+              onClick: () => {
+                timerStore.changeModeAlert();
+              },
+            },
+          ]}
+        />
+      )}
       {stopConfirm && (
         <Alert
           title="หยุดจับเวลา"

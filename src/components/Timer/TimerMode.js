@@ -22,9 +22,13 @@ const TimerSelector = styled.div`
 
 const TimerMode = observer(() => {
   const mainStore = useContext(MainStore);
-
+  const { timerStore } = useContext(MainStore);
+  const _onClick = () => {
+    if (timerStore.status !== "idle") return timerStore.changeModeAlert();
+    mainStore.setMode();
+  };
   return (
-    <TimerSelector onClick={() => mainStore.setMode()}>
+    <TimerSelector onClick={_onClick}>
       <Text color="black" size={1} weight="700">
         {mainStore.mode === "focus" ? "ช่วงโฟกัส" : "ช่วงพัก"}
       </Text>
