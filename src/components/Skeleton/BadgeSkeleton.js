@@ -8,7 +8,7 @@ const BadgeCard = styled.div`
   background: white;
   border-radius: 10px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.15);
-  border-bottom: 10px solid hsl(356, 63%, 54%);
+  border-bottom: 10px solid #ffa500;
   width: 260px;
   padding: 20px;
   padding-bottom: 50px;
@@ -32,10 +32,10 @@ const BadgeIcon = styled.div`
   animation: loading 1s infinite alternate;
   @keyframes loading {
     from {
-      background: hsl(356, 20%, 90%);
+      background: hsl(39, 100%, 90%);
     }
     to {
-      background: hsl(356, 20%, 70%);
+      background: hsl(39, 100%, 70%);
     }
   }
 `;
@@ -58,10 +58,10 @@ const TextSkeleton = styled.div`
   animation: loading 1s infinite alternate;
   @keyframes loading {
     from {
-      background: hsl(356, 20%, 90%);
+      background: hsl(39, 100%, 90%);
     }
     to {
-      background: hsl(356, 20%, 70%);
+      background: hsl(39, 100%, 70%);
     }
   }
 `;
@@ -74,10 +74,10 @@ const DateSkeleton = styled.div`
   animation: loading 1s infinite alternate;
   @keyframes loading {
     from {
-      background: hsl(356, 20%, 90%);
+      background: hsl(39, 100%, 90%);
     }
     to {
-      background: hsl(356, 20%, 70%);
+      background: hsl(39, 100%, 70%);
     }
   }
 `;

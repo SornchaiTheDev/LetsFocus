@@ -25,11 +25,6 @@ const Tree = observer(() => {
   const { timerStore, todosStore, achievementStore } = useContext(MainStore);
   const mainStore = useContext(MainStore);
 
-  // useEffect(() => {
-  //   auth().signOut();
-  //   mainStore.clearLinkwithGoogle();
-  // }, []);
-
   // Achievement Run
   useEffect(() => {
     autorun(() => {
