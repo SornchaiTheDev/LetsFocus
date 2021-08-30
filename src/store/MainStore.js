@@ -139,6 +139,8 @@ class mainStore {
         }
         this.setUid = uid;
         this.achievementStore.fetchAchievementsStats(uid);
+        userData.data().startTime > 0 &&
+          this.timerStore.isAlreadyCount(userData.data().startTime);
       }
       this.setIsLoading = false;
     });

@@ -17,7 +17,7 @@ import { focusTimeLocal, focusTimeOnDb } from "./SaveTimer";
 import Alert from "./components/Alert";
 import BadgeReceive from "./components/Me/BadgeReceive";
 import Howto from "./components/Howto";
-import { auth } from "./firebase";
+import Preloader from "./components/Preloader";
 
 import { autorun } from "mobx";
 
@@ -41,8 +41,6 @@ const Tree = observer(() => {
         );
 
         if (lastest_dated > 0) {
-          console.log("today :" + today);
-          console.log("lastest dated :" + lastest_dated);
           if (today - lastest_dated === 1) {
             achievementStore.updateStreak();
           } else {
@@ -71,6 +69,7 @@ const Tree = observer(() => {
 
   return (
     <>
+      {mainStore.isLoading && <Preloader />}
       {!mainStore.isHideHowto && <Howto />}
       {timerStore.status === "cheat" && (
         <Alert

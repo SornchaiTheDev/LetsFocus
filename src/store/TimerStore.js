@@ -17,12 +17,17 @@ class TimerStore {
     this.rootStore = rootStore;
   }
 
-  countup() {
+  isAlreadyCount(startTime) {
+    this.countup(startTime);
+  }
+
+  countup(startTime = 0) {
     this.isFinish = false;
     this.status = "countup";
 
     timer.postMessage({
       status: "countup",
+      startTime: startTime,
     });
 
     timer.onmessage = (e) => {

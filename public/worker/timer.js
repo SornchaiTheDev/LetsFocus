@@ -22,7 +22,10 @@ self.addEventListener("message", (e) => {
   }
 
   if (e.data.status === "countup") {
-    const startTime = new Date().getTime();
+    const startTime =
+      e.data.startTime !== 0
+        ? new Date(e.data.startTime).getTime()
+        : new Date().getTime();
     self.postMessage({ startTime: startTime });
 
     timer = setInterval(() => {
