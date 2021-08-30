@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "letmakeyoufocus"
+  },
+  "targets": {
+    "letmakeyoufocus": {
+      "hosting": {
+        "test": [
+          "letmakeyoufocus"
+        ],
+        "prod": [
+          "letsfocus"
+        ]
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { makeAutoObservable, toJS } from "mobx";
-import { makePersistable } from "mobx-persist-store";
+import { makePersistable, clearPersistedStore } from "mobx-persist-store";
 import { firestore } from "../firebase";
 class AchievementStore {
   constructor(rootStore) {
@@ -88,6 +88,10 @@ class AchievementStore {
       received_dated: null,
     },
   ];
+
+  async clearStore() {
+    await clearPersistedStore(this);
+  }
 
   get all() {
     return toJS(this.all_achieved);

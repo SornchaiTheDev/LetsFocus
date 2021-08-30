@@ -31,6 +31,8 @@ const Tree = observer(() => {
   //   mainStore.clearLinkwithGoogle();
   // }, []);
 
+  // Analytics
+
   // Achievement Run
   useEffect(() => {
     autorun(() => {

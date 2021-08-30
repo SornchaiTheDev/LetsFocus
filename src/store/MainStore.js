@@ -186,7 +186,11 @@ class mainStore {
   }
 
   async clearStore() {
-    await clearPersistedStore();
+    console.log("clear Store!");
+    await clearPersistedStore(this);
+    this.todosStore.clearStore();
+    this.achievementStore.clearStore();
+    window.location.reload();
   }
 
   get doneTask() {

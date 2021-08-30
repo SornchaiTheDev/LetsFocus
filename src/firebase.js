@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/messaging";
+import "firebase/analytics";
 const firebaseConfig = {
   apiKey: "AIzaSyDaB7C08E4fvsrb2ZvqztssTQrbuemhaAE",
   authDomain: "letmakeyoufocus.firebaseapp.com",

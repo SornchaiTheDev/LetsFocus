@@ -1,5 +1,5 @@
 import { makeAutoObservable, toJS } from "mobx";
-import { makePersistable } from "mobx-persist-store";
+import { makePersistable, clearPersistedStore } from "mobx-persist-store";
 import { firestore } from "../firebase";
 
 class TodosStore {
@@ -15,6 +15,10 @@ class TodosStore {
     this.rootStore = rootStore;
   }
 
+  async clearStore() {
+    await clearPersistedStore(this);
+  }
+
   clearTodo() {
     const remainTodos = this.todos.filter((todo) => todo.completed === false);
     return (this.todos = remainTodos);
@@ -26,7 +30,6 @@ class TodosStore {
 
   isCompleted(id) {
     const currentId = this.todos.findIndex((todo) => todo.id === id);
-    this.rootStore.achievementStore.updateTaskAchieved()
     return this.todos[currentId].completed;
   }
 
@@ -50,6 +53,7 @@ class TodosStore {
         this.rootStore.setFinishTask(this.finishedTask);
         const finishTask = this.finishedTask;
         this.clearTodo();
+        this.rootStore.achievementStore.updateTaskAchieved();
         await firestore()
           .collection("users")
           .doc(this.rootStore.uid)

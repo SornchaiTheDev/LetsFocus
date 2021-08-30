@@ -10,6 +10,7 @@ import ProgressHistory from "../components/Me/ProgressHistory";
 import LoginBox from "../components/Me/LoginBox";
 import Badge from "../components/Me/Badge";
 import { auth } from "../firebase";
+import LogoutBtn from "../components/Me/LogoutBtn";
 
 // Styling
 const ProfileName = styled.div`
@@ -85,87 +86,90 @@ const Me = observer(() => {
     setIsChange(false);
   };
   return (
-    <Base background={mainStore.mode === "focus" ? "#D33F49" : "#3F7CAC"}>
-      <TopBar menu />
-      <Container gap={20}>
-        <Card>
-          {mainStore.uid === null ? (
-            <>
-              <Text weight="800" size={1}>
-                เข้าสู่ระบบ / สมัครสมาชิก
-              </Text>
-              <Text weight="400" size={1}>
-                เพื่อบันทึกข้อมูลของคุณ
-              </Text>
+    <>
+      {mainStore.uid !== null && <LogoutBtn />}
+      <Base background={mainStore.mode === "focus" ? "#D33F49" : "#3F7CAC"}>
+        <TopBar menu />
+        <Container gap={20}>
+          <Card>
+            {mainStore.uid === null && !mainStore.isLoading ? (
+              <>
+                <Text weight="800" size={1}>
+                  เข้าสู่ระบบ / สมัครสมาชิก
+                </Text>
+                <Text weight="400" size={1}>
+                  เพื่อบันทึกข้อมูลของคุณ
+                </Text>
 
-              <LoginBox
-                type="google"
-                text="เข้าสู่ระบบด้วยกูเกิ้ล"
-                onClick={() => {
-                  const provider = new auth.GoogleAuthProvider();
-                  auth().signInWithRedirect(provider);
-                }}
-              />
-            </>
-          ) : (
-            <>
-              <ProfileName>
-                {isChange ? (
-                  <form style={{ width: "100%" }} onSubmit={onChangeName}>
-                    <NameEdit
-                      id="username"
-                      placeholder="ชื่อผู้ใช้"
-                      value={mainStore.user.username}
-                      onChange={(e) => {
-                        if (e.target.value.length < 20)
-                          mainStore.user.username = e.target.value;
-                      }}
-                      onBlur={onChangeName}
-                      autoFocus
-                    />
-                  </form>
-                ) : (
-                  <>
-                    <Text weight="600" size={2}>
-                      {mainStore.user !== undefined &&
-                      mainStore.user.username !== null
-                        ? mainStore.user.username
-                        : "กำลังโหลด"}
-                    </Text>
-                    <Icon
-                      style={{ alignSelf: "flex-end" }}
-                      onClick={() => setIsChange(true)}
-                    >
-                      <FiEdit3 size="1rem" color="black" />
-                    </Icon>
-                  </>
-                )}
-              </ProfileName>
-              <Group justify="center" align="center" gap={20}>
-                <Text weight="300">{getFocusTime()}</Text>
-                <Text weight="300">{getRestTime()}</Text>
-              </Group>
-              <Divider />
-            </>
-          )}
-        </Card>
+                <LoginBox
+                  type="google"
+                  text="เข้าสู่ระบบด้วยกูเกิ้ล"
+                  onClick={() => {
+                    const provider = new auth.GoogleAuthProvider();
+                    auth().signInWithRedirect(provider);
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                <ProfileName>
+                  {isChange ? (
+                    <form style={{ width: "100%" }} onSubmit={onChangeName}>
+                      <NameEdit
+                        id="username"
+                        placeholder="ชื่อผู้ใช้"
+                        value={mainStore.user.username}
+                        onChange={(e) => {
+                          if (e.target.value.length < 20)
+                            mainStore.user.username = e.target.value;
+                        }}
+                        onBlur={onChangeName}
+                        autoFocus
+                      />
+                    </form>
+                  ) : (
+                    <>
+                      <Text weight="600" size={2}>
+                        {mainStore.user !== undefined &&
+                        mainStore.user.username !== null
+                          ? mainStore.user.username
+                          : "กำลังโหลด"}
+                      </Text>
+                      <Icon
+                        style={{ alignSelf: "flex-end" }}
+                        onClick={() => setIsChange(true)}
+                      >
+                        <FiEdit3 size="1rem" color="black" />
+                      </Icon>
+                    </>
+                  )}
+                </ProfileName>
+                <Group justify="center" align="center" gap={20}>
+                  <Text weight="300">{getFocusTime()}</Text>
+                  <Text weight="300">{getRestTime()}</Text>
+                </Group>
+                <Divider />
+              </>
+            )}
+          </Card>
 
-        <Card justify="flex-start" align="flex-start" overflow="scroll">
-          <Text weight="900" size={1.25}>
-            รางวัล
-          </Text>
-          <Badge achievements={achievementStore.all} />
-        </Card>
+          <Card justify="flex-start" align="flex-start" overflow="scroll">
+            <Text weight="900" size={1.25}>
+              รางวัล
+            </Text>
+            <Badge achievements={achievementStore.all} />
+          </Card>
 
-        <Card height={250}>
-          <ProgressHistory progress={mainStore.getWeekProgress} />
-        </Card>
-        <FinishTask
-          task={mainStore.user.finishTask}
-          amount={mainStore.allFinishTask}
-        />
-      </Container>
-    </Base>
+          <Card height={250}>
+            <ProgressHistory progress={mainStore.getWeekProgress} />
+          </Card>
+          <FinishTask
+            task={mainStore.user.finishTask}
+            amount={mainStore.allFinishTask}
+          />
+        </Container>
+      </Base>
+    </>
   );
 });
 

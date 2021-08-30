@@ -1,5 +1,19 @@
 {
-  "hosting": {
+  "hosting": [{
+    "site": "letmakeyoufocus",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },{
     "site": "letsfocus",
     "public": "build",
     "ignore": [
@@ -13,7 +27,7 @@
         "destination": "/index.html"
       }
     ]
-  },
+  }],
   "emulators": {
     "functions": {
       "port": 5001
