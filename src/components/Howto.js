@@ -14,9 +14,14 @@ const AlertContainer = styled.div`
   z-index: 10;
 `;
 const HowtoBox = styled.div`
-  width: 85%;
+  @media (min-width: 320px) {
+    width: 85%;
+  }
+  @media (min-width: 928px) {
+    width: 30%;
+  }
   min-height: 450px;
-  overflow: scroll;
+  // overflow: scroll;
   padding: 20px;
   background: white;
   border-radius: 10px;
@@ -31,7 +36,7 @@ const HowtoBox = styled.div`
 const BodyBox = styled.div`
   width: 100%;
   height: 400px;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 const Paragraph = styled.p`

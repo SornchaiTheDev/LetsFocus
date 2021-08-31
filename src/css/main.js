@@ -12,7 +12,6 @@ export const Text = styled.h1`
 
 export const Base = styled.div`
   background: ${(props) => (props.background ? props.background : "#D33F49")};
-  height: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
