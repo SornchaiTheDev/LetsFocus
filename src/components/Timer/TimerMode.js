@@ -26,13 +26,21 @@ const TimerMode = observer(() => {
   const _onClick = () => {
     if (timerStore.status !== "idle") return timerStore.changeModeAlert();
     mainStore.setMode();
+    mainStore.modeTutSuccess();
   };
   return (
-    <TimerSelector onClick={_onClick}>
-      <Text color="black" size={1} weight="700">
-        {mainStore.mode === "focus" ? "ช่วงโฟกัส" : "ช่วงพัก"}
-      </Text>
-    </TimerSelector>
+    <>
+      {mainStore.modeTut && (
+        <Text size={1} color="white">
+          แตะที่ปุ่มช่วงสามารถเปลี่ยนช่วงได้
+        </Text>
+      )}
+      <TimerSelector onClick={_onClick}>
+        <Text color="black" size={1} weight="700">
+          {mainStore.mode === "focus" ? "ช่วงโฟกัส" : "ช่วงพัก"}
+        </Text>
+      </TimerSelector>
+    </>
   );
 });
 

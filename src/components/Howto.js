@@ -5,7 +5,7 @@ import { MainStore } from "../store/MainStore";
 
 const AlertContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -82,8 +82,6 @@ function Howto() {
             กดลูกศร <b>ขึ้น-ลง</b> เพื่อตั้งเวลานับถอยหลัง
             <br />
             แต่ถ้าไม่ตั้งเวลาเลยจะเป็นนาฬิกาจับเวลาแทน
-            <br />
-            สามารถแตะที่ปุ่มช่วงเพื่อเปลี่ยนช่วงเวลาได้
           </Paragraph>
         </BodyBox>
 
