@@ -65,13 +65,12 @@ class TimerStore {
     this.rootStore.uid !== null && this.setStopStatus();
   }
 
-  countdown() {
+  countdown(time) {
     this.isFinish = false;
     this.status = "start";
-
     timer.postMessage({
       status: "start",
-      time: this.timer,
+      timerEnd: time,
     });
 
     timer.onmessage = (e) => {
@@ -91,6 +90,14 @@ class TimerStore {
     };
   }
 
+  stop() {
+    timer.postMessage({ status: "stop" });
+    this.isFinish = true;
+    this.status = "idle";
+    this.startTime = 0;
+    this.rootStore.uid !== null && this.setStopStatus();
+  }
+
   async setStartStatus(time) {
     await firestore()
       .collection("users")
@@ -103,12 +110,6 @@ class TimerStore {
       .collection("users")
       .doc(this.rootStore.uid)
       .update({ status: "idle", startTime: 0 });
-  }
-
-  stop() {
-    this.status = "idle";
-    timer.postMessage({ status: "stop" });
-    this.isFinish = true;
   }
 
   set updateTimer(time) {
@@ -127,6 +128,10 @@ class TimerStore {
     this.saveRestTime = 0;
     this.startTime = 0;
     this.status = "idle";
+  }
+
+  get isCountdown() {
+    return this.focusTime > 0 || this.restTime > 0;
   }
 
   set setStatus(status) {

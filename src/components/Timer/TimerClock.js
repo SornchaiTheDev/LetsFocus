@@ -99,7 +99,7 @@ const TimerClock = observer(({ stopConfirm }) => {
     return 100;
   };
   const clickEvent = () => {
-    if (timerStore.isFinish && timerStore.timer === 0) {
+    if (!timerStore.isCountdown) {
       timerStore.countup();
     }
 
@@ -111,23 +111,15 @@ const TimerClock = observer(({ stopConfirm }) => {
       timerStore.timer > 0 &&
       timerStore.status === "idle"
     ) {
-      timerStore.setStartTime = new Date(
-        Date.now() + timerStore.timer * 1000
-      ).getTime();
-
-      timerStore.countdown();
+      timerStore.countdown(
+        new Date(Date.now() + timerStore.timer * 1000).getTime()
+      );
     }
     if (
       timerStore.maxTime - timerStore.timer > 0 &&
       timerStore.status !== "countup"
     ) {
       stopConfirm();
-    }
-
-    if (timerStore.status === "extra") {
-      timerStore.isFinish = true;
-      timerStore.status = "end";
-      mainStore.uid !== null && timerStore.setStopStatus();
     }
   };
 

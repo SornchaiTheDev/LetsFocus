@@ -2,11 +2,16 @@ let timer = null;
 
 self.addEventListener("message", (e) => {
   if (e.data.status === "start") {
-    const timerEnd = new Date(Date.now() + e.data.time * 1000).getTime();
+    const timerEnd = e.data.timerEnd;
     const startTime = new Date().getTime();
-    self.postMessage({ startTime: startTime, time: e.data.time });
+    const now = Date.now();
 
-    timer = setInterval(async () => {
+    self.postMessage({
+      startTime: startTime,
+      time: Math.abs(Math.ceil((timerEnd - now) / 1000)),
+    });
+
+    timer = setInterval(() => {
       const now = Date.now();
       if (Math.ceil((timerEnd - now) / 1000) <= 0) {
         clearInterval(timer);
@@ -16,6 +21,7 @@ self.addEventListener("message", (e) => {
       } else {
         self.postMessage({
           time: Math.abs(Math.ceil((timerEnd - now) / 1000)),
+          timerEnd: timerEnd,
         });
       }
     }, 1000);

@@ -218,10 +218,9 @@ class AchievementStore {
     const claims_achieved = [];
     if (!achievements.empty) {
       achievements.forEach((doc) => claims_achieved.push(doc.data()));
-
       this.setAcheived = claims_achieved;
-      this.setStats = stats.data().stats;
     }
+    this.setStats = stats.data().stats;
   }
 
   set setAcheived(acheivements) {
