@@ -20,7 +20,9 @@ const LogoutBtn = styled.div`
 `;
 function LogoutBtnComp() {
   const mainStore = useContext(MainStore);
+  const { timerStore } = useContext(MainStore);
   const onSignOut = async () => {
+    timerStore.clearStore();
     await auth().signOut();
     mainStore.clearStore();
   };

@@ -106,7 +106,6 @@ const Me = observer(() => {
                   text="เข้าสู่ระบบด้วยกูเกิ้ล"
                   onClick={() => {
                     const provider = new auth.GoogleAuthProvider();
-                    timerStore.clearStore();
                     auth().signInWithRedirect(provider);
                   }}
                 />
