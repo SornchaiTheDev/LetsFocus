@@ -1,5 +1,5 @@
 import { makeAutoObservable, autorun } from "mobx";
-import { makePersistable } from "mobx-persist-store";
+import { makePersistable, clearPersistedStore } from "mobx-persist-store";
 import { firestore } from "../firebase";
 const timer = new Worker("./worker/timer.js");
 class TimerStore {
@@ -21,6 +21,10 @@ class TimerStore {
       properties: ["startTime"],
     });
     this.rootStore = rootStore;
+  }
+
+  clearStore() {
+    return clearPersistedStore(this);
   }
 
   isAlreadyCount(startTime) {

@@ -42,7 +42,7 @@ const Divider = styled.div`
 
 const Me = observer(() => {
   const mainStore = useContext(MainStore);
-  const { achievementStore } = useContext(MainStore);
+  const { achievementStore, timerStore } = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
 
   const getFocusTime = () => {
@@ -106,6 +106,7 @@ const Me = observer(() => {
                   text="เข้าสู่ระบบด้วยกูเกิ้ล"
                   onClick={() => {
                     const provider = new auth.GoogleAuthProvider();
+                    timerStore.clearStore();
                     auth().signInWithRedirect(provider);
                   }}
                 />

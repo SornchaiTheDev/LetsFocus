@@ -216,10 +216,12 @@ class AchievementStore {
       .collection("achievements")
       .get();
     const claims_achieved = [];
-    achievements.forEach((doc) => claims_achieved.push(doc.data()));
+    if (!achievements.empty) {
+      achievements.forEach((doc) => claims_achieved.push(doc.data()));
 
-    this.setAcheived = claims_achieved;
-    this.setStats = stats.data().stats;
+      this.setAcheived = claims_achieved;
+      this.setStats = stats.data().stats;
+    }
   }
 
   set setAcheived(acheivements) {
