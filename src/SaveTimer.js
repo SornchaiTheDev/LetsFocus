@@ -13,6 +13,7 @@ export const focusTimeOnDb = async (
     const focusTime = timerStore.saveFocusTime;
     const restTime = timerStore.saveRestTime;
     const achieveTime = mainStore.mode === "focus" ? focusTime : restTime;
+
     achievementStore.updateAchievementState = {
       mode: mainStore.mode,
       time: achieveTime,

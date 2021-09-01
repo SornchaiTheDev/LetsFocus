@@ -117,12 +117,13 @@ class AchievementStore {
   }
 
   set updateAchievementState({ mode, time }) {
+    console.log(time);
     if (mode === "focus") {
       this.stats.focus_overall_day += time;
       this.stats.focus_overall += time;
       this.stats.focus_overall_week += time;
     }
-    if (mode === "rest") this.rest_overall += time;
+    if (mode === "rest") this.stats.rest_overall += time;
   }
 
   set setStarted_dated(date) {
@@ -263,10 +264,6 @@ class AchievementStore {
   }
   clearStreak() {
     this.stats.streak_day = 0;
-  }
-
-  clearOverall() {
-    this.stats.focus_overall_week = 0;
   }
 }
 
