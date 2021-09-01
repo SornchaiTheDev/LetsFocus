@@ -36,7 +36,6 @@ class TimerStore {
   }
 
   countup(startTime = 0) {
-    console.log("count up call");
     this.isFinish = false;
     this.status = "countup";
 
@@ -130,6 +129,10 @@ class TimerStore {
     this.status = "idle";
   }
 
+  set setStatus(status) {
+    return (this.status = status);
+  }
+
   set saveTime(time) {
     this.rootStore.mode === "focus"
       ? (this.saveFocusTime = time)
@@ -165,6 +168,18 @@ class TimerStore {
     const minutes = parseInt((this.timer / 60) % 60)
       .toString()
       .padStart(2, 0);
+
+    if (
+      this.startTime > 0 &&
+      Math.floor((Date.now() - new Date(this.startTime)) / 1000) >= 36000
+    ) {
+      timer.postMessage({ status: "stop" });
+      this.setStartTime = 0;
+      this.rootStore.setIsCheat = true;
+      this.isFinish = true;
+      this.rootStore.uid !== null && this.setStopStatus();
+      this.setStatus = "idle";
+    }
     const seconds = this.timer % 60;
     if (this.timer % 60 < 10) {
       return `${hour > 0 ? `${hour}:` : ""}${minutes}:${seconds

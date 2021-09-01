@@ -80,14 +80,15 @@ const Tree = observer(() => {
     <>
       {mainStore.isLoading && <Preloader />}
       {!mainStore.isHideHowto && <Howto />}
-      {timerStore.status === "cheat" && (
+      {mainStore.isCheat && (
         <Alert
-          msg="คุณขี้โกงอ่าา"
+          title="หลับไปแล้วป้ะเนี่ย !"
+          msg="เปิดไว้เกิน 10 ชม.ละน้า"
           btn={[
             {
               title: "ปิด",
               background: "red",
-              onClick: () => (timerStore.status = "idle"),
+              onClick: () => (mainStore.setIsCheat = false),
             },
           ]}
         />

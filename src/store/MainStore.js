@@ -32,6 +32,7 @@ class mainStore {
   week_progress = [];
   isLoading = true;
   modeTut = true;
+  isCheat = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -41,10 +42,14 @@ class mainStore {
     this.achievementStore = new AchievementStore(this);
     makePersistable(this, {
       name: "MeStore",
-      properties: ["mode", "uid", "user", "isHideHowto", "modeTut"],
+      properties: ["mode", "uid", "user", "isHideHowto", "modeTut", "isCheat"],
     });
     this.leaderBoardStore.updateRank();
     this.fetchUserData();
+  }
+
+  set setIsCheat(status) {
+    return (this.isCheat = status);
   }
 
   modeTutSuccess() {
