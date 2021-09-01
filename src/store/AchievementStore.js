@@ -117,7 +117,6 @@ class AchievementStore {
   }
 
   set updateAchievementState({ mode, time }) {
-    console.log(time);
     if (mode === "focus") {
       this.stats.focus_overall_day += time;
       this.stats.focus_overall += time;
@@ -259,6 +258,7 @@ class AchievementStore {
     this.received.pop();
   }
   updateStreak() {
+    console.log("call");
     this.stats.streak_day += 1;
     this.stats.focus_overall_day = 0;
   }

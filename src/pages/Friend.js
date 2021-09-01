@@ -226,7 +226,7 @@ const Friend = observer(({ history }) => {
               {user.username ? user.username : "กำลังโหลด"}
             </Text>
           </ProfileName>
-          <Group justify="center" align="center" gap={20}>
+          <Group justify="center" align="center" wrap="wrap" gap={20}>
             <Text weight="300">{getFocusTime()}</Text>
             <Text weight="300">{getRestTime()}</Text>
           </Group>

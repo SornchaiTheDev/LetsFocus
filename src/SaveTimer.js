@@ -37,6 +37,8 @@ export const focusTimeOnDb = async (
           { merge: true }
         );
     } catch {}
+
+    achievementStore.setLastest_dated = new Date().getTime();
   }
 };
 

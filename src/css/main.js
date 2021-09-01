@@ -29,6 +29,7 @@ export const Group = styled.div`
   flex-direction: ${(props) => (props.direction ? props.direction : "row")};
   justify-content: ${(props) => (props.justify ? props.justify : "flex-start")};
   align-items: ${(props) => (props.align ? props.align : "flex-start")};
+  flex-wrap: ${(props) => (props.wrap ? props.wrap : "no-wrap")};
   gap: ${(props) => (props.gap ? props.gap : 0)}px;
 `;
 

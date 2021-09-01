@@ -35,31 +35,31 @@ const Tree = observer(() => {
     });
   }, []);
   // Achievement Run
-  useEffect(() => {
-    autorun(() => {
-      if (achievementStore.stats.started_date === "") {
-        achievementStore.setStarted_dated = new Date().getTime();
-      }
-      if (achievementStore.stats.started_date !== "") {
-        const lastest_dated = parseInt(
-          new Date(achievementStore.stats.lastest_date).setHours(0, 0, 0, 0) /
-            86400000
-        );
-        const today = parseInt(
-          new Date(Date.now()).setHours(0, 0, 0, 0) / 86400000
-        );
+  // useEffect(() => {
+  //   autorun(() => {
+  //     if (achievementStore.stats.started_date === "") {
+  //       achievementStore.setStarted_dated = new Date().getTime();
+  //     }
+  //     if (achievementStore.stats.started_date !== "") {
+  //       const lastest_dated = parseInt(
+  //         new Date(achievementStore.stats.lastest_date).setHours(0, 0, 0, 0) /
+  //           86400000
+  //       );
+  //       const today = parseInt(
+  //         new Date(Date.now()).setHours(0, 0, 0, 0) / 86400000
+  //       );
 
-        if (lastest_dated > 0) {
-          if (today - lastest_dated === 1) {
-            achievementStore.updateStreak();
-          } else {
-            achievementStore.clearStreak();
-          }
-        }
-        achievementStore.setLastest_dated = new Date().getTime();
-      }
-    });
-  }, []);
+  //       if (lastest_dated > 0) {
+  //         if (today - lastest_dated === 0) {
+  //           achievementStore.updateStreak();
+  //           // achievementStore.uploadStatsToFirestore();
+  //         } else {
+  //           achievementStore.clearStreak();
+  //         }
+  //       }
+  //     }
+  //   });
+  // }, []);
 
   // Achievement Validate
   useEffect(() => {
