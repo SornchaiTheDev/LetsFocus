@@ -9,7 +9,7 @@ import FinishTask from "../components/Me/FinishTask";
 import ProgressHistory from "../components/Me/ProgressHistory";
 import LoginBox from "../components/Me/LoginBox";
 import Badge from "../components/Me/Badge";
-import { auth } from "../firebase";
+import { auth, firestore } from "../firebase";
 import LogoutBtn from "../components/Me/LogoutBtn";
 
 // Styling
@@ -42,6 +42,7 @@ const Divider = styled.div`
 
 const Me = observer(() => {
   const mainStore = useContext(MainStore);
+  const [sameUsername, setSameUsername] = useState(false);
   const { achievementStore, timerStore } = useContext(MainStore);
   const [isChange, setIsChange] = useState(false);
 
@@ -79,9 +80,18 @@ const Me = observer(() => {
     }
   };
 
-  const onChangeName = (e) => {
+  const onChangeName = async (e) => {
     e.preventDefault();
     const username = document.getElementById("username").value;
+    // Check if same username
+    const getUser = await firestore().collection("users").get();
+    const allUsername = [];
+    getUser.forEach((docs) => {
+      allUsername.push(docs.data().username);
+    });
+
+    if (allUsername.includes(username)) return setSameUsername(true);
+
     mainStore.updateUser({ name: username, uid: mainStore.uid });
     setIsChange(false);
   };
@@ -120,6 +130,7 @@ const Me = observer(() => {
                         placeholder="ชื่อผู้ใช้"
                         value={mainStore.user.username}
                         onChange={(e) => {
+                          setSameUsername(false);
                           if (e.target.value.length < 20)
                             mainStore.user.username = e.target.value;
                         }}
@@ -144,6 +155,11 @@ const Me = observer(() => {
                     </>
                   )}
                 </ProfileName>
+                {sameUsername && (
+                  <Text color="red" weight="600">
+                    มีคนใช้ชื่อนี้แล้ว!
+                  </Text>
+                )}
                 <Group justify="center" align="center" wrap="wrap" gap={20}>
                   <Text weight="300">{getFocusTime()}</Text>
                   <Text weight="300">{getRestTime()}</Text>
