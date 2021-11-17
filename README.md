@@ -1,5 +1,5 @@
 # Let's Focus
-# Stacks :
+# Stacks 
  - ReactJS
  - Styled-components
  - Firebase
