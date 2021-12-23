@@ -47,7 +47,7 @@ const Me = observer(() => {
   const [isChange, setIsChange] = useState(false);
 
   const getFocusTime = () => {
-    const focusTime = mainStore.realtimeFocusTimer;
+    const focusTime = mainStore.user.focusTime;
 
     if (focusTime === undefined) return "กำลังโหลด";
     const hour = Math.floor(focusTime / 3600);
@@ -64,7 +64,7 @@ const Me = observer(() => {
   };
 
   const getRestTime = () => {
-    const restTime = mainStore.realtimeRestTimer;
+    const restTime = mainStore.user.restTime;
 
     if (restTime === undefined) return "กำลังโหลด";
     const hour = Math.floor(restTime / 3600);
